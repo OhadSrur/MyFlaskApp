@@ -10,24 +10,24 @@ def get_sql_connection(svr,db,user,psw):
     cnxn = pyodbc.connect('DRIVER='+driver+';SERVER='+server+';PORT=1443;DATABASE='+db+';UID='+user+';PWD='+ psw)
     return cnxn
 
-def get_sql_engine(svr,db,user,psw):
+def get_all_sql_connection(svr,db,user,psw):
     driver= 'ODBC+Driver+13+for+SQL+Server'
-    connection_string = 'mssql+pyodbc://'+user+'@'+db+':'+psw+'@'+svr+':1433/CoveredCalls?driver='+driver+';'
+    connection_string = 'mssql+pyodbc://'+user+'@'+svr+':'+psw+'@'+svr+'.database.windows.net:1433/'+db+'?driver='+driver+';'
     engine = sq.engine.create_engine(connection_string)
-    engine.connect()
-    return engine
-
-def get_alchemy_connection(svr,db,user,psw):
-    engine = get_sql_engine(svr,db,user,psw)
     connection = engine.connect()
-    return connection
+    return connection_string, engine, connection
+
+def get_sql_connection_string(svr,db,user,psw):
+    driver= 'ODBC+Driver+13+for+SQL+Server'
+    connection_string = 'mssql+pyodbc://'+user+'@'+svr+':'+psw+'@'+svr+'.database.windows.net:1433/'+db+'?driver='+driver+';'
+    return connection_string
 
 if __name__ == "__main__":
     svr = sys.argv[1]
     db = sys.argv[2]
     user = sys.argv[3]
     psw = sys.argv[4]
-    cnxn = get_sql_connection(svr,db,user,psw)
+    connection_string, engine, cnxn = get_all_sql_connection(svr,db,user,psw)
     query = "SELECT StockPriceDate,StockPriceYear,StockPriceMonth,StockOpenPrice,StockLowPrice, \
                 StockHighPrice,StockClosePrice,DailyChangePricePerc,StockPriceChangeGroup \
                 FROM [CoveredCalls].[dbo].vStockHistory WHERE StockID= ?  and StockPriceDate>= ? "

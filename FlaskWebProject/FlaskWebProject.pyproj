@@ -16,6 +16,7 @@
     <SuppressCollectPythonCloudServiceFiles>true</SuppressCollectPythonCloudServiceFiles>
     <Name>FlaskWebProject</Name>
     <RootNamespace>FlaskWebProject</RootNamespace>
+    <WebBrowserPort>5000</WebBrowserPort>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,9 +32,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="requirements.txt" />
+    <Content Include="templates\dashboard.html" />
+    <Content Include="templates\includes\_formhelpers.html" />
+    <Content Include="templates\includes\_messages.html" />
     <Content Include="templates\includes\_navbar.html" />
     <Content Include="templates\index.html" />
     <Content Include="templates\layout.html" />
+    <Content Include="templates\login.html" />
+    <Content Include="templates\register.html" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="templates\" />
