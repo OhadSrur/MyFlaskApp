@@ -93,25 +93,23 @@ def register():
 def login():
     if request.method == 'POST':
         # Get Form Fields
-        username = request.form['username']
-        password_candidate = request.form['password']
-
-        # Get User
-        user = UserAccount(username=username,password=password_candidate)
+        POST_USERNAME = request.form['username']
+        POST_PASSWORD = request.form['password']
 
         # Get user by username
-        result = cur.execute("SELECT * FROM users WHERE username = %s", [username])
+        #result = cur.execute("SELECT * FROM users WHERE username = %s", [username])
+        #query = s.query(user).filter(user.username==POST_USERNAME, user.password)
+        query = UserAccount.query.filter_by(username=POST_USERNAME).first()
 
-        if result > 0:
+        if query.UserID > 0:
             # Get stored hash
-            data = cur.fetchone()
-            password = data['password']
+            password = query.password
 
             # Compare Passwords
-            if sha256_crypt.verify(password_candidate, password):
+            if sha256_crypt.verify(POST_PASSWORD, password):
                 # Passed
                 session['logged_in'] = True
-                session['username'] = username
+                session['username'] = POST_USERNAME
 
                 flash('You are now logged in', 'success')
                 return redirect(url_for('dashboard'))
@@ -119,7 +117,7 @@ def login():
                 error = 'Invalid login'
                 return render_template('login.html', error=error)
             # Close connection
-            cur.close()
+            db.session.close()
         else:
             error = 'Username not found'
             return render_template('login.html', error=error)
@@ -144,6 +142,12 @@ def logout():
     session.clear()
     flash('You are now logged out', 'success')
     return redirect(url_for('login'))
+
+# Dashboard
+@app.route('/dashboard')
+@is_logged_in
+def dashboard():
+   return render_template('dashboard.html')
 
 if __name__ == '__main__':
 
