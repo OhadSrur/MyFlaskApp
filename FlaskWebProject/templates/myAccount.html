@@ -1,0 +1,22 @@
+﻿{% extends 'layout.html' %}
+
+{% block body %}
+<h1><small>{{session.username}} Account Detail</small></h1>
+<table class="table table-striped">
+    <tr>
+        <th>Title</th>
+        <th>FirstName</th>
+        <th>SurName</th>
+        <th>Email</th>
+        <th>Phone</th>
+    </tr>
+    <tr>
+        <td>{{account.title}}</td>
+        <td>{{account.firstName}}</td>
+        <td>{{account.surName}}</td>
+        <td>{{account.email}}</td>
+        <td>{{account.phone}}</td>
+        <td><a href="edit_account/{{account.UserID}}" class="btn btn-default pull-right">Edit</a></td>
+    </tr>
+</table>
+{% endblock %}

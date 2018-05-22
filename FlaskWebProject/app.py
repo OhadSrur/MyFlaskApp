@@ -87,7 +87,6 @@ def register():
         return redirect(url_for('login'))
     return render_template('register.html', form=form)
 
-
 # User login
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -148,6 +147,18 @@ def logout():
 @is_logged_in
 def dashboard():
    return render_template('dashboard.html')
+
+# Account Details
+@app.route('/myAccount', methods=['GET', 'POST'])
+@is_logged_in
+def myAccount():
+    query = UserAccount.query.filter_by(username=session['username']).first()
+
+    if query.UserID > 0:
+        return render_template('myAccount.html', account=query)
+    else:
+        msg = 'No Account Found'
+        return render_template('myAccount.html', msg=msg)
 
 if __name__ == '__main__':
 

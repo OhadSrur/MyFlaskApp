@@ -39,6 +39,7 @@
     <Content Include="templates\index.html" />
     <Content Include="templates\layout.html" />
     <Content Include="templates\login.html" />
+    <Content Include="templates\myAccount.html" />
     <Content Include="templates\register.html" />
   </ItemGroup>
   <ItemGroup>
