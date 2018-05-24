@@ -41,6 +41,9 @@
     <Content Include="templates\login.html" />
     <Content Include="templates\myAccount.html" />
     <Content Include="templates\register.html" />
+    <Content Include="templates\Stylesheet.css">
+      <Publish>True</Publish>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="templates\" />

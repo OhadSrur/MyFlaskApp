@@ -47,9 +47,9 @@ class UserAccount(db.Model):
 
 # Register Form Class
 class RegisterForm(Form):
-    title = StringField('title', [validators.Length(min=2, max=5)])
-    firstName = StringField('firstName', [validators.Length(min=3, max=20)])
-    surName = StringField('surName', [validators.Length(min=3, max=20)])
+    title = StringField('title', [validators.Length(min=2, max=6)])
+    firstName = StringField('firstName', [validators.Length(min=2, max=20)])
+    surName = StringField('surName', [validators.Length(min=2, max=20)])
     username = StringField('Username', [validators.Length(min=4, max=30)])
     email = StringField('Email', [validators.Length(min=6, max=50)])
     phone = IntegerField('phone')
@@ -58,6 +58,15 @@ class RegisterForm(Form):
         validators.EqualTo('confirm', message='Passwords do not match')
     ])
     confirm = PasswordField('Confirm Password')
+
+# Update Form Class
+class UpdateForm(Form):
+    title = StringField('title', [validators.Length(min=2, max=6)])
+    firstName = StringField('firstName', [validators.Length(min=2, max=20)])
+    surName = StringField('surName', [validators.Length(min=2, max=20)])
+    username = StringField('Username', [validators.Length(min=4, max=30)])
+    email = StringField('Email', [validators.Length(min=6, max=50)])
+    phone = IntegerField('phone')
 
 # User Register
 @app.route('/register', methods=['GET', 'POST'])
@@ -96,8 +105,6 @@ def login():
         POST_PASSWORD = request.form['password']
 
         # Get user by username
-        #result = cur.execute("SELECT * FROM users WHERE username = %s", [username])
-        #query = s.query(user).filter(user.username==POST_USERNAME, user.password)
         query = UserAccount.query.filter_by(username=POST_USERNAME).first()
 
         if query.UserID > 0:
@@ -160,6 +167,32 @@ def myAccount():
         msg = 'No Account Found'
         return render_template('myAccount.html', msg=msg)
 
+@app.route('/updateAccount', methods=['GET', 'POST'])
+@is_logged_in
+def updateAccount():
+    query = UserAccount.query.filter_by(username=session['username']).first()
+    form = UpdateForm(request.form)
+
+    if request.method == 'POST' : #and form.validate()   
+       # Update account
+        UserAccount.query.filter_by(username=session['username']).update({
+             'title': request.form['title'],
+             'firstName': request.form['firstName'],
+             'surName': request.form['surName'],
+             'email': request.form['email'],
+             'phone': request.form['phone'],
+        })
+
+        # Commit to DB
+        db.session.commit()
+
+        # Close connection
+        db.session.close()
+
+        flash('You successfully updated your account', 'success')
+
+        return redirect(url_for('dashboard'))
+    return redirect(url_for('myAccount'))
 if __name__ == '__main__':
 
     HOST = os.environ.get('SERVER_HOST', 'localhost')
