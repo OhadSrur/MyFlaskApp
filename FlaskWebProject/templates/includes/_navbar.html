@@ -1,5 +1,5 @@
 ﻿<nav class="navbar navbar-expand-md navbar-dark bg-dark">
-    <a class="navbar-brand" href="#">Navbar</a>
+    <!--<a class="navbar-brand" href="#">Navbar</a>-->
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -13,7 +13,7 @@
                 <a class="nav-link" href="/parameters">Parameters Page</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/results">My Results</a>
+                <a class="nav-link" href="/dailyResults">My Results</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="/myAccount">Account</a>
@@ -21,7 +21,6 @@
         </ul>
         <ul class="nav navbar-nav navbar-right">
             {% if session.logged_in %}
-                <li class="nav-item"><a class="nav-link" href="/dashboard">Dashboard</a></li>
                 <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
             {% else %}
                 <li class="nav-item"><a class="nav-link" href="/register">Register</a></li>

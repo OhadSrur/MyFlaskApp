@@ -7,8 +7,10 @@ from flask import Flask, render_template, flash, redirect, url_for, session, req
 from wtforms import Form, StringField, TextAreaField, PasswordField, validators, IntegerField
 from passlib.hash import sha256_crypt
 from functools import wraps
-from sqlConnection import get_sql_connection_string
+from sqlConnection import get_sql_connection_string, get_all_sql_connection
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import MetaData, Table, select
+import pandas as pd
 
 app = Flask(__name__)
 
@@ -59,6 +61,23 @@ class RegisterForm(Form):
     ])
     confirm = PasswordField('Confirm Password')
 
+class StockPicks(db.Model):
+    #Return Stock Pick Results
+    __tablename__ = 'StockPickScanResults'
+    __table_args__ = {"schema": "Stage"}
+    UserID = db.Column(db.Integer, primary_key=True)
+    StockID = db.Column(db.String(20), unique=False, nullable=False)
+    CompanyName = db.Column(db.String(50), unique=False, nullable=False)
+    Industry = db.Column(db.String(50), unique=False, nullable=False)
+    CurrentStockPrice = db.Column(db.String(50), unique=False, nullable=False)
+    CallExpiryDays = db.Column(db.String(50), unique=False, nullable=False)
+    StrikePrice = db.Column(db.String(50), unique=False, nullable=False)
+    ExpectedCallReturn = db.Column(db.String(50), unique=False, nullable=False)
+    StockPriceDate = db.Column(db.String(50), unique=False, nullable=False)
+
+    def __repr__(self):
+        return '<StockPickScanResults %r>' % self.userID
+
 # Update Form Class
 class UpdateForm(Form):
     title = StringField('title', [validators.Length(min=2, max=6)])
@@ -107,7 +126,7 @@ def login():
         # Get user by username
         query = UserAccount.query.filter_by(username=POST_USERNAME).first()
 
-        if query.UserID > 0:
+        if query and query.UserID > 0:
             # Get stored hash
             password = query.password
 
@@ -118,9 +137,9 @@ def login():
                 session['username'] = POST_USERNAME
 
                 flash('You are now logged in', 'success')
-                return redirect(url_for('dashboard'))
+                return redirect(url_for('dailyResults'))
             else:
-                error = 'Invalid login'
+                error = 'Invalid password'
                 return render_template('login.html', error=error)
             # Close connection
             db.session.close()
@@ -149,11 +168,29 @@ def logout():
     flash('You are now logged out', 'success')
     return redirect(url_for('login'))
 
-# Dashboard
-@app.route('/dashboard')
+# dailyResults
+@app.route('/dailyResults')
 @is_logged_in
-def dashboard():
-   return render_template('dashboard.html')
+def dailyResults():
+    #Stocks Picks
+    #query = StockPicks.query.filter_by(UserID=1, StockPriceDate='2018-05-25').all()
+
+    connection_string, engine, connection = get_all_sql_connection(svr='svr',db='db',user='user',psw='password!')
+    #metadata = MetaData(schema='Stage')
+    #query = Table('StockPickScanResults', metadata, autoload=True, autoload_with=engine)
+    #stmt = select([query])
+    #stmt = stmt.where(query.columns.UserID.in_('1'))
+    #results = connection.execute(stmt).fetchall()
+    #first_row=results[0].values()
+    
+    query = "SELECT StockID, CompanyName, Industry, CurrentStockPrice, CallExpiryDays, StrikePrice, ExpectedCallReturn \
+    FROM Stage.StockPickScanResults \
+    WHERE UserID= ? and StockPriceDate= ? "
+    results = pd.read_sql_query(query,connection,params=('1','2018-05-25'))
+    #columns = ['StockID', 'CompanyName', 'Industry', 'CurrentStockPrice', 'CallExpiryDays', 'StrikePrice', 'ExpectedCallReturn']
+    #results.columns=columns
+
+    return render_template('dailyResults.html',StockPicks=results.values)
 
 # Account Details
 @app.route('/myAccount', methods=['GET', 'POST'])
@@ -191,8 +228,9 @@ def updateAccount():
 
         flash('You successfully updated your account', 'success')
 
-        return redirect(url_for('dashboard'))
+        return redirect(url_for('dailyResults'))
     return redirect(url_for('myAccount'))
+
 if __name__ == '__main__':
 
     HOST = os.environ.get('SERVER_HOST', 'localhost')

@@ -32,7 +32,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="requirements.txt" />
-    <Content Include="templates\dashboard.html" />
+    <Content Include="templates\dailyResults.html" />
     <Content Include="templates\includes\_formhelpers.html" />
     <Content Include="templates\includes\_messages.html" />
     <Content Include="templates\includes\_navbar.html" />

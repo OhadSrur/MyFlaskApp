@@ -1,0 +1,28 @@
+﻿{% extends 'layout.html' %}
+
+{% block body %}
+<h1>Daily Results<small> Welcome {{session.username}}</small></h1>
+<hr>
+<table class="table table-striped">
+    <tr>
+        <th>Symbol</th>
+        <th>Company Name</th>
+        <th>Industry</th>
+        <th>Current Stock Price</th>
+        <th>Call Expiry Days</th>
+        <th>Strike Price</th>
+        <th>Expected Call Return</th>
+    </tr>
+    {% for StockPick in StockPicks %}
+    <tr>
+        <td>{{StockPick[0]}}</td>
+        <td>{{StockPick[1]}}</td>
+        <td>{{StockPick[2]}}</td>
+        <td>{{StockPick[3]}}</td>
+        <td>{{StockPick[4]}}</td>
+        <td>{{StockPick[5]}}</td>
+        <td>{{StockPick[6]}}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
