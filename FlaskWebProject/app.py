@@ -182,11 +182,19 @@ def dailyResults():
     #stmt = stmt.where(query.columns.UserID.in_('1'))
     #results = connection.execute(stmt).fetchall()
     #first_row=results[0].values()
-    
+    checkLastTradingDateQuery = "SELECT  TOP 1 mc.MarketDate \
+    FROM	[dbo].[MarketCalendar] mc \
+    WHERE mc.MarketStatus='Open' and mc.MarketDate between  dateadd(day,-10,try_convert(date,try_convert(datetimeoffset, GETDATE()) AT TIME ZONE 'Eastern Standard Time')) \
+        AND CASE WHEN try_convert(time,try_convert(datetimeoffset, GETDATE()) AT TIME ZONE 'Eastern Standard Time')>'16:30' THEN try_convert(date,try_convert(datetimeoffset, GETDATE()) AT TIME ZONE 'Eastern Standard Time') \
+            ELSE dateadd(day,-1,try_convert(date,try_convert(datetimeoffset, GETDATE()) AT TIME ZONE 'Eastern Standard Time')) END \
+    order by mc.MarketDate desc"
+
+    lastTradingDate = pd.read_sql_query(checkLastTradingDateQuery,connection)
+
     query = "SELECT StockID, CompanyName, Industry, CurrentStockPrice, CallExpiryDays, StrikePrice, ExpectedCallReturn \
     FROM Stage.StockPickScanResults \
     WHERE UserID= ? and StockPriceDate= ? "
-    results = pd.read_sql_query(query,connection,params=('1','2018-05-25'))
+    results = pd.read_sql_query(query,connection,params=('1',lastTradingDate.values[0][0]))
     #columns = ['StockID', 'CompanyName', 'Industry', 'CurrentStockPrice', 'CallExpiryDays', 'StrikePrice', 'ExpectedCallReturn']
     #results.columns=columns
 
