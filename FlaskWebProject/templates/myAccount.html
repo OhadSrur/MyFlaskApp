@@ -1,10 +1,10 @@
 ﻿{% extends 'layout.html' %}
 
 {% block body %}
-<h1><small>{{session.username}} Account Detail</small></h1>
+<h1><small>{{session.username}} Account Details</small></h1>
 {% from "includes/_formhelpers.html" import render_field %}
 <form method="POST" action="{{ url_for('updateAccount') }}">
-    <table class="table table-striped">
+    <!--<table class="table table-striped">
         <tr>
             <th>Title</th>
             <th>FirstName</th>
@@ -20,6 +20,29 @@
             <td><input value={{account.phone}} type="text" name="phone" class="input-text" /></td>
             <td><input type="submit" name="commit" class="btn btn-primary" value="Save Changes" /></td>
         </tr>
-    </table>
+    </table>-->
+    <div class="form-group">
+        <label for="title">Title</label>
+        <input value={{account.title}} type="text" name="title" class="input-text" />
+    </div>
+    <div class="form-group">
+        <label>First Name</label>
+        <input value={{account.firstName}} type="text" name="firstName" class="input-text" />
+    </div>
+    <div class="form-group">
+        <label>Surname</label>
+        <input value={{account.surName}} type="text" name="surName" class="input-text" />
+    </div>
+    <div class="form-group">
+        <label>Email</label>
+        <input value={{account.email}} type="email" name="email" class="input-text" />
+    </div>
+    <div class="form-group">
+        <label>Phone</label>
+        <input value={{account.phone}} type="text" name="phone" class="input-text" />
+    </div>
+    <div class="form-group">
+        <input type="submit" name="commit" class="btn btn-primary" value="Save Changes" />
+    </div>
 </form>
 {% endblock %}

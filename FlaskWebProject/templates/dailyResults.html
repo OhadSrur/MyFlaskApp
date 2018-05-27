@@ -1,5 +1,4 @@
 ﻿{% extends 'layout.html' %}
-
 {% block body %}
 <h1>Daily Results<small> Welcome {{session.username}}</small></h1>
 <hr>
@@ -11,6 +10,8 @@
         <th>Current Stock Price</th>
         <th>Call Expiry Days</th>
         <th>Strike Price</th>
+        <th>Income Exercise Perc</th>
+        <th>Income Not Exercise Perc</th>
         <th>Expected Call Return</th>
     </tr>
     {% for StockPick in StockPicks %}
@@ -22,6 +23,8 @@
         <td>{{StockPick[4]}}</td>
         <td>{{StockPick[5]}}</td>
         <td>{{StockPick[6]}}</td>
+        <td>{{StockPick[7]}}</td>
+        <td>{{StockPick[8]}}</td>
     </tr>
     {% endfor %}
 </table>

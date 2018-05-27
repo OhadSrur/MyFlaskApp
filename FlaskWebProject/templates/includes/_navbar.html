@@ -4,28 +4,63 @@
         <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+    <div class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow" id="navbarsExampleDefault">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
                 <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/parameters">Parameters Page</a>
+                <a class="nav-link" href="/dailyResults">My Daily Results</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/dailyResults">My Results</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/myAccount">Account</a>
+                <a class="nav-link" href="/myAccount">Settings</a>
             </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
             {% if session.logged_in %}
-                <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
+            <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
             {% else %}
-                <li class="nav-item"><a class="nav-link" href="/register">Register</a></li>
-                <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
+            <li class="nav-item"><a class="nav-link" href="/register">Register</a></li>
+            <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
             {% endif %}
         </ul>
     </div>
+    {% if session.logged_in %}
+    <div class="container-fluid">
+        <div class="row">
+            <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+                <div class="sidebar-sticky">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/myAccount">
+                                <span data-feather="file"></span>
+                                Personal Details
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/parametersAccount">
+                                Basic Parameters
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/parametersOptions">
+                                Option Strategy
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                Technical Strategy
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                Other
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </div>
+    {% endif %}
 </nav>

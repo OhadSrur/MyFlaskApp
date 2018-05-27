@@ -47,14 +47,31 @@ class UserAccount(db.Model):
     def __repr__(self):
         return '<UserAccount %r>' % self.username
 
+class Account(db.Model):
+    __tablename__ = 'Account'
+    UserID = db.Column(db.Integer, primary_key=True)
+    AccountID = db.Column(db.Integer, primary_key=True)
+    AccountName = db.Column(db.String(50), unique=False, nullable=False)
+    StockCommission = db.Column(db.Float(precision='4,2'), unique=False, nullable=False)
+    StockCommissionPerSher = db.Column(db.Float(precision='3,3'), unique=False, nullable=True)
+    OptionCommission = db.Column(db.Float(precision='4,2'), unique=False, nullable=False)
+    OptionCommPerSher = db.Column(db.Float(precision='3,3'), unique=False, nullable=True)
+    TaxRate = db.Column(db.Float(precision='5,2'), unique=False, nullable=False)
+    USD = db.Column(db.Float(precision='9,2'), unique=False, nullable=False)
+    AUD = db.Column(db.Float(precision='9,2'), unique=False, nullable=False)
+    MinPerc = db.Column(db.Float(precision='5,5'), unique=False, nullable=True)
+    RequiredPerc = db.Column(db.Float(precision='5,5'), unique=False, nullable=True)
+
+    def __repr__(self):
+        return '<Account %r>' % self.AccountID
 # Register Form Class
 class RegisterForm(Form):
-    title = StringField('title', [validators.Length(min=2, max=6)])
-    firstName = StringField('firstName', [validators.Length(min=2, max=20)])
-    surName = StringField('surName', [validators.Length(min=2, max=20)])
+    title = StringField('Title', [validators.Length(min=2, max=6)])
+    firstName = StringField('First Name', [validators.Length(min=2, max=20)])
+    surName = StringField('Surname', [validators.Length(min=2, max=20)])
     username = StringField('Username', [validators.Length(min=4, max=30)])
     email = StringField('Email', [validators.Length(min=6, max=50)])
-    phone = IntegerField('phone')
+    phone = IntegerField('Phone')
     password = PasswordField('Password', [
         validators.DataRequired(),
         validators.EqualTo('confirm', message='Passwords do not match')
@@ -72,6 +89,8 @@ class StockPicks(db.Model):
     CurrentStockPrice = db.Column(db.String(50), unique=False, nullable=False)
     CallExpiryDays = db.Column(db.String(50), unique=False, nullable=False)
     StrikePrice = db.Column(db.String(50), unique=False, nullable=False)
+    IncomeExPerc = db.Column(db.String(50), unique=False, nullable=False)
+    IncomeNotExPerc = db.Column(db.String(50), unique=False, nullable=False)
     ExpectedCallReturn = db.Column(db.String(50), unique=False, nullable=False)
     StockPriceDate = db.Column(db.String(50), unique=False, nullable=False)
 
@@ -80,12 +99,12 @@ class StockPicks(db.Model):
 
 # Update Form Class
 class UpdateForm(Form):
-    title = StringField('title', [validators.Length(min=2, max=6)])
-    firstName = StringField('firstName', [validators.Length(min=2, max=20)])
-    surName = StringField('surName', [validators.Length(min=2, max=20)])
+    title = StringField('Title', [validators.Length(min=2, max=6)])
+    firstName = StringField('First Name', [validators.Length(min=2, max=20)])
+    surName = StringField('Surname', [validators.Length(min=2, max=20)])
     username = StringField('Username', [validators.Length(min=4, max=30)])
     email = StringField('Email', [validators.Length(min=6, max=50)])
-    phone = IntegerField('phone')
+    phone = IntegerField('Phone')
 
 # User Register
 @app.route('/register', methods=['GET', 'POST'])
@@ -172,31 +191,33 @@ def logout():
 @app.route('/dailyResults')
 @is_logged_in
 def dailyResults():
-    #Stocks Picks
-    #query = StockPicks.query.filter_by(UserID=1, StockPriceDate='2018-05-25').all()
-
+    #Getting DB connection
     connection_string, engine, connection = get_all_sql_connection(svr='svr',db='db',user='user',psw='password!')
-    #metadata = MetaData(schema='Stage')
-    #query = Table('StockPickScanResults', metadata, autoload=True, autoload_with=engine)
-    #stmt = select([query])
-    #stmt = stmt.where(query.columns.UserID.in_('1'))
-    #results = connection.execute(stmt).fetchall()
-    #first_row=results[0].values()
+    #Getting Account
+    username = 'OhadS' #session['username']
+    accountIDquery = "SELECT a.AccountID \
+                 FROM Account a \
+		            join \
+	             UserAccount  ua on a.UserID=ua.UserID \
+                 WHERE ua.UserName= %r and a.AccountName='Live'" % username
+    accountID = pd.read_sql_query(accountIDquery,connection)
+    accountID = accountID.values[0][0]
+
+    #Last Trading Date
     checkLastTradingDateQuery = "SELECT  TOP 1 mc.MarketDate \
     FROM	[dbo].[MarketCalendar] mc \
     WHERE mc.MarketStatus='Open' and mc.MarketDate between  dateadd(day,-10,try_convert(date,try_convert(datetimeoffset, GETDATE()) AT TIME ZONE 'Eastern Standard Time')) \
         AND CASE WHEN try_convert(time,try_convert(datetimeoffset, GETDATE()) AT TIME ZONE 'Eastern Standard Time')>'16:30' THEN try_convert(date,try_convert(datetimeoffset, GETDATE()) AT TIME ZONE 'Eastern Standard Time') \
             ELSE dateadd(day,-1,try_convert(date,try_convert(datetimeoffset, GETDATE()) AT TIME ZONE 'Eastern Standard Time')) END \
     order by mc.MarketDate desc"
-
     lastTradingDate = pd.read_sql_query(checkLastTradingDateQuery,connection)
-
-    query = "SELECT StockID, CompanyName, Industry, CurrentStockPrice, CallExpiryDays, StrikePrice, ExpectedCallReturn \
+    
+    #Stocks Picks
+    query = "SELECT StockID, CompanyName, Industry, CurrentStockPrice, CallExpiryDays, StrikePrice, IncomeExPerc, IncomeNotExPerc,ExpectedCallReturn \
     FROM Stage.StockPickScanResults \
-    WHERE UserID= ? and StockPriceDate= ? "
-    results = pd.read_sql_query(query,connection,params=('1',lastTradingDate.values[0][0]))
-    #columns = ['StockID', 'CompanyName', 'Industry', 'CurrentStockPrice', 'CallExpiryDays', 'StrikePrice', 'ExpectedCallReturn']
-    #results.columns=columns
+    WHERE AccountID= ? and StockPriceDate= ? \
+    ORDER BY try_convert(int,CallExpiryDays) ASC, ExpectedCallReturn DESC"
+    results = pd.read_sql_query(query,connection,params=(str(accountID),lastTradingDate.values[0][0]))
 
     return render_template('dailyResults.html',StockPicks=results.values)
 
@@ -238,6 +259,23 @@ def updateAccount():
 
         return redirect(url_for('dailyResults'))
     return redirect(url_for('myAccount'))
+
+@app.route('/parametersOptions', methods=['GET', 'POST'])
+@is_logged_in
+def parametersOptions():
+
+    query = AccountScanParameters.query.filter_by(username=session['username'], UserID='1').first()
+
+    if query.UserID > 0:
+        return render_template('parametersOptions.html', parametersOptions=query)
+    else:
+        msg = 'No Account Found'
+        return render_template('parameters.html', msg=msg)
+    
+@app.route('/parametersOptions', methods=['GET', 'POST'])
+@is_logged_in
+def updateParameters():
+    return 1
 
 if __name__ == '__main__':
 
