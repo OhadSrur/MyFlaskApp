@@ -5,68 +5,76 @@
 {% from "includes/_formhelpers.html" import render_field %}
 <form method="POST" action="{{ url_for('updateParameters') }}">
     <div class="form-group">
+        <label>PositionType</label>
+        <input value={{parametersOptions.PositionType}} type="text" name="PositionType" class="input-text" />
+    </div>
+    <div class="form-group">
         <label>WeeksNumForCalcProb</label>
-        <input value={{parametersOptions.WeeksNumForCalcProb}} type="text" name="title" class="input-text" />
+        <input value={{parametersOptions.WeeksNumForCalcProb}} type="text" name="WeeksNumForCalcProb" class="input-text" />
     </div>
     <div class="form-group">
         <label>MaxNumberOfShares</label>
-        <input value={{parametersOptions.MaxNumberOfShares}} type="text" name="firstName" class="input-text" />
+        <input value={{parametersOptions.MaxNumberOfShares}} type="text" name="MaxNumberOfShares" class="input-text" />
     </div>
     <div class="form-group">
         <label>MaxUSDInvestmentSizePerStock</label>
-        <input value={{parametersOptions.MaxUSDInvestmentSizePerStock}} type="text" name="surName" class="input-text" />
+        <input value={{parametersOptions.MaxUSDInvestmentSizePerStock}} type="text" name="MaxUSDInvestmentSizePerStock" class="input-text" />
     </div>
     <div class="form-group">
         <label>MaxExpiryWeeks</label>
-        <input value={{parametersOptions.MaxExpiryWeeks}} type="email" name="email" class="input-text" />
+        <input value={{parametersOptions.MaxExpiryWeeks}} type="text" name="MaxExpiryWeeks" class="input-text" />
     </div>
     <div class="form-group">
         <label>MinCallProbability</label>
-        <input value={{parametersOptions.MinCallProbability}} type="text" name="phone" class="input-text" />
+        <input value={{parametersOptions.MinCallProbability}} type="text" name="MinCallProbability" class="input-text" />
     </div>
     <div class="form-group">
         <label>MaxCallProbability</label>
-        <input value={{parametersOptions.MaxCallProbability}} type="text" name="phone" class="input-text" />
+        <input value={{parametersOptions.MaxCallProbability}} type="text" name="MaxCallProbability" class="input-text" />
     </div>
     <div class="form-group">
         <label>MinIncomeExPerc</label>
-        <input value={{parametersOptions.MinIncomeExPerc}} type="text" name="phone" class="input-text" />
+        <input value={{parametersOptions.MinIncomeExPerc}} type="text" name="MinIncomeExPerc" class="input-text" />
     </div>
     <div class="form-group">
         <label>MinIncomeNotExPerc</label>
-        <input value={{parametersOptions.MinIncomeNotExPerc}} type="text" name="phone" class="input-text" />
+        <input value={{parametersOptions.MinIncomeNotExPerc}} type="text" name="MinIncomeNotExPerc" class="input-text" />
+    </div>
+    <div class="form-group">
+        <label>CheckDailyProbability</label>
+        <input value={{parametersOptions.CheckDailyProbability}} type="checkbox" name="CheckDailyProbability" class="input-checkbox" />
     </div>
     <div class="form-group">
         <label>MaxNumResultsPerExpiry</label>
-        <input value={{parametersOptions.MaxNumResultsPerExpiry}} type="text" name="phone" class="input-text" />
+        <input value={{parametersOptions.MaxNumResultsPerExpiry}} type="text" name="MaxNumResultsPerExpiry" class="input-text" />
     </div>
     <div class="form-group">
         <label>MinTradingPrice</label>
-        <input value={{parametersOptions.MinTradingPrice}} type="text" name="phone" class="input-text" />
+        <input value={{parametersOptions.MinTradingPrice}} type="text" name="MinTradingPrice" class="input-text" />
     </div>
     <div class="form-group">
         <label>MaxTradingPrice</label>
-        <input value={{parametersOptions.MaxTradingPrice}} type="text" name="phone" class="input-text" />
+        <input value={{parametersOptions.MaxTradingPrice}} type="text" name="MaxTradingPrice" class="input-text" />
     </div>
     <div class="form-group">
         <label>IncludePutResults</label>
-        <input value={{parametersOptions.IncludePutResults}} type="text" name="phone" class="input-text" />
+        <input value={{parametersOptions.IncludePutResults}} type="checkbox" name="IncludePutResults" class="input-checkbox" />
     </div>
     <div class="form-group">
         <label>ExcludeExpiryDuringEventDates</label>
-        <input value={{parametersOptions.ExcludeExpiryDuringEventDates}} type="text" name="phone" class="input-text" />
+        <input value={{parametersOptions.ExcludeExpiryDuringEventDates}} type="checkbox" name="ExcludeExpiryDuringEventDates" class="input-checkbox" />
     </div>
     <div class="form-group">
         <label>ExcludeStocks</label>
-        <input value={{parametersOptions.ExcludeStocks}} type="text" name="phone" class="input-text" />
+        <input value={{parametersOptions.ExcludeStocks}} type="text" name="ExcludeStocks" class="input-text" />
     </div>
     <div class="form-group">
         <label>ExcludeIndustry</label>
-        <input value={{parametersOptions.ExcludeIndustry}} type="text" name="phone" class="input-text" />
+        <input value={{parametersOptions.ExcludeIndustry}} type="text" name="ExcludeIndustry" class="input-text" />
     </div>
     <div class="form-group">
         <label>PutProtectionPercCheckPrice</label>
-        <input value={{parametersOptions.PutProtectionPercCheckPrice}} type="text" name="phone" class="input-text" />
+        <input value={{parametersOptions.PutProtectionPercCheckPrice}} type="text" name="PutProtectionPercCheckPrice" class="input-text" />
     </div>
     <div class="form-group">
         <input type="submit" name="commit" class="btn btn-primary" value="Save Changes" />
