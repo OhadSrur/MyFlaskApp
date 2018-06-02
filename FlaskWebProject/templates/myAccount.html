@@ -6,23 +6,23 @@
 <form method="POST" action="{{ url_for('updateAccount') }}">
     <div class="form-group">
         <label for="title">Title</label>
-        <input value={{account.title}} type="text" name="title" class="input-text" />
+        <input value={{account.title}} type="text" name="title" class="form-control" />
     </div>
     <div class="form-group">
         <label>First Name</label>
-        <input value={{account.firstName}} type="text" name="firstName" class="input-text" />
+        <input value={{account.firstName}} type="text" name="firstName" class="form-control" />
     </div>
     <div class="form-group">
         <label>Surname</label>
-        <input value={{account.surName}} type="text" name="surName" class="input-text" />
+        <input value={{account.surName}} type="text" name="surName" class="form-control" />
     </div>
     <div class="form-group">
         <label>Email</label>
-        <input value={{account.email}} type="email" name="email" class="input-text" />
+        <input value={{account.email}} type="email" name="email" class="form-control" />
     </div>
     <div class="form-group">
         <label>Phone</label>
-        <input value={{account.phone}} type="text" name="phone" class="input-text" />
+        <input value={{account.phone}} type="text" name="phone" class="form-control" />
     </div>
     <div class="form-group">
         <input type="submit" name="commit" class="btn btn-primary" value="Save Changes" />

@@ -1,0 +1,59 @@
+﻿{% extends 'layout.html' %}
+
+{% block body %}
+<h1><small>Account Basic Parameters</small></h1>
+{% from "includes/_formhelpers.html" import render_field %}
+<form method="POST" action="{{ url_for('updateAccountBasic') }}">
+    <div class="form-group">
+        <label>StockCommission</label>
+        <input value={{account.StockCommission}} type="text" name="StockCommission" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>StockCommPerSher</label>
+        <input value={{account.StockCommPerSher}} type="text" name="StockCommPerSher" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>OptionCommission</label>
+        <input value={{account.OptionCommission}} type="text" name="OptionCommission" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>OptionCommPerSher</label>
+        <input value={{account.OptionCommPerSher}} type="text" name="OptionCommPerSher" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>TaxRate</label>
+        <input value={{account.TaxRate}} type="text" name="TaxRate" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Total USD</label>
+        <input value={{account.USD}} type="text" name="USD" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Total AUD</label>
+        <input value={{account.AUD}} type="text" name="AUD" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Min Income Percent per Covered Call Option</label>
+        <input value={{account.MinPerc}} type="text" name="MinPerc" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Required Income Percent per Covered Call Option</label>
+        <input value={{account.RequiredPerc}} type="text" name="RequiredPerc" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>DeepIn The Money Check in $</label>
+        <input value={{account.DeepInTheMoneyCheck}} type="text" name="DeepInTheMoneyCheck" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>DailyReport</label>
+        <input value={{account.DailyReport}} type="text" name="DailyReport" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>PositionReport</label>
+        <input value={{account.PositionReport}} type="text" name="PositionReport" class="form-control" />
+    </div>
+    <div class="form-group">
+        <input type="submit" name="commit" class="btn btn-primary" value="Save Changes" />
+    </div>
+</form>
+{% endblock %}

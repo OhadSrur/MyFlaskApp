@@ -14,8 +14,6 @@ import pandas as pd
 from wtforms.validators import Required, Length, Email, Regexp, EqualTo
 from wtforms import ValidationError
 
-app = Flask(__name__)
-
 # initialization
 app = Flask(__name__)
 
@@ -60,7 +58,7 @@ class Account(db.Model):
     AccountID = db.Column(db.Integer, primary_key=True)
     AccountName = db.Column(db.String(50), unique=False, nullable=False)
     StockCommission = db.Column(db.Float(precision='4,2'),  nullable=False)
-    StockCommissionPerSher = db.Column(db.Float(precision='3,3'),  nullable=True)
+    StockCommPerSher = db.Column(db.Float(precision='3,3'),  nullable=True)
     OptionCommission = db.Column(db.Float(precision='4,2'),  nullable=False)
     OptionCommPerSher = db.Column(db.Float(precision='3,3'),  nullable=True)
     TaxRate = db.Column(db.Float(precision='5,2'),  nullable=False)
@@ -68,6 +66,9 @@ class Account(db.Model):
     AUD = db.Column(db.Float(precision='9,2'),  nullable=False)
     MinPerc = db.Column(db.Float(precision='5,5'),  nullable=True)
     RequiredPerc = db.Column(db.Float(precision='5,5'),  nullable=True)
+    DeepInTheMoneyCheck = db.Column(db.Float(precision='4,2'),  nullable=False)
+    DailyReport = db.Column(db.Boolean)
+    PositionReport = db.Column(db.Boolean)
 
     def __repr__(self):
         return '<Account %r>' % self.AccountID
@@ -145,6 +146,20 @@ class UpdateAccountDetails(Form):
     username = StringField('Username', [validators.Length(min=4, max=30)])
     email = StringField('Email', [validators.Length(min=6, max=50)])
     phone = IntegerField('Phone')
+
+class UpdateAccountBasic(Form):
+    StockCommission = DecimalField('StockCommission',places=2)
+    StockCommPerSher = DecimalField('StockCommissionPerSher',places=3)
+    OptionCommission = DecimalField('OptionCommission',places=2)
+    OptionCommPerSher = DecimalField('OptionCommPerSher',places=3)
+    TaxRate = DecimalField('TaxRate',places=2)
+    USD = IntegerField('USD')
+    AUD = IntegerField('AUD')
+    MinPerc = DecimalField('MinPerc',places=4)
+    RequiredPerc = DecimalField('RequiredPerc',places=4)
+    DeepInTheMoneyCheck = DecimalField('DeepInTheMoneyCheck',places=2)
+    DailyReport = BooleanField('DailyReport', false_values=None)
+    PositionReport = BooleanField('PositionReport', false_values=None)
 
 class UpdateAccountOptionParameters(Form):
     WeeksNumForCalcProb = IntegerField('WeeksNumForCalcProb')
@@ -246,6 +261,17 @@ def logout():
     flash('You are now logged out', 'success')
     return redirect(url_for('login'))
 
+def getAccountID(username):
+    connection_string, engine, connection = get_all_sql_connection(svr=CC_SVR,db=CC_DB,user=CC_USER,psw=CC_PSW)
+    #Getting Account
+    accountIDquery = "SELECT a.AccountID \
+                 FROM Account a \
+		            join \
+	             UserAccount  ua on a.UserID=ua.UserID \
+                 WHERE ua.UserName= %r and a.AccountName='Live'" % username
+    accountID = pd.read_sql_query(accountIDquery,connection)
+    return str(accountID.values[0][0])
+
 # dailyResults
 @app.route('/dailyResults')
 @is_logged_in
@@ -253,14 +279,7 @@ def dailyResults():
     #Getting DB connection
     connection_string, engine, connection = get_all_sql_connection(svr=CC_SVR,db=CC_DB,user=CC_USER,psw=CC_PSW)
     #Getting Account
-    username = 'OhadS' #session['username']
-    accountIDquery = "SELECT a.AccountID \
-                 FROM Account a \
-		            join \
-	             UserAccount  ua on a.UserID=ua.UserID \
-                 WHERE ua.UserName= %r and a.AccountName='Live'" % username
-    accountID = pd.read_sql_query(accountIDquery,connection)
-    accountID = accountID.values[0][0]
+    accountID = getAccountID(session['username'])
 
     #Last Trading Date
     checkLastTradingDateQuery = "SELECT  TOP 1 mc.MarketDate \
@@ -292,6 +311,18 @@ def myAccount():
         msg = 'No Account Found'
         return render_template('myAccount.html', msg=msg)
 
+# Account Details
+@app.route('/accountBasic', methods=['GET', 'POST'])
+@is_logged_in
+def accountBasic():
+    query = Account.query.filter_by(AccountID=getAccountID(session['username'])).first()
+
+    if query.UserID > 0:
+        return render_template('accountBasic.html', account=query)
+    else:
+        msg = 'No Account Found'
+        return render_template('accountBasic.html', msg=msg)
+
 @app.route('/updateAccount', methods=['GET', 'POST'])
 @is_logged_in
 def updateAccount():
@@ -319,11 +350,45 @@ def updateAccount():
         return redirect(url_for('dailyResults'))
     return redirect(url_for('myAccount'))
 
+@app.route('/updateAccountBasic', methods=['GET', 'POST'])
+@is_logged_in
+def updateAccountBasic():
+    query = Account.query.filter_by(AccountID=getAccountID(session['username'])).first()
+    form = UpdateAccountBasic(request.form)
+
+    if request.method == 'POST' : #and form.validate()   
+       # Update account
+        Account.query.filter_by(AccountID=getAccountID(session['username'])).update({
+             'StockCommission': request.form['StockCommission'],
+             'StockCommPerSher': request.form['StockCommPerSher'],
+             'OptionCommission': request.form['OptionCommission'],
+             'OptionCommPerSher': request.form['OptionCommPerSher'],
+             'TaxRate': request.form['TaxRate'],
+             'USD': request.form['USD'],
+             'AUD': request.form['AUD'],
+             'MinPerc': request.form['MinPerc'],
+             'RequiredPerc': request.form['RequiredPerc'],
+             'DeepInTheMoneyCheck': request.form['DeepInTheMoneyCheck'],
+             #'DailyReport': request.form['DailyReport'],
+             #'PositionReport': request.form['PositionReport'],
+        })
+
+        # Commit to DB
+        db.session.commit()
+
+        # Close connection
+        db.session.close()
+
+        flash('You successfully updated your account basic parameters', 'success')
+
+        return redirect(url_for('dailyResults'))
+    return redirect(url_for('accountBasic'))
+
 @app.route('/parametersOptions', methods=['GET', 'POST'])
 @is_logged_in
 def parametersOptions():
-
-    query = AccountScanParameters.query.filter_by(UserID='1', PositionType='New').first()
+    accountID = getAccountID(session['username'])
+    query = AccountScanParameters.query.filter_by(AccountID=accountID, PositionType='New').first()
 
     if query.UserID > 0:
         return render_template('parametersOptions.html', parametersOptions=query)
@@ -334,12 +399,13 @@ def parametersOptions():
 @app.route('/updateParameters', methods=['GET', 'POST'])
 @is_logged_in
 def updateParameters():
-    query = AccountScanParameters.query.filter_by(UserID='1', PositionType='New').first()
+    accountID = getAccountID(session['username'])
+    query = AccountScanParameters.query.filter_by(AccountID=accountID, PositionType='New').first()
     form = UpdateAccountOptionParameters(request.form)
 
     if request.method == 'POST' : #and form.validate()   
        # Update account
-        AccountScanParameters.query.filter_by(UserID='1', PositionType='New').update({
+        AccountScanParameters.query.filter_by(AccountID=accountID, PositionType='New').update({
             'WeeksNumForCalcProb': request.form['WeeksNumForCalcProb'],
             'MaxNumberOfShares' : request.form['MaxNumberOfShares'],
             'MaxUSDInvestmentSizePerStock' : request.form['MaxUSDInvestmentSizePerStock'],
