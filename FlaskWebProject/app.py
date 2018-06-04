@@ -13,9 +13,11 @@ from sqlalchemy import MetaData, Table, select
 import pandas as pd
 from wtforms.validators import Required, Length, Email, Regexp, EqualTo
 from wtforms import ValidationError
+#from flask_bootstrap import Bootstrap
 
 # initialization
 app = Flask(__name__)
+#bootstrap = Bootstrap(app)
 
 #Secrets from environment
 app.secret_key=os.environ.get('CC_APP_SECRET')
@@ -111,7 +113,7 @@ class StockPicks(db.Model):
     StockPriceDate = db.Column(db.String(50), unique=False, nullable=False)
 
     def __repr__(self):
-        return '<StockPickScanResults %r>' % self.userID
+        return '<StockPickScanResults %r>' % self.userID459519
 
 class AccountScanParameters(db.Model):
     __tablename__ = 'AccountScanParameters'
@@ -258,7 +260,7 @@ def is_logged_in(f):
 @is_logged_in
 def logout():
     session.clear()
-    flash('You are now logged out', 'success')
+    flash('You are now logged out. Thanks for using CoveredCalls application', 'success')
     return redirect(url_for('login'))
 
 def getAccountID(username):
@@ -435,6 +437,18 @@ def updateParameters():
 
         return redirect(url_for('parametersOptions'))
     return redirect(url_for('parametersOptions'))
+
+@app.errorhandler(403)
+def page_not_found(e):
+    return render_template('403.html'), 403
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+
+@app.errorhandler(500)
+def internal_server_error(e):
+    return render_template('500.html'), 500
 
 if __name__ == '__main__':
 

@@ -6,15 +6,17 @@
 
     <div class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow" id="navbarsExampleDefault">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+            <li class="nav-item {% if request.path == '/' %}active{% endif %}">
+                <a class="nav-link" href="/">Home</a>
             </li>
-            <li class="nav-item">
+            {% if session.logged_in %}
+            <li class="nav-item {% if request.path == '/dailyResults' %}active{% endif %}">
                 <a class="nav-link" href="/dailyResults">My Daily Results</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item {% if request.path == '/myAccount' %}active{% endif %}">
                 <a class="nav-link" href="/myAccount">Settings</a>
             </li>
+            {% endif %}
         </ul>
         <ul class="nav navbar-nav navbar-right">
             {% if session.logged_in %}
@@ -25,7 +27,7 @@
             {% endif %}
         </ul>
     </div>
-    {% if session.logged_in %}
+    {% if session.logged_in and request.path == '/myAccount' %}
     <div class="container-fluid">
         <div class="row">
             <nav class="col-md-2 d-none d-md-block bg-light sidebar">

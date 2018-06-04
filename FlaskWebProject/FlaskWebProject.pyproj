@@ -32,10 +32,16 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="sqlConnection.py" />
+    <Compile Include="__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Project Goals.txt" />
     <Content Include="requirements.txt" />
+    <Content Include="templates\500.html" />
+    <Content Include="templates\404.html" />
+    <Content Include="templates\403.html" />
     <Content Include="templates\accountBasic.html" />
     <Content Include="static\css\bootstrap-grid.css" />
     <Content Include="static\css\bootstrap-grid.css.map" />
@@ -54,6 +60,7 @@
     <Content Include="templates\includes\_formhelpers.html" />
     <Content Include="templates\includes\_messages.html" />
     <Content Include="templates\includes\_navbar.html" />
+    <Content Include="templates\includes\_sidenavbar.html" />
     <Content Include="templates\index.html" />
     <Content Include="templates\layout.html" />
     <Content Include="templates\login.html" />
