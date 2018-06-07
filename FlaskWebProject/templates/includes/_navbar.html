@@ -13,7 +13,7 @@
             <li class="nav-item {% if request.path == '/dailyResults' %}active{% endif %}">
                 <a class="nav-link" href="/dailyResults">My Daily Results</a>
             </li>
-            <li class="nav-item {% if request.path == '/myAccount' %}active{% endif %}">
+            <li class="nav-item {% if request.path in ['/myAccount','/accountBasic','/parametersOptions'] %}active{% endif %}">
                 <a class="nav-link" href="/myAccount">Settings</a>
             </li>
             {% endif %}
@@ -27,7 +27,7 @@
             {% endif %}
         </ul>
     </div>
-    {% if session.logged_in and request.path == '/myAccount' %}
+    {% if session.logged_in and request.path in ['/myAccount','/accountBasic','/parametersOptions'] %}
     <div class="container-fluid">
         <div class="row">
             <nav class="col-md-2 d-none d-md-block bg-light sidebar">
@@ -35,7 +35,6 @@
                     <ul class="nav flex-column">
                         <li class="nav-item">
                             <a class="nav-link" href="/myAccount">
-                                <span data-feather="file"></span>
                                 Personal Details
                             </a>
                         </li>

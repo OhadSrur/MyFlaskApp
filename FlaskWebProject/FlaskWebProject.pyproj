@@ -37,6 +37,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="CoveredCall - Web Deploy.pubxml" />
     <Content Include="Project Goals.txt" />
     <Content Include="requirements.txt" />
     <Content Include="templates\500.html" />

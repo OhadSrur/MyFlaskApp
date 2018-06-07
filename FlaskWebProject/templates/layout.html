@@ -8,12 +8,18 @@
     <link rel="stylesheet" href="https://getbootstrap.com/docs/4.1/examples/dashboard/dashboard.css" />
     <!--<link rel="stylesheet" type="text/css" href="url_for('static', filename='css/Stylesheet.css')" />-->
     <style>
-        table, th, td {
-            border: 1px solid black;
-        }
 
         th {
             cursor: pointer;
+        }
+        .table tbody tr:hover td,
+        .table tbody tr:hover th {
+            background-color: transparent;
+            border: 1px solid black;
+        }
+
+        .table-striped tbody tr:nth-child(odd):hover td {
+            background-color: #F9F9F9;
         }
     </style>
 </head>

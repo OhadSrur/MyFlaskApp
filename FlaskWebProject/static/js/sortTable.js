@@ -13,4 +13,4 @@ function sortTable() {
             .forEach(tr => table.appendChild(tr));
     })));
 }
-//window.onload = sortTable;
+window.onload = sortTable;

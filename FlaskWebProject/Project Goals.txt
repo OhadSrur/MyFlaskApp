@@ -1,2 +1,5 @@
 Download daily results to CSV from Azure Blob Storage
 Config.py with config settings for different environment
+
+Create requirements file
+Use WFastCGI
