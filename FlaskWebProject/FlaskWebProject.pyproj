@@ -17,6 +17,8 @@
     <Name>FlaskWebProject</Name>
     <RootNamespace>FlaskWebProject</RootNamespace>
     <WebBrowserPort>5000</WebBrowserPort>
+    <IsWindowsApplication>False</IsWindowsApplication>
+    <InterpreterId>CondaEnv|CondaEnv|flask</InterpreterId>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -37,9 +39,14 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="CoveredCall - FTP.pubxml" />
+    <None Include="CoveredCall - Web Deploy1.pubxml" />
+    <Content Include="templates\putResults.html" />
+    <Content Include="web.config" />
     <None Include="CoveredCall - Web Deploy.pubxml" />
     <Content Include="Project Goals.txt" />
     <Content Include="requirements.txt" />
+    <Content Include="runtime.txt" />
     <Content Include="templates\500.html" />
     <Content Include="templates\404.html" />
     <Content Include="templates\403.html" />
@@ -90,6 +97,9 @@
     <Folder Include="static\" />
     <Folder Include="templates\" />
     <Folder Include="templates\includes\" />
+  </ItemGroup>
+  <ItemGroup>
+    <InterpreterReference Include="CondaEnv|CondaEnv|flask" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.Web.targets" />
   <!-- Specify pre- and post-build commands in the BeforeBuild and 

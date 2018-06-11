@@ -274,6 +274,17 @@ def getAccountID(username):
     accountID = pd.read_sql_query(accountIDquery,connection)
     return str(accountID.values[0][0])
 
+def getLastTradingDate():
+    connection_string, engine, connection = get_all_sql_connection(svr=CC_SVR,db=CC_DB,user=CC_USER,psw=CC_PSW)
+    #Last Trading Date
+    checkLastTradingDateQuery = "SELECT  TOP 1 mc.MarketDate \
+    FROM	[dbo].[MarketCalendar] mc \
+    WHERE mc.MarketStatus='Open' and mc.MarketDate between  dateadd(day,-10,try_convert(date,try_convert(datetimeoffset, GETDATE()) AT TIME ZONE 'Eastern Standard Time')) \
+        AND CASE WHEN try_convert(time,try_convert(datetimeoffset, GETDATE()) AT TIME ZONE 'Eastern Standard Time')>'16:30' THEN try_convert(date,try_convert(datetimeoffset, GETDATE()) AT TIME ZONE 'Eastern Standard Time') \
+            ELSE dateadd(day,-1,try_convert(date,try_convert(datetimeoffset, GETDATE()) AT TIME ZONE 'Eastern Standard Time')) END \
+    order by mc.MarketDate desc"
+    return pd.read_sql_query(checkLastTradingDateQuery,connection)
+
 # dailyResults
 @app.route('/dailyResults')
 @is_logged_in
@@ -282,15 +293,7 @@ def dailyResults():
     connection_string, engine, connection = get_all_sql_connection(svr=CC_SVR,db=CC_DB,user=CC_USER,psw=CC_PSW)
     #Getting Account
     accountID = getAccountID(session['username'])
-
-    #Last Trading Date
-    checkLastTradingDateQuery = "SELECT  TOP 1 mc.MarketDate \
-    FROM	[dbo].[MarketCalendar] mc \
-    WHERE mc.MarketStatus='Open' and mc.MarketDate between  dateadd(day,-10,try_convert(date,try_convert(datetimeoffset, GETDATE()) AT TIME ZONE 'Eastern Standard Time')) \
-        AND CASE WHEN try_convert(time,try_convert(datetimeoffset, GETDATE()) AT TIME ZONE 'Eastern Standard Time')>'16:30' THEN try_convert(date,try_convert(datetimeoffset, GETDATE()) AT TIME ZONE 'Eastern Standard Time') \
-            ELSE dateadd(day,-1,try_convert(date,try_convert(datetimeoffset, GETDATE()) AT TIME ZONE 'Eastern Standard Time')) END \
-    order by mc.MarketDate desc"
-    lastTradingDate = pd.read_sql_query(checkLastTradingDateQuery,connection)
+    lastTradingDate = getLastTradingDate()
     
     #Stocks Picks
     query = "SELECT StockID, CompanyName, Industry, CurrentStockPrice, CallExpiryDays, StrikePrice, IncomeExPerc, IncomeNotExPerc,ExpectedCallReturn \
@@ -300,6 +303,34 @@ def dailyResults():
     results = pd.read_sql_query(query,connection,params=(str(accountID),lastTradingDate.values[0][0]))
 
     return render_template('dailyResults.html',StockPicks=results.values)
+
+@app.route('/putResults')
+@is_logged_in
+def putResults():
+     #Getting DB connection
+    connection_string, engine, connection = get_all_sql_connection(svr=CC_SVR,db=CC_DB,user=CC_USER,psw=CC_PSW)
+    #Getting Account
+    accountID = getAccountID(session['username'])
+
+    #Stocks Picks
+    query = "SELECT s.StockID, s.CompanyName, s.Industry, s.CurrentStockPrice,DATEDIFF(dd,getdate()-1,oc.ExpiryDate) as CallExpiryDays, \
+		oc.StrikePrice, oc.Bid, \
+		s.CurrentStockPrice - oc.Bid + CASE WHEN oc.StrikePrice>s.CurrentStockPrice THEN (oc.StrikePrice-s.CurrentStockPrice) else 0 END as BreakEven, \
+		TRY_CONVERT(DECIMAL(4,4),oc.Bid / s.CurrentStockPrice)*100 as IncomeNotExPerc \
+            FROM  \
+	            [CoveredCalls].[dbo].[Stock] s \
+		            join \
+	            [CoveredCalls].[dbo].[OptionChain] oc on s.StockID=oc.StockID and  oc.OptionType='Put' and oc.LatestData=1 \
+		            join \
+	            [CoveredCalls].dbo.AccountScanParameters asp on asp.AccountID= ? and asp.PositionType='New' \
+            WHERE DATEDIFF(d,getdate(),oc.ExpiryDate)<=asp.MaxExpiryWeeks*7 and s.CurrentDataFlag=1 \
+	            and TRY_CONVERT(DECIMAL(4,4),oc.Bid / s.CurrentStockPrice)*100>asp.MinIncomeNotExPerc \
+	            and s.CurrentStockPrice between asp.MinTradingPrice and asp.MaxTradingPrice \
+	            and s.CurrentStockPrice>oc.StrikePrice \
+            ORDER BY s.StockID,oc.ExpiryDate asc, oc.StrikePrice"
+    results = pd.read_sql_query(query,connection,params=(str(accountID)))
+
+    return render_template('putResults.html',StockPicks=results.values)
 
 # Account Details
 @app.route('/myAccount', methods=['GET', 'POST'])

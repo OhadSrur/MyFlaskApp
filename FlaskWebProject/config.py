@@ -6,7 +6,7 @@ CC_USER = os.environ.get('CC_USER')
 CC_PSW = os.environ.get('CC_PSW')
 
 class Config:
-    SECRET_KEY = os.environ.get('CC_APP_SECRET') or 'hard to guess string'
+    SECRET_KEY = os.environ.get('CC_APP_SECRET')
     MAIL_SERVER = os.environ.get('MAIL_SERVER', 'smtp.googlemail.com')
     MAIL_PORT = int(os.environ.get('MAIL_PORT', '587'))
     MAIL_USE_TLS = os.environ.get('MAIL_USE_TLS', 'true').lower() in \

@@ -1,0 +1,32 @@
+﻿{% extends 'layout.html' %}
+{% block body %}
+<h1>Put Results</h1>
+<!--<img alt="download-csv" height="44" src="{{ url_for('static' , filename='images/export-csv.png')}}" title="Download CSV results" width="120" />-->
+<hr>
+<table class="table table-striped" onload="sortTable">
+    <tr>
+        <th>Symbol</th>
+        <th>Company Name</th>
+        <th>Industry</th>
+        <th>Current Stock Price</th>
+        <th>Call Expiry Days</th>
+        <th>Strike Price</th>
+        <th>Bid</th>
+        <th>Break Even Price</th>
+        <th>Income Not Exercise Perc</th>
+    </tr>
+    {% for StockPick in StockPicks %}
+    <tr>
+        <td>{{StockPick[0]}}</td>
+        <td>{{StockPick[1]}}</td>
+        <td>{{StockPick[2]}}</td>
+        <td>{{StockPick[3]}}</td>
+        <td>{{StockPick[4]}}</td>
+        <td>{{StockPick[5]}}</td>
+        <td>{{StockPick[6]}}</td>
+        <td>{{StockPick[7]}}</td>
+        <td>{{StockPick[8]}}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
