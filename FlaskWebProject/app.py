@@ -325,8 +325,8 @@ def putResults():
     accountID = getAccountID(session['username'])
 
     #Stocks Picks
-    query = "exec spViewPutResuls @AccountID= ? "
-    results = pd.read_sql_query(query,connection,params=(str(accountID)))
+    query = "exec spViewPutResuls @AccountID= ?, @StockID= ? "
+    results = pd.read_sql_query(query,connection,params=(str(accountID),None))
 
     return render_template('putResults.html',StockPicks=results.values)
 
