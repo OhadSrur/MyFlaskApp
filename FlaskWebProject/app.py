@@ -3,7 +3,7 @@ This script runs the application using a development server.
 It contains the definition of routes and views for the application.
 """
 import os
-from flask import Flask, render_template, flash, redirect, url_for, session, request, logging
+from flask import Flask, render_template, flash, redirect, url_for, session, request, logging, Blueprint
 from wtforms import Form, StringField, TextAreaField, PasswordField, validators, IntegerField, DecimalField, BooleanField
 from passlib.hash import sha256_crypt
 from functools import wraps
@@ -13,6 +13,7 @@ from sqlalchemy import MetaData, Table, select
 import pandas as pd
 from wtforms.validators import Required, Length, Email, Regexp, EqualTo
 from wtforms import ValidationError
+from jinja2 import TemplateNotFound
 #from flask_bootstrap import Bootstrap
 
 # initialization
@@ -182,6 +183,17 @@ class UpdateAccountOptionParameters(Form):
     ExcludeIndustry = StringField('ExcludeIndustry', [validators.Length(max=2000)])
     PutProtectionPercCheckPrice = DecimalField('PutProtectionPercCheckPrice',places=3)
 
+#register_blueprint = Blueprint(
+#    'register',
+#    __name__,
+#    template_folder='templates/register',
+#    url_prefix="/register")
+
+#main_blueprint = Blueprint(
+#    'main',
+#    __name__,
+#    template_folder='templates/index')
+
 # User Register
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -313,21 +325,7 @@ def putResults():
     accountID = getAccountID(session['username'])
 
     #Stocks Picks
-    query = "SELECT s.StockID, s.CompanyName, s.Industry, s.CurrentStockPrice,DATEDIFF(dd,getdate()-1,oc.ExpiryDate) as CallExpiryDays, \
-		oc.StrikePrice, oc.Bid, \
-		s.CurrentStockPrice - oc.Bid + CASE WHEN oc.StrikePrice>s.CurrentStockPrice THEN (oc.StrikePrice-s.CurrentStockPrice) else 0 END as BreakEven, \
-		TRY_CONVERT(DECIMAL(4,4),oc.Bid / s.CurrentStockPrice)*100 as IncomeNotExPerc \
-            FROM  \
-	            [CoveredCalls].[dbo].[Stock] s \
-		            join \
-	            [CoveredCalls].[dbo].[OptionChain] oc on s.StockID=oc.StockID and  oc.OptionType='Put' and oc.LatestData=1 \
-		            join \
-	            [CoveredCalls].dbo.AccountScanParameters asp on asp.AccountID= ? and asp.PositionType='New' \
-            WHERE DATEDIFF(d,getdate(),oc.ExpiryDate)<=asp.MaxExpiryWeeks*7 and s.CurrentDataFlag=1 \
-	            and TRY_CONVERT(DECIMAL(4,4),oc.Bid / s.CurrentStockPrice)*100>asp.MinIncomeNotExPerc \
-	            and s.CurrentStockPrice between asp.MinTradingPrice and asp.MaxTradingPrice \
-	            and s.CurrentStockPrice>oc.StrikePrice \
-            ORDER BY s.StockID,oc.ExpiryDate asc, oc.StrikePrice"
+    query = "exec spViewPutResuls @AccountID= ? "
     results = pd.read_sql_query(query,connection,params=(str(accountID)))
 
     return render_template('putResults.html',StockPicks=results.values)
@@ -480,6 +478,8 @@ def page_not_found(e):
 @app.errorhandler(500)
 def internal_server_error(e):
     return render_template('500.html'), 500
+
+#app.register_blueprint(register_blueprint)
 
 if __name__ == '__main__':
 
