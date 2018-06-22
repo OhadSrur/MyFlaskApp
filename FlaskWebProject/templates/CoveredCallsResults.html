@@ -2,7 +2,7 @@
 {% block body %}
 <h1>Daily Results<small> Welcome {{session.username}}</small></h1>
 <!--<img alt="download-csv" height="44" src="{{ url_for('static' , filename='images/export-csv.png')}}" title="Download CSV results" width="120" />-->
-<hr>
+<hr/>
 <table class="table table-striped" onload="sortTable">
     <tr>
         <th>Symbol</th>
@@ -17,7 +17,7 @@
     </tr>
     {% for StockPick in StockPicks %}
     <tr>
-        <td>{{StockPick[0]}}</td>
+        <td><a class="StockID" href="/CoveredCallsResults/{{StockPick[0]}}">{{StockPick[0]}}</a></td>
         <td>{{StockPick[1]}}</td>
         <td>{{StockPick[2]}}</td>
         <td>{{StockPick[3]}}</td>

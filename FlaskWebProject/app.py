@@ -3,7 +3,7 @@ This script runs the application using a development server.
 It contains the definition of routes and views for the application.
 """
 import os
-from flask import Flask, render_template, flash, redirect, url_for, session, request, logging, Blueprint
+from flask import Flask, render_template, flash, redirect, url_for, session, request, logging, Blueprint, send_from_directory
 from wtforms import Form, StringField, TextAreaField, PasswordField, validators, IntegerField, DecimalField, BooleanField
 from passlib.hash import sha256_crypt
 from functools import wraps
@@ -244,7 +244,7 @@ def login():
                 session['username'] = POST_USERNAME
 
                 flash('You are now logged in', 'success')
-                return redirect(url_for('dailyResults'))
+                return redirect(url_for('CoveredCallsResults'))
             else:
                 error = 'Invalid password'
                 return render_template('login.html', error=error)
@@ -297,10 +297,10 @@ def getLastTradingDate():
     order by mc.MarketDate desc"
     return pd.read_sql_query(checkLastTradingDateQuery,connection)
 
-# dailyResults
-@app.route('/dailyResults')
+# CoveredCallsResults
+@app.route('/CoveredCallsResults')
 @is_logged_in
-def dailyResults():
+def CoveredCallsResults():
     #Getting DB connection
     connection_string, engine, connection = get_all_sql_connection(svr=CC_SVR,db=CC_DB,user=CC_USER,psw=CC_PSW)
     #Getting Account
@@ -314,7 +314,27 @@ def dailyResults():
     ORDER BY try_convert(int,CallExpiryDays) ASC, ExpectedCallReturn DESC"
     results = pd.read_sql_query(query,connection,params=(str(accountID),lastTradingDate.values[0][0]))
 
-    return render_template('dailyResults.html',StockPicks=results.values)
+    return render_template('CoveredCallsResults.html',StockPicks=results.values)
+
+# CoveredCallsResults
+@app.route('/CoveredCallsResults/<string:StockID>')
+@is_logged_in
+def CoveredCallsResultsStock(StockID):
+    #Getting DB connection
+    connection_string, engine, connection = get_all_sql_connection(svr=CC_SVR,db=CC_DB,user=CC_USER,psw=CC_PSW)
+    #Getting Account
+    accountID = getAccountID(session['username'])
+    lastTradingDate = getLastTradingDate()
+    
+    #Stocks Picks
+    query = "SELECT StockID, CompanyName, Industry, CurrentStockPrice, CallExpiryDays, StrikePrice, IncomeExPerc, IncomeNotExPerc,ExpectedCallReturn \
+    FROM Stage.StockPickScanResults \
+    WHERE AccountID= ? and StockPriceDate= ? and StockID= ? \
+    ORDER BY try_convert(int,CallExpiryDays) ASC, ExpectedCallReturn DESC"
+    results = pd.read_sql_query(query,connection,params=(str(accountID),lastTradingDate.values[0][0],StockID))
+
+    return render_template('CoveredCallsResults.html',StockPicks=results.values)
+
 
 @app.route('/putResults')
 @is_logged_in
@@ -327,6 +347,20 @@ def putResults():
     #Stocks Picks
     query = "exec spViewPutResuls @AccountID= ?, @StockID= ? "
     results = pd.read_sql_query(query,connection,params=(str(accountID),None))
+
+    return render_template('putResults.html',StockPicks=results.values)
+
+@app.route('/putResults/<string:StockID>')
+@is_logged_in
+def putResultsStock(StockID):
+     #Getting DB connection
+    connection_string, engine, connection = get_all_sql_connection(svr=CC_SVR,db=CC_DB,user=CC_USER,psw=CC_PSW)
+    #Getting Account
+    accountID = getAccountID(session['username'])
+
+    #Stocks Picks
+    query = "exec spViewPutResuls @AccountID= ?, @StockID= ? "
+    results = pd.read_sql_query(query,connection,params=(str(accountID),StockID))
 
     return render_template('putResults.html',StockPicks=results.values)
 
@@ -378,7 +412,7 @@ def updateAccount():
 
         flash('You successfully updated your account', 'success')
 
-        return redirect(url_for('dailyResults'))
+        return redirect(url_for('CoveredCallsResults'))
     return redirect(url_for('myAccount'))
 
 @app.route('/updateAccountBasic', methods=['GET', 'POST'])
@@ -412,7 +446,7 @@ def updateAccountBasic():
 
         flash('You successfully updated your account basic parameters', 'success')
 
-        return redirect(url_for('dailyResults'))
+        return redirect(url_for('CoveredCallsResults'))
     return redirect(url_for('accountBasic'))
 
 @app.route('/parametersOptions', methods=['GET', 'POST'])
@@ -478,6 +512,10 @@ def page_not_found(e):
 @app.errorhandler(500)
 def internal_server_error(e):
     return render_template('500.html'), 500
+
+@app.route('/favicon.ico') 
+def favicon(): 
+    return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 #app.register_blueprint(register_blueprint)
 

@@ -10,8 +10,8 @@
                 <a class="nav-link" href="/">Home</a>
             </li>
             {% if session.logged_in %}
-            <li class="nav-item {% if request.path == '/dailyResults' %}active{% endif %}">
-                <a class="nav-link" href="/dailyResults">Covered Calls Results</a>
+            <li class="nav-item {% if request.path == '/CoveredCallsResults' %}active{% endif %}">
+                <a class="nav-link" href="/CoveredCallsResults">Covered Calls Results</a>
             </li>
             <li class="nav-item {% if request.path == '/putResults' %}active{% endif %}">
                 <a class="nav-link" href="/putResults">Write Put Results</a>

@@ -6,12 +6,16 @@
     <title></title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://getbootstrap.com/docs/4.1/examples/dashboard/dashboard.css" />
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}" type="image/x-icon">
+    <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}" type="image/x-icon">
+    <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
     <!--<link rel="stylesheet" type="text/css" href="url_for('static', filename='css/Stylesheet.css')" />-->
     <style>
 
-        th {
+        th, td {
             cursor: pointer;
         }
+
         .table tbody tr:hover td,
         .table tbody tr:hover th {
             background-color: transparent;
