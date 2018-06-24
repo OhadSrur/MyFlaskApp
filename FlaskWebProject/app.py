@@ -14,6 +14,7 @@ import pandas as pd
 from wtforms.validators import Required, Length, Email, Regexp, EqualTo
 from wtforms import ValidationError
 from jinja2 import TemplateNotFound
+import pygal
 #from flask_bootstrap import Bootstrap
 
 # initialization
@@ -335,7 +336,6 @@ def CoveredCallsResultsStock(StockID):
 
     return render_template('CoveredCallsResults.html',StockPicks=results.values)
 
-
 @app.route('/putResults')
 @is_logged_in
 def putResults():
@@ -363,6 +363,23 @@ def putResultsStock(StockID):
     results = pd.read_sql_query(query,connection,params=(str(accountID),StockID))
 
     return render_template('putResults.html',StockPicks=results.values)
+
+@app.route('/StockGraph/<string:StockID>')
+def StockGrpah(StockID):
+    graph = pygal.Line()
+    graph.title = 'Stock Graph for ' + StockID
+
+    #Getting DB connection
+    connection_string, engine, connection = get_all_sql_connection(svr=CC_SVR,db=CC_DB,user=CC_USER,psw=CC_PSW)
+
+    stock_query = "exec spMovingAverage @StockID= ? , @NumOfYears=2"
+    stockResults =  pd.read_sql_query(stock_query,connection,params=[StockID])
+    graph.x_labels = stockResults.StockPriceDate
+    graph.add('Stock Price',  stockResults.StockClosePrice)
+    graph.add('50 MA',  stockResults.Stock50MA)
+    graph.add('200 MA',  stockResults.Stock200MA)
+    graph_data = graph.render_data_uri()
+    return render_template("lineGraph.html", graph_data = graph_data)
 
 # Account Details
 @app.route('/myAccount', methods=['GET', 'POST'])

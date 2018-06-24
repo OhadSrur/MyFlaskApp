@@ -5,6 +5,7 @@
 <hr>
 <table class="table table-striped" onload="sortTable">
     <tr>
+        <th>Stock Graph</th>
         <th>Symbol</th>
         <th>Company Name</th>
         <th>Industry</th>
@@ -17,6 +18,7 @@
     </tr>
     {% for StockPick in StockPicks %}
     <tr>
+        <td><a class="StockID" href="/StockGraph/{{StockPick[0]}}"><img alt="graph-stock" height="50" src="{{ url_for('static' , filename='images/graph.png')}}" title="view Stock Graph" width="50" /></a></td>
         <td><a class="StockID" href="/putResults/{{StockPick[0]}}">{{StockPick[0]}}</a></td>
         <td>{{StockPick[1]}}</td>
         <td>{{StockPick[2]}}</td>
