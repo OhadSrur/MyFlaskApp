@@ -19,7 +19,7 @@
     {% for StockPick in StockPicks %}
     <tr>
         <td><a class="StockID" href="/StockGraph/{{StockPick[0]}}"><img alt="graph-stock" height="50" src="{{ url_for('static' , filename='images/graph.png')}}" title="view Stock Graph" width="50" /></a></td>
-        <td><a class="StockID" href="/CoveredCallsResults/{{StockPick[0]}}">{{StockPick[0]}}</a></td>
+        {% if request.path == '/CoveredCallsResults' %}<td><a class="StockID" href="/CoveredCallsResults/{{StockPick[0]}}">{{StockPick[0]}}</a></td>{% else %}<td>{{StockPick[0]}}</td>{% endif %}
         <td>{{StockPick[1]}}</td>
         <td>{{StockPick[2]}}</td>
         <td>{{StockPick[3]}}</td>
