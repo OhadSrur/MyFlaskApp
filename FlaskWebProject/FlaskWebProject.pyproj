@@ -30,11 +30,18 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="app.py" />
-    <Compile Include="config.py">
+    <Compile Include="config_test.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="controllers\main.py" />
+    <Compile Include="controllers\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="manage.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="sqlConnection.py" />
-    <Compile Include="__init__.py">
+    <Compile Include="__init_test.py">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
@@ -42,17 +49,17 @@
     <Content Include="static\images\favicon.ico" />
     <Content Include="static\images\graph.png" />
     <Content Include="templates\favicon.ico" />
-    <Content Include="templates\lineGraph.html" />
-    <Content Include="templates\putResults.html" />
+    <Content Include="templates\app\Graph\lineGraph.html" />
+    <Content Include="templates\app\put\putResults.html" />
     <Content Include="web.config" />
     <None Include="CoveredCall - Web Deploy.pubxml" />
     <Content Include="Project Goals.txt" />
     <Content Include="requirements.txt" />
     <Content Include="runtime.txt" />
-    <Content Include="templates\500.html" />
-    <Content Include="templates\404.html" />
-    <Content Include="templates\403.html" />
-    <Content Include="templates\accountBasic.html" />
+    <Content Include="templates\main\500.html" />
+    <Content Include="templates\main\404.html" />
+    <Content Include="templates\main\403.html" />
+    <Content Include="templates\app\account\accountBasic.html" />
     <Content Include="static\css\bootstrap-grid.css" />
     <Content Include="static\css\bootstrap-grid.css.map" />
     <Content Include="static\css\bootstrap-grid.min.css" />
@@ -66,17 +73,17 @@
     <Content Include="static\css\bootstrap.min.css" />
     <Content Include="static\css\bootstrap.min.css.map" />
     <Content Include="static\images\export-csv.png" />
-    <Content Include="templates\CoveredCallsResults.html" />
+    <Content Include="templates\app\call\CoveredCallsResults.html" />
     <Content Include="templates\includes\_formhelpers.html" />
     <Content Include="templates\includes\_messages.html" />
     <Content Include="templates\includes\_navbar.html" />
     <Content Include="templates\includes\_sidenavbar.html" />
-    <Content Include="templates\index.html" />
+    <Content Include="templates\main\index.html" />
     <Content Include="templates\layout.html" />
-    <Content Include="templates\login.html" />
-    <Content Include="templates\myAccount.html" />
-    <Content Include="templates\parametersOptions.html" />
-    <Content Include="templates\register.html" />
+    <Content Include="templates\main\login.html" />
+    <Content Include="templates\app\account\myAccount.html" />
+    <Content Include="templates\app\account\parametersOptions.html" />
+    <Content Include="templates\main\register.html" />
     <Content Include="static\css\Stylesheet.css">
       <Publish>True</Publish>
     </Content>
@@ -91,10 +98,16 @@
     <Content Include="static\js\sortTable.js" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="main\" />
+    <Folder Include="controllers\" />
+    <Folder Include="templates\app\account\" />
+    <Folder Include="templates\app\call\" />
+    <Folder Include="templates\app\Graph\" />
+    <Folder Include="templates\app\put\" />
+    <Folder Include="templates\main\" />
     <Folder Include="static\css\" />
     <Folder Include="static\images\" />
     <Folder Include="static\js\" />
+    <Folder Include="templates\app\" />
     <Folder Include="tests\" />
     <Folder Include="static\" />
     <Folder Include="templates\" />

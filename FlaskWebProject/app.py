@@ -40,7 +40,7 @@ wsgi_app = app.wsgi_app
 main_blueprint = Blueprint(
     'main',
     __name__,
-    template_folder='templates')
+    template_folder='templates/main')
 
 @main_blueprint.route('/')
 def index():
@@ -191,7 +191,7 @@ class UpdateAccountOptionParameters(Form):
 registerAccount_blueprint = Blueprint(
     'registerAccount',
     __name__,
-    template_folder='templates/register',
+    template_folder='templates/main',
     url_prefix="/register")
 
 # User Register
@@ -219,13 +219,13 @@ def register():
 
         flash('You are now registered and can log in', 'success')
 
-        return redirect(url_for('login'))
+        return redirect(url_for('login.login'))
     return render_template('register.html', form=form)
 
 login_blueprint = Blueprint(
     'login',
     __name__,
-    template_folder='templates')
+    template_folder='templates/main')
 
 # User login
 @login_blueprint.route('/login', methods=['GET', 'POST'])
@@ -249,7 +249,7 @@ def login():
                 session['username'] = POST_USERNAME
 
                 flash('You are now logged in', 'success')
-                return redirect(url_for('CoveredCallsResults'))
+                return redirect(url_for('call.CoveredCallsResults'))
             else:
                 error = 'Invalid password'
                 return render_template('login.html', error=error)
@@ -305,7 +305,7 @@ def getLastTradingDate():
 call_blueprint = Blueprint(
     'call',
     __name__,
-    template_folder='templates')
+    template_folder='templates/app/call')
 
 # CoveredCallsResults
 @call_blueprint.route('/CoveredCallsResults')
@@ -348,7 +348,7 @@ def CoveredCallsResultsStock(StockID):
 put_blueprint = Blueprint(
     'put',
     __name__,
-    template_folder='templates')
+    template_folder='templates/app/put')
 
 @put_blueprint.route('/putResults')
 @is_logged_in
@@ -381,7 +381,7 @@ def putResultsStock(StockID):
 graph_blueprint = Blueprint(
     'graph',
     __name__,
-    template_folder='templates')
+    template_folder='templates/app/Graph')
 
 @graph_blueprint.route('/StockGraph/<string:StockID>')
 def StockGrpah(StockID):
@@ -403,7 +403,7 @@ def StockGrpah(StockID):
 account_blueprint = Blueprint(
     'account',
     __name__,
-    template_folder='templates')
+    template_folder='templates/app/account')
 
 # Account Details
 @account_blueprint.route('/myAccount', methods=['GET', 'POST'])
@@ -453,7 +453,7 @@ def updateAccount():
 
         flash('You successfully updated your account', 'success')
 
-        return redirect(url_for('CoveredCallsResults'))
+        return redirect(url_for('call.CoveredCallsResults'))
     return redirect(url_for('account.myAccount'))
 
 @account_blueprint.route('/updateAccountBasic', methods=['GET', 'POST'])

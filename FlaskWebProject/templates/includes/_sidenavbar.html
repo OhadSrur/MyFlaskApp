@@ -5,18 +5,18 @@
             <div class="left-sidebar-wrapper">
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link" href="/myAccount">
+                        <a class="nav-link" href="{{ url_for('account.myAccount') }}">
                             <span data-feather="file"></span>
                             Personal Details
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/accountBasic">
+                        <a class="nav-link" href="{{ url_for('account.accountBasic') }}">
                             Basic Parameters
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/parametersOptions">
+                        <a class="nav-link" href="{{ url_for('account.parametersOptions') }}">
                             Option Strategy
                         </a>
                     </li>
