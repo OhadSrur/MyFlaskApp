@@ -37,8 +37,12 @@ db = SQLAlchemy(app)
 # Make the WSGI interface available at the top level so wfastcgi can get it.
 wsgi_app = app.wsgi_app
 
+main_blueprint = Blueprint(
+    'main',
+    __name__,
+    template_folder='templates')
 
-@app.route('/')
+@main_blueprint.route('/')
 def index():
     return render_template('index.html')
 
@@ -184,19 +188,14 @@ class UpdateAccountOptionParameters(Form):
     ExcludeIndustry = StringField('ExcludeIndustry', [validators.Length(max=2000)])
     PutProtectionPercCheckPrice = DecimalField('PutProtectionPercCheckPrice',places=3)
 
-#register_blueprint = Blueprint(
-#    'register',
-#    __name__,
-#    template_folder='templates/register',
-#    url_prefix="/register")
-
-#main_blueprint = Blueprint(
-#    'main',
-#    __name__,
-#    template_folder='templates/index')
+registerAccount_blueprint = Blueprint(
+    'registerAccount',
+    __name__,
+    template_folder='templates/register',
+    url_prefix="/register")
 
 # User Register
-@app.route('/register', methods=['GET', 'POST'])
+@registerAccount_blueprint.route('/', methods=['GET', 'POST'])
 def register():
     form = RegisterForm(request.form)
     if request.method == 'POST' and form.validate():
@@ -223,8 +222,13 @@ def register():
         return redirect(url_for('login'))
     return render_template('register.html', form=form)
 
+login_blueprint = Blueprint(
+    'login',
+    __name__,
+    template_folder='templates')
+
 # User login
-@app.route('/login', methods=['GET', 'POST'])
+@login_blueprint.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         # Get Form Fields
@@ -265,16 +269,16 @@ def is_logged_in(f):
             return f(*args, **kwargs)
         else:
             flash('Unauthorized, Please login', 'danger')
-            return redirect(url_for('login'))
+            return redirect(url_for('login.login'))
     return wrap
 
 # Logout
-@app.route('/logout')
+@login_blueprint.route('/logout')
 @is_logged_in
 def logout():
     session.clear()
     flash('You are now logged out. Thanks for using CoveredCalls application', 'success')
-    return redirect(url_for('login'))
+    return redirect(url_for('login.login'))
 
 def getAccountID(username):
     connection_string, engine, connection = get_all_sql_connection(svr=CC_SVR,db=CC_DB,user=CC_USER,psw=CC_PSW)
@@ -298,8 +302,13 @@ def getLastTradingDate():
     order by mc.MarketDate desc"
     return pd.read_sql_query(checkLastTradingDateQuery,connection)
 
+call_blueprint = Blueprint(
+    'call',
+    __name__,
+    template_folder='templates')
+
 # CoveredCallsResults
-@app.route('/CoveredCallsResults')
+@call_blueprint.route('/CoveredCallsResults')
 @is_logged_in
 def CoveredCallsResults():
     #Getting DB connection
@@ -318,7 +327,7 @@ def CoveredCallsResults():
     return render_template('CoveredCallsResults.html',StockPicks=results.values)
 
 # CoveredCallsResults
-@app.route('/CoveredCallsResults/<string:StockID>')
+@call_blueprint.route('/CoveredCallsResults/<string:StockID>')
 @is_logged_in
 def CoveredCallsResultsStock(StockID):
     #Getting DB connection
@@ -336,7 +345,12 @@ def CoveredCallsResultsStock(StockID):
 
     return render_template('CoveredCallsResults.html',StockPicks=results.values)
 
-@app.route('/putResults')
+put_blueprint = Blueprint(
+    'put',
+    __name__,
+    template_folder='templates')
+
+@put_blueprint.route('/putResults')
 @is_logged_in
 def putResults():
      #Getting DB connection
@@ -350,7 +364,7 @@ def putResults():
 
     return render_template('putResults.html',StockPicks=results.values)
 
-@app.route('/putResults/<string:StockID>')
+@put_blueprint.route('/putResults/<string:StockID>')
 @is_logged_in
 def putResultsStock(StockID):
      #Getting DB connection
@@ -364,7 +378,12 @@ def putResultsStock(StockID):
 
     return render_template('putResults.html',StockPicks=results.values)
 
-@app.route('/StockGraph/<string:StockID>')
+graph_blueprint = Blueprint(
+    'graph',
+    __name__,
+    template_folder='templates')
+
+@graph_blueprint.route('/StockGraph/<string:StockID>')
 def StockGrpah(StockID):
     graph = pygal.Line()
     graph.title = 'Stock Graph for ' + StockID
@@ -381,8 +400,13 @@ def StockGrpah(StockID):
     graph_data = graph.render_data_uri()
     return render_template("lineGraph.html", graph_data = graph_data)
 
+account_blueprint = Blueprint(
+    'account',
+    __name__,
+    template_folder='templates')
+
 # Account Details
-@app.route('/myAccount', methods=['GET', 'POST'])
+@account_blueprint.route('/myAccount', methods=['GET', 'POST'])
 @is_logged_in
 def myAccount():
     query = UserAccount.query.filter_by(username=session['username']).first()
@@ -394,7 +418,7 @@ def myAccount():
         return render_template('myAccount.html', msg=msg)
 
 # Account Details
-@app.route('/accountBasic', methods=['GET', 'POST'])
+@account_blueprint.route('/accountBasic', methods=['GET', 'POST'])
 @is_logged_in
 def accountBasic():
     query = Account.query.filter_by(AccountID=getAccountID(session['username'])).first()
@@ -405,7 +429,7 @@ def accountBasic():
         msg = 'No Account Found'
         return render_template('accountBasic.html', msg=msg)
 
-@app.route('/updateAccount', methods=['GET', 'POST'])
+@account_blueprint.route('/updateAccount', methods=['GET', 'POST'])
 @is_logged_in
 def updateAccount():
     query = UserAccount.query.filter_by(username=session['username']).first()
@@ -430,9 +454,9 @@ def updateAccount():
         flash('You successfully updated your account', 'success')
 
         return redirect(url_for('CoveredCallsResults'))
-    return redirect(url_for('myAccount'))
+    return redirect(url_for('account.myAccount'))
 
-@app.route('/updateAccountBasic', methods=['GET', 'POST'])
+@account_blueprint.route('/updateAccountBasic', methods=['GET', 'POST'])
 @is_logged_in
 def updateAccountBasic():
     query = Account.query.filter_by(AccountID=getAccountID(session['username'])).first()
@@ -463,10 +487,10 @@ def updateAccountBasic():
 
         flash('You successfully updated your account basic parameters', 'success')
 
-        return redirect(url_for('CoveredCallsResults'))
-    return redirect(url_for('accountBasic'))
+        return redirect(url_for('call.CoveredCallsResults'))
+    return redirect(url_for('account.accountBasic'))
 
-@app.route('/parametersOptions', methods=['GET', 'POST'])
+@account_blueprint.route('/parametersOptions', methods=['GET', 'POST'])
 @is_logged_in
 def parametersOptions():
     accountID = getAccountID(session['username'])
@@ -478,7 +502,7 @@ def parametersOptions():
         msg = 'No Account Found'
         return render_template('parameters.html', msg=msg)
     
-@app.route('/updateParameters', methods=['GET', 'POST'])
+@account_blueprint.route('/updateParameters', methods=['GET', 'POST'])
 @is_logged_in
 def updateParameters():
     accountID = getAccountID(session['username'])
@@ -515,26 +539,32 @@ def updateParameters():
 
         flash('You successfully updated your Optionn Parameters', 'success')
 
-        return redirect(url_for('parametersOptions'))
-    return redirect(url_for('parametersOptions'))
+        return redirect(url_for('account.parametersOptions'))
+    return redirect(url_for('account.parametersOptions'))
 
-@app.errorhandler(403)
+@main_blueprint.errorhandler(403)
 def page_not_found(e):
     return render_template('403.html'), 403
 
-@app.errorhandler(404)
+@main_blueprint.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
 
-@app.errorhandler(500)
+@main_blueprint.errorhandler(500)
 def internal_server_error(e):
     return render_template('500.html'), 500
 
-@app.route('/favicon.ico') 
+@main_blueprint.route('/favicon.ico') 
 def favicon(): 
     return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
-#app.register_blueprint(register_blueprint)
+app.register_blueprint(registerAccount_blueprint)
+app.register_blueprint(main_blueprint)
+app.register_blueprint(login_blueprint)
+app.register_blueprint(call_blueprint)
+app.register_blueprint(put_blueprint)
+app.register_blueprint(graph_blueprint)
+app.register_blueprint(account_blueprint)
 
 if __name__ == '__main__':
 

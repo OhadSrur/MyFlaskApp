@@ -3,7 +3,7 @@
 {% block body %}
 <h1><small>{{session.username}} Account Details</small></h1>
 {% from "includes/_formhelpers.html" import render_field %}
-<form method="POST" action="{{ url_for('updateAccount') }}">
+<form method="POST" action="{{ url_for('account.updateAccount') }}">
     <div class="form-group">
         <label for="title">Title</label>
         <input value={{account.title}} type="text" name="title" class="form-control" />

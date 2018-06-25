@@ -39,8 +39,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="CoveredCall - FTP.pubxml" />
-    <None Include="CoveredCall - Web Deploy1.pubxml" />
     <Content Include="static\images\favicon.ico" />
     <Content Include="static\images\graph.png" />
     <Content Include="templates\favicon.ico" />

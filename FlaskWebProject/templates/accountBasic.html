@@ -3,7 +3,7 @@
 {% block body %}
 <h1><small>Account Basic Parameters</small></h1>
 {% from "includes/_formhelpers.html" import render_field %}
-<form method="POST" action="{{ url_for('updateAccountBasic') }}">
+<form method="POST" action="{{ url_for('account.updateAccountBasic') }}">
     <div class="form-group">
         <label>StockCommission</label>
         <input value={{account.StockCommission}} type="text" name="StockCommission" class="form-control" />

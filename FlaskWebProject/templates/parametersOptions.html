@@ -3,7 +3,7 @@
 {% block body %}
 <h1><small>{{session.username}} Parameters Setup Page</small></h1>
 {% from "includes/_formhelpers.html" import render_field %}
-<form method="POST" action="{{ url_for('updateParameters') }}">
+<form method="POST" action="{{ url_for('account.updateParameters') }}">
     <div class="form-group">
         <label>PositionType</label>
         <input value={{parametersOptions.PositionType}} type="text" name="PositionType" class="form-control" />

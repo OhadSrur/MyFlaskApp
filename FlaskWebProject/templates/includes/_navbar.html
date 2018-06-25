@@ -7,17 +7,17 @@
     <div class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow" id="navbarsExampleDefault">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item {% if request.path == '/' %}active{% endif %}">
-                <a class="nav-link" href="/">Home</a>
+                <a class="nav-link" href="{{ url_for('main.index') }}">Home</a>
             </li>
             {% if session.logged_in %}
             <li class="nav-item {% if request.path == '/CoveredCallsResults' %}active{% endif %}">
-                <a class="nav-link" href="/CoveredCallsResults">Covered Calls Results</a>
+                <a class="nav-link" href="{{ url_for('call.CoveredCallsResults') }}">Covered Calls Results</a>
             </li>
             <li class="nav-item {% if request.path == '/putResults' %}active{% endif %}">
-                <a class="nav-link" href="/putResults">Write Put Results</a>
+                <a class="nav-link" href="{{ url_for('put.putResults') }}">Write Put Results</a>
             </li>
             <li class="nav-item {% if request.path in ['/myAccount','/accountBasic','/parametersOptions'] %}active{% endif %}">
-                <a class="nav-link" href="/myAccount">Settings</a>
+                <a class="nav-link" href="{{ url_for('account.myAccount') }}">Settings</a>
             </li>
             <!--<li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <span class="caret"></span></a>
@@ -35,10 +35,10 @@
         </ul>
                 <ul class="nav navbar-nav navbar-right">
                     {% if session.logged_in %}
-                    <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('login.logout') }}">Logout</a></li>
                     {% else %}
-                    <li class="nav-item"><a class="nav-link" href="/register">Register</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('registerAccount.register') }}">Register</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('login.login') }}">Login</a></li>
                     {% endif %}
                 </ul>
     </div>
@@ -49,17 +49,17 @@
                 <div class="sidebar-sticky">
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link" href="/myAccount">
+                            <a class="nav-link" href="{{ url_for('account.myAccount') }}">
                                 Personal Details
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/accountBasic">
+                            <a class="nav-link" href="{{ url_for('account.accountBasic') }}">
                                 Basic Parameters
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/parametersOptions">
+                            <a class="nav-link" href="{{ url_for('account.parametersOptions') }}">
                                 Option Strategy
                             </a>
                         </li>
