@@ -219,16 +219,16 @@ def register():
 
         flash('You are now registered and can log in', 'success')
 
-        return redirect(url_for('login.login'))
+        return redirect(url_for('auth.login'))
     return render_template('register.html', form=form)
 
-login_blueprint = Blueprint(
-    'login',
+auth_blueprint = Blueprint(
+    'auth',
     __name__,
     template_folder='templates/main')
 
 # User login
-@login_blueprint.route('/login', methods=['GET', 'POST'])
+@auth_blueprint.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         # Get Form Fields
@@ -269,37 +269,28 @@ def is_logged_in(f):
             return f(*args, **kwargs)
         else:
             flash('Unauthorized, Please login', 'danger')
-            return redirect(url_for('login.login'))
+            return redirect(url_for('auth.login'))
     return wrap
 
 # Logout
-@login_blueprint.route('/logout')
+@auth_blueprint.route('/logout')
 @is_logged_in
 def logout():
     session.clear()
     flash('You are now logged out. Thanks for using CoveredCalls application', 'success')
-    return redirect(url_for('login.login'))
+    return redirect(url_for('auth.login'))
 
 def getAccountID(username):
     connection_string, engine, connection = get_all_sql_connection(svr=CC_SVR,db=CC_DB,user=CC_USER,psw=CC_PSW)
     #Getting Account
-    accountIDquery = "SELECT a.AccountID \
-                 FROM Account a \
-		            join \
-	             UserAccount  ua on a.UserID=ua.UserID \
-                 WHERE ua.UserName= %r and a.AccountName='Live'" % username
+    accountIDquery = "EXEC spGetAccount @Username= %r ,@email=NULL,@AccountName='Live'" % username
     accountID = pd.read_sql_query(accountIDquery,connection)
     return str(accountID.values[0][0])
 
 def getLastTradingDate():
     connection_string, engine, connection = get_all_sql_connection(svr=CC_SVR,db=CC_DB,user=CC_USER,psw=CC_PSW)
     #Last Trading Date
-    checkLastTradingDateQuery = "SELECT  TOP 1 mc.MarketDate \
-    FROM	[dbo].[MarketCalendar] mc \
-    WHERE mc.MarketStatus='Open' and mc.MarketDate between  dateadd(day,-10,try_convert(date,try_convert(datetimeoffset, GETDATE()) AT TIME ZONE 'Eastern Standard Time')) \
-        AND CASE WHEN try_convert(time,try_convert(datetimeoffset, GETDATE()) AT TIME ZONE 'Eastern Standard Time')>'16:30' THEN try_convert(date,try_convert(datetimeoffset, GETDATE()) AT TIME ZONE 'Eastern Standard Time') \
-            ELSE dateadd(day,-1,try_convert(date,try_convert(datetimeoffset, GETDATE()) AT TIME ZONE 'Eastern Standard Time')) END \
-    order by mc.MarketDate desc"
+    checkLastTradingDateQuery = "SELECT MarketDate FROM vLastMarketDate"
     return pd.read_sql_query(checkLastTradingDateQuery,connection)
 
 call_blueprint = Blueprint(
@@ -318,10 +309,7 @@ def CoveredCallsResults():
     lastTradingDate = getLastTradingDate()
     
     #Stocks Picks
-    query = "SELECT StockID, CompanyName, Industry, CurrentStockPrice, CallExpiryDays, StrikePrice, IncomeExPerc, IncomeNotExPerc,ExpectedCallReturn \
-    FROM Stage.StockPickScanResults \
-    WHERE AccountID= ? and StockPriceDate= ? \
-    ORDER BY try_convert(int,CallExpiryDays) ASC, ExpectedCallReturn DESC"
+    query = "EXEC spCoveredCallResults @AccountID= ?, @TradingDate= ?, @StockID=NULL"
     results = pd.read_sql_query(query,connection,params=(str(accountID),lastTradingDate.values[0][0]))
 
     return render_template('CoveredCallsResults.html',StockPicks=results.values)
@@ -337,10 +325,7 @@ def CoveredCallsResultsStock(StockID):
     lastTradingDate = getLastTradingDate()
     
     #Stocks Picks
-    query = "SELECT StockID, CompanyName, Industry, CurrentStockPrice, CallExpiryDays, StrikePrice, IncomeExPerc, IncomeNotExPerc,ExpectedCallReturn \
-    FROM Stage.StockPickScanResults \
-    WHERE AccountID= ? and StockPriceDate= ? and StockID= ? \
-    ORDER BY try_convert(int,CallExpiryDays) ASC, ExpectedCallReturn DESC"
+    query = "EXEC spCoveredCallResults @AccountID= ?, @TradingDate= ?, @StockID= ? "
     results = pd.read_sql_query(query,connection,params=(str(accountID),lastTradingDate.values[0][0],StockID))
 
     return render_template('CoveredCallsResults.html',StockPicks=results.values)
@@ -560,7 +545,7 @@ def favicon():
 
 app.register_blueprint(registerAccount_blueprint)
 app.register_blueprint(main_blueprint)
-app.register_blueprint(login_blueprint)
+app.register_blueprint(auth_blueprint)
 app.register_blueprint(call_blueprint)
 app.register_blueprint(put_blueprint)
 app.register_blueprint(graph_blueprint)
