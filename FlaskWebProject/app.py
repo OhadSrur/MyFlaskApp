@@ -19,6 +19,7 @@ import pygal
 
 # initialization
 app = Flask(__name__)
+#app.config.from_object("config.DevConfig")
 #bootstrap = Bootstrap(app)
 
 #Secrets from environment
