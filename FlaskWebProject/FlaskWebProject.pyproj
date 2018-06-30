@@ -6,7 +6,7 @@
     <ProjectGuid>06f652e8-a67e-439f-bfed-3e8a6e3cf7cb</ProjectGuid>
     <ProjectHome>.</ProjectHome>
     <ProjectTypeGuids>{789894c7-04a9-4a11-a6b5-3f4435165112};{1b580a1a-fdb3-4b32-83e1-6407eb2722e6};{349c5851-65df-11da-9384-00065b846f21};{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
-    <StartupFile>app.py</StartupFile>
+    <StartupFile>manage.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -19,6 +19,17 @@
     <WebBrowserPort>5000</WebBrowserPort>
     <IsWindowsApplication>False</IsWindowsApplication>
     <InterpreterId>CondaEnv|CondaEnv|flask</InterpreterId>
+    <PythonRunWebServerCommandArguments>shell</PythonRunWebServerCommandArguments>
+    <PythonRunWebServerCommand>
+    </PythonRunWebServerCommand>
+    <CommandLineArguments>
+    </CommandLineArguments>
+    <PythonRunWebServerCommandEnvironment>
+    </PythonRunWebServerCommandEnvironment>
+    <InterpreterArguments>
+    </InterpreterArguments>
+    <PythonRunWebServerCommandType>
+    </PythonRunWebServerCommandType>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -29,90 +40,113 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="app.py" />
-    <Compile Include="config.py" />
-    <Compile Include="config_test.py">
+    <Compile Include="Web_App\controllers\account.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="controllers\main.py" />
-    <Compile Include="controllers\__init__.py">
+    <Compile Include="Web_App\controllers\auth.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web_App\controllers\call.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web_App\controllers\graph.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web_App\controllers\put.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web_App\controllers\register.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web_App\forms.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web_App\models.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web_App\__init__.py" />
+    <Compile Include="Web_App\config.py" />
+    <Compile Include="tests\config_test.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web_App\controllers\main.py" />
+    <Compile Include="Web_App\controllers\__init__.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="manage.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="sqlConnection.py" />
-    <Compile Include="__init_test.py">
+    <Compile Include="Web_App\sqlConnection.py" />
+    <Compile Include="tests\__init_test.py">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="static\images\favicon.ico" />
-    <Content Include="static\images\graph.png" />
-    <Content Include="templates\favicon.ico" />
-    <Content Include="templates\app\Graph\lineGraph.html" />
-    <Content Include="templates\app\put\putResults.html" />
+    <Content Include="Web_App\static\css\bootstrap-grid.css" />
+    <Content Include="Web_App\static\css\bootstrap-grid.css.map" />
+    <Content Include="Web_App\static\css\bootstrap-grid.min.css" />
+    <Content Include="Web_App\static\css\bootstrap-grid.min.css.map" />
+    <Content Include="Web_App\static\css\bootstrap-reboot.css" />
+    <Content Include="Web_App\static\css\bootstrap-reboot.css.map" />
+    <Content Include="Web_App\static\css\bootstrap-reboot.min.css" />
+    <Content Include="Web_App\static\css\bootstrap-reboot.min.css.map" />
+    <Content Include="Web_App\static\css\bootstrap.css" />
+    <Content Include="Web_App\static\css\bootstrap.css.map" />
+    <Content Include="Web_App\static\css\bootstrap.min.css" />
+    <Content Include="Web_App\static\css\bootstrap.min.css.map" />
+    <Content Include="Web_App\static\css\Stylesheet.css" />
+    <Content Include="Web_App\static\images\export-csv.png" />
+    <Content Include="Web_App\static\images\favicon.ico" />
+    <Content Include="Web_App\static\images\graph.png" />
+    <Content Include="Web_App\static\js\bootstrap.bundle.js" />
+    <Content Include="Web_App\static\js\bootstrap.bundle.js.map" />
+    <Content Include="Web_App\static\js\bootstrap.bundle.min.js" />
+    <Content Include="Web_App\static\js\bootstrap.bundle.min.js.map" />
+    <Content Include="Web_App\static\js\bootstrap.js" />
+    <Content Include="Web_App\static\js\bootstrap.js.map" />
+    <Content Include="Web_App\static\js\bootstrap.min.js" />
+    <Content Include="Web_App\static\js\bootstrap.min.js.map" />
+    <Content Include="Web_App\static\js\sortTable.js" />
+    <Content Include="Web_App\templates\favicon.ico" />
+    <Content Include="Web_App\templates\app\Graph\lineGraph.html" />
+    <Content Include="Web_App\templates\app\put\putResults.html" />
     <Content Include="web.config" />
     <None Include="CoveredCall - Web Deploy.pubxml" />
     <Content Include="Project Goals.txt" />
     <Content Include="requirements.txt" />
     <Content Include="runtime.txt" />
-    <Content Include="templates\main\500.html" />
-    <Content Include="templates\main\404.html" />
-    <Content Include="templates\main\403.html" />
-    <Content Include="templates\app\account\accountBasic.html" />
-    <Content Include="static\css\bootstrap-grid.css" />
-    <Content Include="static\css\bootstrap-grid.css.map" />
-    <Content Include="static\css\bootstrap-grid.min.css" />
-    <Content Include="static\css\bootstrap-grid.min.css.map" />
-    <Content Include="static\css\bootstrap-reboot.css" />
-    <Content Include="static\css\bootstrap-reboot.css.map" />
-    <Content Include="static\css\bootstrap-reboot.min.css" />
-    <Content Include="static\css\bootstrap-reboot.min.css.map" />
-    <Content Include="static\css\bootstrap.css" />
-    <Content Include="static\css\bootstrap.css.map" />
-    <Content Include="static\css\bootstrap.min.css" />
-    <Content Include="static\css\bootstrap.min.css.map" />
-    <Content Include="static\images\export-csv.png" />
-    <Content Include="templates\app\call\CoveredCallsResults.html" />
-    <Content Include="templates\includes\_formhelpers.html" />
-    <Content Include="templates\includes\_messages.html" />
-    <Content Include="templates\includes\_navbar.html" />
-    <Content Include="templates\includes\_sidenavbar.html" />
-    <Content Include="templates\main\index.html" />
-    <Content Include="templates\layout.html" />
-    <Content Include="templates\main\login.html" />
-    <Content Include="templates\app\account\myAccount.html" />
-    <Content Include="templates\app\account\parametersOptions.html" />
-    <Content Include="templates\main\register.html" />
-    <Content Include="static\css\Stylesheet.css">
-      <Publish>True</Publish>
-    </Content>
-    <Content Include="static\js\bootstrap.bundle.js" />
-    <Content Include="static\js\bootstrap.bundle.js.map" />
-    <Content Include="static\js\bootstrap.bundle.min.js" />
-    <Content Include="static\js\bootstrap.bundle.min.js.map" />
-    <Content Include="static\js\bootstrap.js" />
-    <Content Include="static\js\bootstrap.js.map" />
-    <Content Include="static\js\bootstrap.min.js" />
-    <Content Include="static\js\bootstrap.min.js.map" />
-    <Content Include="static\js\sortTable.js" />
+    <Content Include="Web_App\templates\main\500.html" />
+    <Content Include="Web_App\templates\main\404.html" />
+    <Content Include="Web_App\templates\main\403.html" />
+    <Content Include="Web_App\templates\app\account\accountBasic.html" />
+    <Content Include="Web_App\templates\app\call\CoveredCallsResults.html" />
+    <Content Include="Web_App\templates\includes\_formhelpers.html" />
+    <Content Include="Web_App\templates\includes\_messages.html" />
+    <Content Include="Web_App\templates\includes\_navbar.html" />
+    <Content Include="Web_App\templates\includes\_sidenavbar.html" />
+    <Content Include="Web_App\templates\main\index.html" />
+    <Content Include="Web_App\templates\layout.html" />
+    <Content Include="Web_App\templates\main\login.html" />
+    <Content Include="Web_App\templates\app\account\myAccount.html" />
+    <Content Include="Web_App\templates\app\account\parametersOptions.html" />
+    <Content Include="Web_App\templates\main\register.html" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="controllers\" />
-    <Folder Include="templates\app\account\" />
-    <Folder Include="templates\app\call\" />
-    <Folder Include="templates\app\Graph\" />
-    <Folder Include="templates\app\put\" />
-    <Folder Include="templates\main\" />
-    <Folder Include="static\css\" />
-    <Folder Include="static\images\" />
-    <Folder Include="static\js\" />
-    <Folder Include="templates\app\" />
+    <Folder Include="Web_App\controllers\" />
+    <Folder Include="Web_App\" />
+    <Folder Include="Web_App\static\" />
+    <Folder Include="Web_App\static\css\" />
+    <Folder Include="Web_App\static\images\" />
+    <Folder Include="Web_App\static\js\" />
+    <Folder Include="Web_App\templates\app\account\" />
+    <Folder Include="Web_App\templates\app\call\" />
+    <Folder Include="Web_App\templates\app\Graph\" />
+    <Folder Include="Web_App\templates\app\put\" />
+    <Folder Include="Web_App\templates\main\" />
+    <Folder Include="Web_App\templates\app\" />
     <Folder Include="tests\" />
-    <Folder Include="static\" />
-    <Folder Include="templates\" />
-    <Folder Include="templates\includes\" />
+    <Folder Include="Web_App\templates\" />
+    <Folder Include="Web_App\templates\includes\" />
   </ItemGroup>
   <ItemGroup>
     <InterpreterReference Include="CondaEnv|CondaEnv|flask" />
