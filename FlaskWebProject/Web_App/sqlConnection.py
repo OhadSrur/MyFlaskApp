@@ -2,6 +2,7 @@ import pyodbc
 import sys
 import sqlalchemy as sq
 import pandas as pd
+import os
 
 def get_sql_connection(svr,db,user,psw):
 
@@ -21,6 +22,9 @@ def get_sql_connection_string(svr,db,user,psw):
     driver= 'ODBC+Driver+13+for+SQL+Server'
     connection_string = 'mssql+pyodbc://'+user+'@'+svr+':'+psw+'@'+svr+'.database.windows.net:1433/'+db+'?driver='+driver+';'
     return connection_string
+
+def get_connections():
+    return get_all_sql_connection(svr=os.environ.get('CC_SVR'),db=os.environ.get('CC_SVR'),user=os.environ.get('CC_USER'),psw=os.environ.get('CC_PSW'))
 
 if __name__ == "__main__":
     svr = sys.argv[1]
