@@ -1,6 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData, Table, select
-from Web_App.sqlConnection import get_sql_connection_string, get_all_sql_connection
 
 # extensions
 db = SQLAlchemy()

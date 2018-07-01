@@ -2,8 +2,8 @@
 This script runs the application using a development server.
 It contains the definition of routes and views for the application.
 """
-from flask import Flask
-#import os
+from flask import Flask, send_from_directory
+import os
 #from jinja2 import TemplateNotFound
 from Web_App.models import db
 from Web_App.controllers.main import main_blueprint
@@ -34,4 +34,8 @@ def create_app(config_object):
     app.register_blueprint(graph_blueprint)
     app.register_blueprint(account_blueprint)
 
+    @app.route('/favicon.ico') 
+    def favicon(): 
+        return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.ico', mimetype='image/vnd.microsoft.icon')
+    
     return app

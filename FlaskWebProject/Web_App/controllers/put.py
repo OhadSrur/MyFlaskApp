@@ -1,20 +1,21 @@
 from flask import render_template, Blueprint, session
 import pandas as pd
 from Web_App.controllers.account import getAccountID
-from Web_App.sqlConnection import get_all_sql_connection
+from Web_App.sqlConnection import get_connections
 from Web_App.models import StockPicks
 from Web_App.controllers.auth import is_logged_in
+from jinja2 import TemplateNotFound
 
 put_blueprint = Blueprint(
     'put',
     __name__,
-    template_folder='templates/app/put')
+    template_folder='../templates/app/put')
 
 @put_blueprint.route('/putResults')
 @is_logged_in
 def putResults():
      #Getting DB connection
-    connection_string, engine, connection = get_all_sql_connection(svr=CC_SVR,db=CC_DB,user=CC_USER,psw=CC_PSW)
+    connection_string, engine, connection = get_connections()
     #Getting Account
     accountID = getAccountID(session['username'])
 
@@ -28,7 +29,7 @@ def putResults():
 @is_logged_in
 def putResultsStock(StockID):
      #Getting DB connection
-    connection_string, engine, connection = get_all_sql_connection(svr=CC_SVR,db=CC_DB,user=CC_USER,psw=CC_PSW)
+    connection_string, engine, connection = get_connections()
     #Getting Account
     accountID = getAccountID(session['username'])
 

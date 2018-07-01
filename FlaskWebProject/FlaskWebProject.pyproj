@@ -66,7 +66,7 @@
     </Compile>
     <Compile Include="Web_App\__init__.py" />
     <Compile Include="Web_App\config.py" />
-    <Compile Include="tests\config_test.py">
+    <Compile Include="Web_App\tests\config_test.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Web_App\controllers\main.py" />
@@ -77,7 +77,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Web_App\sqlConnection.py" />
-    <Compile Include="tests\__init_test.py">
+    <Compile Include="Web_App\tests\__init_test.py">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
@@ -144,7 +144,7 @@
     <Folder Include="Web_App\templates\app\put\" />
     <Folder Include="Web_App\templates\main\" />
     <Folder Include="Web_App\templates\app\" />
-    <Folder Include="tests\" />
+    <Folder Include="Web_App\tests\" />
     <Folder Include="Web_App\templates\" />
     <Folder Include="Web_App\templates\includes\" />
   </ItemGroup>

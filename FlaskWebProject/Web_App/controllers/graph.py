@@ -1,7 +1,7 @@
 from flask import render_template, Blueprint
 import pandas as pd
 import pygal
-from Web_App.sqlConnection import get_all_sql_connection
+from Web_App.sqlConnection import get_connections
 
 graph_blueprint = Blueprint(
     'graph',
@@ -14,7 +14,7 @@ def StockGrpah(StockID):
     graph.title = 'Stock Graph for ' + StockID
 
     #Getting DB connection
-    connection_string, engine, connection = get_all_sql_connection(svr=CC_SVR,db=CC_DB,user=CC_USER,psw=CC_PSW)
+    connection_string, engine, connection = get_connections()
 
     stock_query = "exec spMovingAverage @StockID= ? , @NumOfYears=2"
     stockResults =  pd.read_sql_query(stock_query,connection,params=[StockID])

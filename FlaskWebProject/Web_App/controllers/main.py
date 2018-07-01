@@ -1,6 +1,7 @@
 from flask import render_template, Blueprint, send_from_directory
 import pandas as pd
-from Web_App.sqlConnection import get_sql_connection_string, get_all_sql_connection
+from Web_App.sqlConnection import get_connections
+import os
 
 main_blueprint = Blueprint(
     'main',
@@ -24,12 +25,8 @@ def page_not_found(e):
 def internal_server_error(e):
     return render_template('500.html'), 500
 
-@main_blueprint.route('/favicon.ico') 
-def favicon(): 
-    return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.ico', mimetype='image/vnd.microsoft.icon')
-
 def getLastTradingDate():
-    connection_string, engine, connection = get_all_sql_connection(svr=CC_SVR,db=CC_DB,user=CC_USER,psw=CC_PSW)
+    connection_string, engine, connection = get_connections()
     #Last Trading Date
     checkLastTradingDateQuery = "SELECT MarketDate FROM vLastMarketDate"
     return pd.read_sql_query(checkLastTradingDateQuery,connection)

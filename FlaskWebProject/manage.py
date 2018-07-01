@@ -1,7 +1,6 @@
 from flask_script import Manager,Shell
 from Web_App import create_app
 from Web_App.models import db
-import os
 
 app = create_app('Web_App.config.DevConfig')
 

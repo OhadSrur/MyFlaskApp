@@ -1,14 +1,21 @@
 from flask import render_template, Blueprint, redirect, url_for, session, request, flash
 import pandas as pd
-from Web_App.models import UserAccount, db, Account
+from Web_App.models import UserAccount, db, Account, AccountScanParameters
 from Web_App.forms import UpdateAccountDetails, UpdateAccountBasic, UpdateAccountOptionParameters
-from Web_App.sqlConnection import get_sql_connection_string, get_all_sql_connection
+from Web_App.sqlConnection import get_connections
 from Web_App.controllers.auth import is_logged_in
 
 account_blueprint = Blueprint(
     'account',
     __name__,
     template_folder='../templates/app/account')
+
+def getAccountID(username):
+    connection_string, engine, connection = get_connections()
+    #Getting Account
+    accountIDquery = "EXEC spGetAccount @Username= %r ,@email=NULL,@AccountName='Live'" % username
+    accountID = pd.read_sql_query(accountIDquery,connection)
+    return str(accountID.values[0][0])
 
 # Account Details
 @account_blueprint.route('/myAccount', methods=['GET', 'POST'])
@@ -146,10 +153,3 @@ def updateParameters():
 
         return redirect(url_for('account.parametersOptions'))
     return redirect(url_for('account.parametersOptions'))
-
-def getAccountID(username):
-    connection_string, engine, connection = get_all_sql_connection(svr=CC_SVR,db=CC_DB,user=CC_USER,psw=CC_PSW)
-    #Getting Account
-    accountIDquery = "EXEC spGetAccount @Username= %r ,@email=NULL,@AccountName='Live'" % username
-    accountID = pd.read_sql_query(accountIDquery,connection)
-    return str(accountID.values[0][0])

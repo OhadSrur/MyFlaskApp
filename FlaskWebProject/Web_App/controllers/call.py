@@ -2,9 +2,10 @@ from flask import render_template, Blueprint, session
 import pandas as pd
 from Web_App.controllers.account import getAccountID
 from Web_App.controllers.main import getLastTradingDate
-from Web_App.sqlConnection import get_all_sql_connection
+from Web_App.sqlConnection import get_connections
 from Web_App.models import StockPicks
 from Web_App.controllers.auth import is_logged_in
+from jinja2 import TemplateNotFound
 
 call_blueprint = Blueprint(
     'call',
@@ -16,7 +17,7 @@ call_blueprint = Blueprint(
 @is_logged_in
 def CoveredCallsResults():
     #Getting DB connection
-    connection_string, engine, connection = get_all_sql_connection(svr=CC_SVR,db=CC_DB,user=CC_USER,psw=CC_PSW)
+    connection_string, engine, connection = get_connections()
     #Getting Account
     accountID = getAccountID(session['username'])
     lastTradingDate = getLastTradingDate()
@@ -32,7 +33,7 @@ def CoveredCallsResults():
 @is_logged_in
 def CoveredCallsResultsStock(StockID):
     #Getting DB connection
-    connection_string, engine, connection = get_all_sql_connection(svr=CC_SVR,db=CC_DB,user=CC_USER,psw=CC_PSW)
+    connection_string, engine, connection = get_connections()
     #Getting Account
     accountID = getAccountID(session['username'])
     lastTradingDate = getLastTradingDate()
