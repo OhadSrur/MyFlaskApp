@@ -2,6 +2,7 @@ from flask import render_template, Blueprint
 import pandas as pd
 import pygal
 from Web_App.sqlConnection import get_connections
+from flask_login import login_user, logout_user, login_required, current_user
 
 graph_blueprint = Blueprint(
     'graph',
@@ -9,6 +10,7 @@ graph_blueprint = Blueprint(
     template_folder='../templates/app/Graph')
 
 @graph_blueprint.route('/StockGraph/<string:StockID>')
+@login_required
 def StockGrpah(StockID):
     graph = pygal.Line()
     graph.title = 'Stock Graph for ' + StockID

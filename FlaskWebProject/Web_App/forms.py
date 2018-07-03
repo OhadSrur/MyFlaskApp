@@ -1,7 +1,8 @@
-from wtforms import Form, StringField, TextAreaField, PasswordField, validators, IntegerField, DecimalField, BooleanField
-from wtforms.validators import Required, Length, Email, Regexp, EqualTo
+from wtforms import Form, StringField, TextAreaField, PasswordField, validators, IntegerField, DecimalField, BooleanField, SubmitField
+from wtforms.validators import Required, Length, Email, Regexp, EqualTo, DataRequired
 from wtforms import ValidationError
 from Web_App.models import UserAccount
+from flask_wtf import FlaskForm
 
 # Register Form Class
 class RegisterForm(Form):
@@ -66,3 +67,15 @@ class UpdateAccountOptionParameters(Form):
     ExcludeStocks = StringField('ExcludeStocks', [validators.Length(max=2000)])
     ExcludeIndustry = StringField('ExcludeIndustry', [validators.Length(max=2000)])
     PutProtectionPercCheckPrice = DecimalField('PutProtectionPercCheckPrice',places=3)
+
+class ChangePasswordForm(FlaskForm):
+    old_password = PasswordField('Old password', validators=[DataRequired()])
+    password = PasswordField('New password', validators=[DataRequired(), EqualTo('password2', message='Passwords must match.')])
+    password2 = PasswordField('Confirm new password', validators=[DataRequired()])
+    submit = SubmitField('Update Password')
+
+class LoginForm(FlaskForm):
+    #email = StringField('Email', validators=[DataRequired(), Length(1, 64), Email()])
+    password = PasswordField('Password', validators=[DataRequired()])
+    remember_me = BooleanField('Keep me logged in')
+    submit = SubmitField('Log In')

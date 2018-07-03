@@ -1,5 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData, Table, select
+#from werkzeug.security import generate_password_hash, check_password_hash
+from passlib.hash import sha256_crypt
 
 # extensions
 db = SQLAlchemy()
@@ -15,12 +17,18 @@ class UserAccount(db.Model):
     phone = db.Column(db.Integer, unique=False, nullable=True)
     password = db.Column(db.String(50), unique=True, nullable=False)
 
+    #def password(self, password):
+    #    self.password_hash = generate_password_hash(password)
+
+    def verify_password(self, password):
+        return sha256_crypt.verify(self.password, password)
+
     def __repr__(self):
         return '<UserAccount %r>' % self.username
 
 class Account(db.Model):
     __tablename__ = 'Account'
-    UserID = db.Column(db.Integer, primary_key=True)
+    UserID = db.Column(db.Integer, primary_key=True) 
     AccountID = db.Column(db.Integer, primary_key=True)
     AccountName = db.Column(db.String(50), unique=False, nullable=False)
     StockCommission = db.Column(db.Float(precision='4,2'),  nullable=False)
@@ -83,3 +91,7 @@ class AccountScanParameters(db.Model):
 
     def __repr__(self):
         return '<AccountScanParameters %r>' % self.UserID
+
+#@login_manager.user_loader
+#def load_user(user_id):
+#    return UserAccount.query.get(int(user_id))

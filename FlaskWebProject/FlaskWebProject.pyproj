@@ -46,6 +46,12 @@
     <Compile Include="Web_App\controllers\auth.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Web_App\controllers\auth\views.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web_App\controllers\auth\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Web_App\controllers\call.py">
       <SubType>Code</SubType>
     </Compile>
@@ -115,6 +121,7 @@
     <Content Include="Project Goals.txt" />
     <Content Include="requirements.txt" />
     <Content Include="runtime.txt" />
+    <Content Include="Web_App\templates\macros\form_macros.html" />
     <Content Include="Web_App\templates\main\500.html" />
     <Content Include="Web_App\templates\main\404.html" />
     <Content Include="Web_App\templates\main\403.html" />
@@ -124,9 +131,10 @@
     <Content Include="Web_App\templates\includes\_messages.html" />
     <Content Include="Web_App\templates\includes\_navbar.html" />
     <Content Include="Web_App\templates\includes\_sidenavbar.html" />
+    <Content Include="Web_App\templates\main\auth\change_password.html" />
     <Content Include="Web_App\templates\main\index.html" />
     <Content Include="Web_App\templates\layout.html" />
-    <Content Include="Web_App\templates\main\login.html" />
+    <Content Include="Web_App\templates\main\auth\login.html" />
     <Content Include="Web_App\templates\app\account\myAccount.html" />
     <Content Include="Web_App\templates\app\account\parametersOptions.html" />
     <Content Include="Web_App\templates\main\register.html" />
@@ -134,6 +142,7 @@
   <ItemGroup>
     <Folder Include="Web_App\controllers\" />
     <Folder Include="Web_App\" />
+    <Folder Include="Web_App\controllers\auth\" />
     <Folder Include="Web_App\static\" />
     <Folder Include="Web_App\static\css\" />
     <Folder Include="Web_App\static\images\" />
@@ -144,6 +153,8 @@
     <Folder Include="Web_App\templates\app\put\" />
     <Folder Include="Web_App\templates\main\" />
     <Folder Include="Web_App\templates\app\" />
+    <Folder Include="Web_App\templates\main\auth\" />
+    <Folder Include="Web_App\templates\macros\" />
     <Folder Include="Web_App\tests\" />
     <Folder Include="Web_App\templates\" />
     <Folder Include="Web_App\templates\includes\" />

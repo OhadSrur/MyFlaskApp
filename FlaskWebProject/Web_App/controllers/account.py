@@ -3,7 +3,7 @@ import pandas as pd
 from Web_App.models import UserAccount, db, Account, AccountScanParameters
 from Web_App.forms import UpdateAccountDetails, UpdateAccountBasic, UpdateAccountOptionParameters
 from Web_App.sqlConnection import get_connections
-from Web_App.controllers.auth import is_logged_in
+from flask_login import login_user, logout_user, login_required, current_user
 
 account_blueprint = Blueprint(
     'account',
@@ -19,7 +19,7 @@ def getAccountID(username):
 
 # Account Details
 @account_blueprint.route('/myAccount', methods=['GET', 'POST'])
-@is_logged_in
+@login_required
 def myAccount():
     query = UserAccount.query.filter_by(username=session['username']).first()
 
@@ -31,7 +31,7 @@ def myAccount():
 
 # Account Details
 @account_blueprint.route('/accountBasic', methods=['GET', 'POST'])
-@is_logged_in
+@login_required
 def accountBasic():
     query = Account.query.filter_by(AccountID=getAccountID(session['username'])).first()
 
@@ -42,7 +42,7 @@ def accountBasic():
         return render_template('accountBasic.html', msg=msg)
 
 @account_blueprint.route('/updateAccount', methods=['GET', 'POST'])
-@is_logged_in
+@login_required
 def updateAccount():
     query = UserAccount.query.filter_by(username=session['username']).first()
     form = UpdateAccountDetails(request.form)
@@ -69,7 +69,7 @@ def updateAccount():
     return redirect(url_for('account.myAccount'))
 
 @account_blueprint.route('/updateAccountBasic', methods=['GET', 'POST'])
-@is_logged_in
+@login_required
 def updateAccountBasic():
     query = Account.query.filter_by(AccountID=getAccountID(session['username'])).first()
     form = UpdateAccountBasic(request.form)
@@ -103,7 +103,7 @@ def updateAccountBasic():
     return redirect(url_for('account.accountBasic'))
 
 @account_blueprint.route('/parametersOptions', methods=['GET', 'POST'])
-@is_logged_in
+@login_required
 def parametersOptions():
     accountID = getAccountID(session['username'])
     query = AccountScanParameters.query.filter_by(AccountID=accountID, PositionType='New').first()
@@ -115,7 +115,7 @@ def parametersOptions():
         return render_template('parameters.html', msg=msg)
     
 @account_blueprint.route('/updateParameters', methods=['GET', 'POST'])
-@is_logged_in
+@login_required
 def updateParameters():
     accountID = getAccountID(session['username'])
     query = AccountScanParameters.query.filter_by(AccountID=accountID, PositionType='New').first()

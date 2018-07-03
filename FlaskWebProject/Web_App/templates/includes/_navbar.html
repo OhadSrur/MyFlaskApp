@@ -35,6 +35,7 @@
         </ul>
                 <ul class="nav navbar-nav navbar-right">
                     {% if session.logged_in %}
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.logout') }}">Change Password</a></li> <!--NEED TO CHANGE BACK-->
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.logout') }}">Logout</a></li>
                     {% else %}
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('registerAccount.register') }}">Register</a></li>

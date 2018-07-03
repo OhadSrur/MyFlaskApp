@@ -3,7 +3,7 @@ import pandas as pd
 from Web_App.controllers.account import getAccountID
 from Web_App.sqlConnection import get_connections
 from Web_App.models import StockPicks
-from Web_App.controllers.auth import is_logged_in
+from flask_login import login_user, logout_user, login_required, current_user
 from jinja2 import TemplateNotFound
 
 put_blueprint = Blueprint(
@@ -12,7 +12,7 @@ put_blueprint = Blueprint(
     template_folder='../templates/app/put')
 
 @put_blueprint.route('/putResults')
-@is_logged_in
+@login_required
 def putResults():
      #Getting DB connection
     connection_string, engine, connection = get_connections()
@@ -26,7 +26,7 @@ def putResults():
     return render_template('putResults.html',StockPicks=results.values)
 
 @put_blueprint.route('/putResults/<string:StockID>')
-@is_logged_in
+@login_required
 def putResultsStock(StockID):
      #Getting DB connection
     connection_string, engine, connection = get_connections()
