@@ -1,12 +1,13 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData, Table, select
-#from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 from passlib.hash import sha256_crypt
+from flask_login import UserMixin
 
 # extensions
 db = SQLAlchemy()
 
-class UserAccount(db.Model):
+class UserAccount(db.Model, UserMixin):
     __tablename__ = 'UserAccount'
     UserID = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(25), unique=True, nullable=False)
@@ -17,11 +18,17 @@ class UserAccount(db.Model):
     phone = db.Column(db.Integer, unique=False, nullable=True)
     password = db.Column(db.String(50), unique=True, nullable=False)
 
-    #def password(self, password):
-    #    self.password_hash = generate_password_hash(password)
+    def password(self, password):
+        self.password = generate_password_hash(password)
 
-    def verify_password(self, password):
-        return sha256_crypt.verify(self.password, password)
+    #def verify_password(self, password):
+    #    return sha256_crypt.verify(password, self.password)
+
+    def check_password(self, value):
+        return check_password_hash(self.password, value)
+
+    def get_UserId(self):
+        return self.UserID
 
     def __repr__(self):
         return '<UserAccount %r>' % self.username

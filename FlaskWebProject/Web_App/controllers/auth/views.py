@@ -1,4 +1,4 @@
-from flask import render_template, redirect, request, url_for, flash
+from flask import render_template, redirect, request, url_for, flash, session
 from flask_login import login_user, logout_user, login_required, current_user
 from passlib.hash import sha256_crypt
 from . import auth_blueprint
@@ -30,16 +30,16 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = UserAccount.query.filter_by(username=request.form['username']).first()
-        if user is not None and user.verify_password(request.form['password']):
-            login_user(user, request.form['remember_me'])
+        if user is not None and user.check_password(request.form['password']):
+            session['logged_in'] = True
             next = request.args.get('next')
             if next is None or not next.startswith('/'):
                 next = url_for('call.CoveredCallsResults')
             flash('You are now logged in', 'success')
             return redirect(next)
         flash('Invalid username or password.')
-    flash(form.errors)
-    return render_template('auth/login.html', form=form)
+    #flash(form.errors)
+    return render_template('login.html', form=form)
 
 
 @auth_blueprint.route('/logout')

@@ -5,7 +5,7 @@ It contains the definition of routes and views for the application.
 from flask import Flask, send_from_directory
 import os
 #from jinja2 import TemplateNotFound
-from Web_App.models import db
+from Web_App.models import db, UserAccount
 from Web_App.controllers.main import main_blueprint
 from Web_App.controllers.auth.views import auth_blueprint
 from Web_App.controllers.account import account_blueprint
@@ -20,6 +20,10 @@ bootstrap = Bootstrap()
 login_manager = LoginManager()
 login_manager.session_protection = 'basic'
 login_manager.login_view = 'auth.login'
+
+@login_manager.user_loader
+def load_user(userid):
+    return UserAccount.get_UserId(userid)
 
 def create_app(config_object):
     # initialization
