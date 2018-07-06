@@ -82,6 +82,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="CoveredCall - Web Deploy.pubxml" />
     <Content Include="Web_App\static\css\bootstrap-grid.css" />
     <Content Include="Web_App\static\css\bootstrap-grid.css.map" />
     <Content Include="Web_App\static\css\bootstrap-grid.min.css" />
@@ -111,7 +112,6 @@
     <Content Include="Web_App\templates\app\Graph\lineGraph.html" />
     <Content Include="Web_App\templates\app\put\putResults.html" />
     <Content Include="web.config" />
-    <None Include="CoveredCall - Web Deploy.pubxml" />
     <Content Include="Project Goals.txt" />
     <Content Include="requirements.txt" />
     <Content Include="runtime.txt" />
