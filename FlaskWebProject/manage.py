@@ -2,7 +2,7 @@ from Web_App import create_app
 from flask_script import Manager
 from Web_App.models import db
 
-app = create_app('Web_App.config.DevConfig')
+app = create_app()
 
 manager = Manager(app)
 

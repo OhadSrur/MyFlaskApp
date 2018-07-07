@@ -16,10 +16,11 @@
     <SuppressCollectPythonCloudServiceFiles>true</SuppressCollectPythonCloudServiceFiles>
     <Name>FlaskWebProject</Name>
     <RootNamespace>FlaskWebProject</RootNamespace>
-    <WebBrowserPort>5000</WebBrowserPort>
+    <WebBrowserPort>80</WebBrowserPort>
     <IsWindowsApplication>False</IsWindowsApplication>
     <InterpreterId>CondaEnv|CondaEnv|flask</InterpreterId>
-    <PythonRunWebServerCommandArguments>shell</PythonRunWebServerCommandArguments>
+    <PythonRunWebServerCommandArguments>
+    </PythonRunWebServerCommandArguments>
     <PythonRunWebServerCommand>
     </PythonRunWebServerCommand>
     <CommandLineArguments>

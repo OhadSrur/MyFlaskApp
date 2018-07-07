@@ -13,13 +13,18 @@ from Web_App.controllers.register import registerAccount_blueprint
 from Web_App.controllers.call import call_blueprint
 from Web_App.controllers.put import put_blueprint
 from Web_App.controllers.graph import graph_blueprint
+from Web_App.sqlConnection import get_sql_connection_string 
 #from flask_bootstrap import Bootstrap
 
-def create_app(config_object):
+def create_app():
     # initialization
     app = Flask(__name__)
-    app.config.from_object(config_object)
+    #app.config.from_object(config_object)
     #bootstrap = Bootstrap(app)
+    app.secret_key=os.environ.get('CC_APP_SECRET')
+    app.config['SQLALCHEMY_DATABASE_URI'] = get_sql_connection_string(svr=os.environ.get('CC_SVR'),db=os.environ.get('CC_SVR'),user=os.environ.get('CC_USER'),psw=os.environ.get('CC_PSW'))
+    app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     db.init_app(app)
 
