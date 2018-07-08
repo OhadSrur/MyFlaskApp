@@ -1,6 +1,7 @@
 from Web_App import create_app
 from flask_script import Manager
 from Web_App.models import db
+from waitress import serve
 
 app = create_app()
 
@@ -19,4 +20,5 @@ def make_shell_context():
 #manager.add_command("shell", Shell(make_context=make_shell_context))
 
 if __name__ == "__main__":
-    manager.run()
+    #manager.run()
+    serve(manager.run(),host="0.0.0.0",port=5000)

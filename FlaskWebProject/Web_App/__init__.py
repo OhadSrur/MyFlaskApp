@@ -23,6 +23,7 @@ def create_app():
     #bootstrap = Bootstrap(app)
     app.secret_key=os.environ.get('CC_APP_SECRET')
     app.config['SQLALCHEMY_DATABASE_URI'] = get_sql_connection_string(svr=os.environ.get('CC_SVR'),db=os.environ.get('CC_SVR'),user=os.environ.get('CC_USER'),psw=os.environ.get('CC_PSW'))
+    #print(os.environ.get('SQL_ConnectionString'))
     app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
