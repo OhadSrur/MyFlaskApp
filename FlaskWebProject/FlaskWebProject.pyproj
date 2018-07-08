@@ -16,8 +16,7 @@
     <SuppressCollectPythonCloudServiceFiles>true</SuppressCollectPythonCloudServiceFiles>
     <Name>FlaskWebProject</Name>
     <RootNamespace>FlaskWebProject</RootNamespace>
-    <WebBrowserPort>
-    </WebBrowserPort>
+    <WebBrowserPort>5000</WebBrowserPort>
     <IsWindowsApplication>False</IsWindowsApplication>
     <InterpreterId>CondaEnv|CondaEnv|flask</InterpreterId>
     <PythonRunWebServerCommandArguments>

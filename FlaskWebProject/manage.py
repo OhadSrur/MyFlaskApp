@@ -5,8 +5,7 @@ from waitress import serve
 
 app = create_app()
 
-manager = Manager(app)
-
+manager = Manager(app.run())
 
 @manager.shell
 def make_shell_context():
@@ -14,11 +13,11 @@ def make_shell_context():
         in the context of the app
     """
 
-    return dict(app=app, db=db)
+    return dict(app=manager, db=db)
 #def make_shell_context():
 #    return dict(app=app, db=db)
 #manager.add_command("shell", Shell(make_context=make_shell_context))
 
-if __name__ == "__main__":
+#if __name__ == "__main__":
     #manager.run()
-    serve(manager.run(),host="0.0.0.0",port=5000)
+    #serve(manager,host="0.0.0.0",port=80)
