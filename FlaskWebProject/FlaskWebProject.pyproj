@@ -19,8 +19,7 @@
     <WebBrowserPort>5000</WebBrowserPort>
     <IsWindowsApplication>False</IsWindowsApplication>
     <InterpreterId>CondaEnv|CondaEnv|flask</InterpreterId>
-    <PythonRunWebServerCommandArguments>
-    </PythonRunWebServerCommandArguments>
+    <PythonRunWebServerCommandArguments>runserver</PythonRunWebServerCommandArguments>
     <PythonRunWebServerCommand>
     </PythonRunWebServerCommand>
     <CommandLineArguments>
@@ -90,9 +89,11 @@
     <Content Include=".deployment">
       <SubType>Code</SubType>
     </Content>
+    <None Include="CoveredCallTest - Web Deploy.pubxml" />
     <Content Include="deploy.cmd">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="web.config" />
     <Content Include="Web_App\static\css\bootstrap-grid.css" />
     <Content Include="Web_App\static\css\bootstrap-grid.css.map" />
     <Content Include="Web_App\static\css\bootstrap-grid.min.css" />
@@ -121,7 +122,6 @@
     <Content Include="Web_App\templates\favicon.ico" />
     <Content Include="Web_App\templates\app\Graph\lineGraph.html" />
     <Content Include="Web_App\templates\app\put\putResults.html" />
-    <Content Include="web.config" />
     <Content Include="Project Goals.txt" />
     <Content Include="requirements.txt" />
     <Content Include="runtime.txt" />
