@@ -3,7 +3,7 @@ from flask_script import Manager
 from Web_App import db
 from waitress import serve
 
-app = create_app()
+app = create_app('Web_App.config.DevConfig')
 
 manager = Manager(app)
 

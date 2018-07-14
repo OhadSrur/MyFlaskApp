@@ -106,7 +106,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="CoveredCall - Web Deploy.pubxml" />
     <Content Include=".deployment">
       <SubType>Code</SubType>
     </Content>

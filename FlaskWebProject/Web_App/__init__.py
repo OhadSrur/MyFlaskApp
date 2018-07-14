@@ -7,6 +7,7 @@ import os
 from flask_bootstrap import Bootstrap
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
+from Web_App.config import Config
 
 bootstrap = Bootstrap()
 login_manager = LoginManager()
@@ -14,7 +15,7 @@ db = SQLAlchemy()
 login_manager.session_protection = 'basic'
 login_manager.login_view = 'auth.login'
 
-def create_app():
+def create_app(config_object):
     # initialization
     app = Flask(__name__)
     app.config.from_object(config_object)
