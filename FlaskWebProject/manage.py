@@ -1,6 +1,6 @@
 from Web_App import create_app
 from flask_script import Manager
-from Web_App.models import db
+from Web_App import db
 from waitress import serve
 
 app = create_app()

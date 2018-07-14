@@ -1,5 +1,6 @@
-from flask import render_template, Blueprint, request, session, flash
-from Web_App.models import UserAccount, db
+from flask import render_template, request, session, flash, Blueprint
+from Web_App.models import db
+from Web_App.models import UserAccount
 from Web_App.forms import RegisterForm
 from passlib.hash import sha256_crypt
 

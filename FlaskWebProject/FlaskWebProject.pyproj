@@ -13,7 +13,7 @@
     <LaunchProvider>Web launcher</LaunchProvider>
     <WebBrowserUrl>http://localhost</WebBrowserUrl>
     <OutputPath>.</OutputPath>
-    <SuppressCollectPythonCloudServiceFiles>true</SuppressCollectPythonCloudServiceFiles>
+    <SuppressCollectPythonCloudServiceFiles>false</SuppressCollectPythonCloudServiceFiles>
     <Name>FlaskWebProject</Name>
     <RootNamespace>FlaskWebProject</RootNamespace>
     <WebBrowserPort>5000</WebBrowserPort>
@@ -40,22 +40,43 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Web_App\controllers\account.py">
+    <Compile Include="Web_App\controllers\account\account.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web_App\controllers\account\__init__.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Web_App\controllers\auth.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Web_App\controllers\call.py">
+    <Compile Include="Web_App\controllers\auth\auth_views.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Web_App\controllers\graph.py">
+    <Compile Include="Web_App\controllers\auth\__init__.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Web_App\controllers\put.py">
+    <Compile Include="Web_App\controllers\call\call.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Web_App\controllers\register.py">
+    <Compile Include="Web_App\controllers\call\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web_App\controllers\graph\graph.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web_App\controllers\graph\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web_App\controllers\main\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web_App\controllers\put\put.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web_App\controllers\main\register.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web_App\controllers\put\__init__.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Web_App\forms.py">
@@ -72,7 +93,7 @@
     <Compile Include="Web_App\tests\config_test.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Web_App\controllers\main.py" />
+    <Compile Include="Web_App\controllers\main\main.py" />
     <Compile Include="Web_App\controllers\__init__.py">
       <SubType>Code</SubType>
     </Compile>
@@ -125,6 +146,7 @@
     <Content Include="Project Goals.txt" />
     <Content Include="requirements.txt" />
     <Content Include="runtime.txt" />
+    <Content Include="Web_App\templates\macros\form_macros.html" />
     <Content Include="Web_App\templates\main\500.html" />
     <Content Include="Web_App\templates\main\404.html" />
     <Content Include="Web_App\templates\main\403.html" />
@@ -134,9 +156,10 @@
     <Content Include="Web_App\templates\includes\_messages.html" />
     <Content Include="Web_App\templates\includes\_navbar.html" />
     <Content Include="Web_App\templates\includes\_sidenavbar.html" />
+    <Content Include="Web_App\templates\main\auth\change_password.html" />
     <Content Include="Web_App\templates\main\index.html" />
     <Content Include="Web_App\templates\layout.html" />
-    <Content Include="Web_App\templates\main\login.html" />
+    <Content Include="Web_App\templates\main\auth\login.html" />
     <Content Include="Web_App\templates\app\account\myAccount.html" />
     <Content Include="Web_App\templates\app\account\parametersOptions.html" />
     <Content Include="Web_App\templates\main\register.html" />
@@ -144,6 +167,12 @@
   <ItemGroup>
     <Folder Include="Web_App\controllers\" />
     <Folder Include="Web_App\" />
+    <Folder Include="Web_App\controllers\auth\" />
+    <Folder Include="Web_App\controllers\account\" />
+    <Folder Include="Web_App\controllers\call\" />
+    <Folder Include="Web_App\controllers\graph\" />
+    <Folder Include="Web_App\controllers\main\" />
+    <Folder Include="Web_App\controllers\put\" />
     <Folder Include="Web_App\static\" />
     <Folder Include="Web_App\static\css\" />
     <Folder Include="Web_App\static\images\" />
@@ -154,6 +183,8 @@
     <Folder Include="Web_App\templates\app\put\" />
     <Folder Include="Web_App\templates\main\" />
     <Folder Include="Web_App\templates\app\" />
+    <Folder Include="Web_App\templates\main\auth\" />
+    <Folder Include="Web_App\templates\macros\" />
     <Folder Include="Web_App\tests\" />
     <Folder Include="Web_App\templates\" />
     <Folder Include="Web_App\templates\includes\" />

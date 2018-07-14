@@ -1,16 +1,12 @@
-from flask import render_template, Blueprint, send_from_directory
+from flask import render_template, send_from_directory
+from . import main_blueprint
 import pandas as pd
 from Web_App.sqlConnection import get_connections
 import os
 
-main_blueprint = Blueprint(
-    'main',
-    __name__,
-    template_folder='../templates/main')
-
 @main_blueprint.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('main/index.html')
 
 
 @main_blueprint.errorhandler(403)
