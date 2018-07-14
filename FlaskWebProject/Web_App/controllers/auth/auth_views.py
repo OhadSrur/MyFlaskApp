@@ -1,8 +1,9 @@
 from flask import render_template, redirect, request, url_for, flash, session
 from flask_login import login_user, logout_user, login_required, current_user
 from passlib.hash import sha256_crypt
-from . import auth_blueprint
-from Web_App.models import UserAccount, db
+from Web_App.controllers.auth import auth_blueprint
+from functools import wraps
+from Web_App.models import UserAccount
 ##from ..email import send_email
 from Web_App.forms import LoginForm, ChangePasswordForm #,RegistrationForm,PasswordResetRequestForm, PasswordResetForm, ChangeEmailForm
 
@@ -29,22 +30,43 @@ from Web_App.forms import LoginForm, ChangePasswordForm #,RegistrationForm,Passw
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        user = UserAccount.query.filter_by(username=request.form['username']).first()
-        if user is not None and user.check_password(request.form['password']):
-            session['logged_in'] = True
-            next = request.args.get('next')
-            if next is None or not next.startswith('/'):
-                next = url_for('call.CoveredCallsResults')
-            flash('You are now logged in', 'success')
-            return redirect(next)
-        flash('Invalid username or password.')
-    #flash(form.errors)
-    return render_template('login.html', form=form)
+        POST_USERNAME = request.form['username']
+        POST_PASSWORD = request.form['password']
+        user = UserAccount.query.filter_by(username=POST_USERNAME).first()
+        if user is not None:
+            if user.password is not None and user.verify_password(POST_PASSWORD):
+                session['logged_in'] = True
+                session['username'] = POST_USERNAME
 
+                next = request.args.get('next')
+                if next is None or not next.startswith('/'):
+                    next = url_for('call.CoveredCallsResults')
+                flash('You are now logged in', 'success')
+                return redirect(next)
+            else:
+                error = 'Invalid password'
+                return render_template('main/auth/login.html', error=error)
+        else:
+            error = 'Username not found'
+            return render_template('login.html', error=error)
+    #flash(form.errors)@is_logged_in
+    return render_template('main/auth/login.html', form=form)
+
+# Check if user logged in
+def is_logged_in(f):
+    @wraps(f)
+    def wrap(*args, **kwargs):
+        if 'logged_in' in session:
+            return f(*args, **kwargs)
+        else:
+            flash('Unauthorized, Please login', 'danger')
+            return redirect(url_for('auth.login'))
+    return wrap
 
 @auth_blueprint.route('/logout')
-@login_required
+@is_logged_in
 def logout():
+    session.clear()
     logout_user()
     flash('You have been logged out.')
     return redirect(url_for('main.index'))

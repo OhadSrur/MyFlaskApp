@@ -1,16 +1,13 @@
-from flask import render_template, Blueprint
+from flask import render_template
+from . import graph_blueprint
 import pandas as pd
 import pygal
 from Web_App.sqlConnection import get_connections
 from flask_login import login_user, logout_user, login_required, current_user
-
-graph_blueprint = Blueprint(
-    'graph',
-    __name__,
-    template_folder='../templates/app/Graph')
+from Web_App.controllers.auth.auth_views import is_logged_in
 
 @graph_blueprint.route('/StockGraph/<string:StockID>')
-@login_required
+@is_logged_in
 def StockGrpah(StockID):
     graph = pygal.Line()
     graph.title = 'Stock Graph for ' + StockID
@@ -25,4 +22,4 @@ def StockGrpah(StockID):
     graph.add('50 MA',  stockResults.Stock50MA)
     graph.add('200 MA',  stockResults.Stock200MA)
     graph_data = graph.render_data_uri()
-    return render_template("lineGraph.html", graph_data = graph_data)
+    return render_template("app/graph/lineGraph.html", graph_data = graph_data)

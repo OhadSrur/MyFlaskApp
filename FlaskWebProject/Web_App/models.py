@@ -1,13 +1,10 @@
-from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData, Table, select
 from werkzeug.security import generate_password_hash, check_password_hash
 from passlib.hash import sha256_crypt
 from flask_login import UserMixin
+from Web_App import db, login_manager
 
-# extensions
-db = SQLAlchemy()
-
-class UserAccount(db.Model, UserMixin):
+class UserAccount(UserMixin,db.Model):
     __tablename__ = 'UserAccount'
     UserID = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(25), unique=True, nullable=False)
@@ -18,14 +15,14 @@ class UserAccount(db.Model, UserMixin):
     phone = db.Column(db.Integer, unique=False, nullable=True)
     password = db.Column(db.String(50), unique=True, nullable=False)
 
-    def password(self, password):
-        self.password = generate_password_hash(password)
+    #def password(self, password):
+    #    self.password = generate_password_hash(password)
 
-    #def verify_password(self, password):
-    #    return sha256_crypt.verify(password, self.password)
+    def verify_password(self, value):
+        return sha256_crypt.verify(value, self.password)
 
-    def check_password(self, value):
-        return check_password_hash(self.password, value)
+    #def verify_password(self, value):
+    #    return check_password_hash(self.password, value)
 
     def get_UserId(self):
         return self.UserID
@@ -99,6 +96,6 @@ class AccountScanParameters(db.Model):
     def __repr__(self):
         return '<AccountScanParameters %r>' % self.UserID
 
-#@login_manager.user_loader
-#def load_user(user_id):
-#    return UserAccount.query.get(int(user_id))
+@login_manager.user_loader
+def load_user(user_id):
+    return UserAccount.query.get(int(user_id))

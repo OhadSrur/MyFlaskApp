@@ -1,14 +1,12 @@
-from flask import render_template, Blueprint, redirect, url_for, session, request, flash
+from flask import render_template, redirect, url_for, session, request, flash
+from . import account_blueprint
 import pandas as pd
-from Web_App.models import UserAccount, db, Account, AccountScanParameters
+from Web_App import db
+from Web_App.models import UserAccount, Account, AccountScanParameters
 from Web_App.forms import UpdateAccountDetails, UpdateAccountBasic, UpdateAccountOptionParameters
 from Web_App.sqlConnection import get_connections
 from flask_login import login_user, logout_user, login_required, current_user
-
-account_blueprint = Blueprint(
-    'account',
-    __name__,
-    template_folder='../templates/app/account')
+from Web_App.controllers.auth.auth_views import is_logged_in
 
 def getAccountID(username):
     connection_string, engine, connection = get_connections()
@@ -19,30 +17,30 @@ def getAccountID(username):
 
 # Account Details
 @account_blueprint.route('/myAccount', methods=['GET', 'POST'])
-@login_required
+@is_logged_in
 def myAccount():
     query = UserAccount.query.filter_by(username=session['username']).first()
 
     if query.UserID > 0:
-        return render_template('myAccount.html', account=query)
+        return render_template('app/account/myAccount.html', account=query)
     else:
         msg = 'No Account Found'
-        return render_template('myAccount.html', msg=msg)
+        return render_template('app/account/myAccount.html', msg=msg)
 
 # Account Details
 @account_blueprint.route('/accountBasic', methods=['GET', 'POST'])
-@login_required
+@is_logged_in
 def accountBasic():
     query = Account.query.filter_by(AccountID=getAccountID(session['username'])).first()
 
     if query.UserID > 0:
-        return render_template('accountBasic.html', account=query)
+        return render_template('app/account/accountBasic.html', account=query)
     else:
         msg = 'No Account Found'
-        return render_template('accountBasic.html', msg=msg)
+        return render_template('app/account/accountBasic.html', msg=msg)
 
 @account_blueprint.route('/updateAccount', methods=['GET', 'POST'])
-@login_required
+@is_logged_in
 def updateAccount():
     query = UserAccount.query.filter_by(username=session['username']).first()
     form = UpdateAccountDetails(request.form)
@@ -69,7 +67,7 @@ def updateAccount():
     return redirect(url_for('account.myAccount'))
 
 @account_blueprint.route('/updateAccountBasic', methods=['GET', 'POST'])
-@login_required
+@is_logged_in
 def updateAccountBasic():
     query = Account.query.filter_by(AccountID=getAccountID(session['username'])).first()
     form = UpdateAccountBasic(request.form)
@@ -103,19 +101,19 @@ def updateAccountBasic():
     return redirect(url_for('account.accountBasic'))
 
 @account_blueprint.route('/parametersOptions', methods=['GET', 'POST'])
-@login_required
+@is_logged_in
 def parametersOptions():
     accountID = getAccountID(session['username'])
     query = AccountScanParameters.query.filter_by(AccountID=accountID, PositionType='New').first()
 
     if query.UserID > 0:
-        return render_template('parametersOptions.html', parametersOptions=query)
+        return render_template('app/account/parametersOptions.html', parametersOptions=query)
     else:
         msg = 'No Account Found'
-        return render_template('parameters.html', msg=msg)
+        return render_template('app/account/parameters.html', msg=msg)
     
 @account_blueprint.route('/updateParameters', methods=['GET', 'POST'])
-@login_required
+@is_logged_in
 def updateParameters():
     accountID = getAccountID(session['username'])
     query = AccountScanParameters.query.filter_by(AccountID=accountID, PositionType='New').first()

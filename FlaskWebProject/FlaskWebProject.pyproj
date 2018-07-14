@@ -13,7 +13,7 @@
     <LaunchProvider>Web launcher</LaunchProvider>
     <WebBrowserUrl>http://localhost</WebBrowserUrl>
     <OutputPath>.</OutputPath>
-    <SuppressCollectPythonCloudServiceFiles>true</SuppressCollectPythonCloudServiceFiles>
+    <SuppressCollectPythonCloudServiceFiles>false</SuppressCollectPythonCloudServiceFiles>
     <Name>FlaskWebProject</Name>
     <RootNamespace>FlaskWebProject</RootNamespace>
     <WebBrowserPort>5000</WebBrowserPort>
@@ -40,28 +40,43 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Web_App\controllers\account.py">
+    <Compile Include="Web_App\controllers\account\account.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web_App\controllers\account\__init__.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Web_App\controllers\auth.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Web_App\controllers\auth\views.py">
+    <Compile Include="Web_App\controllers\auth\auth_views.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Web_App\controllers\auth\__init__.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Web_App\controllers\call.py">
+    <Compile Include="Web_App\controllers\call\call.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Web_App\controllers\graph.py">
+    <Compile Include="Web_App\controllers\call\__init__.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Web_App\controllers\put.py">
+    <Compile Include="Web_App\controllers\graph\graph.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Web_App\controllers\register.py">
+    <Compile Include="Web_App\controllers\graph\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web_App\controllers\main\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web_App\controllers\put\put.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web_App\controllers\main\register.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web_App\controllers\put\__init__.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Web_App\forms.py">
@@ -75,7 +90,7 @@
     <Compile Include="Web_App\tests\config_test.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Web_App\controllers\main.py" />
+    <Compile Include="Web_App\controllers\main\main.py" />
     <Compile Include="Web_App\controllers\__init__.py">
       <SubType>Code</SubType>
     </Compile>
@@ -143,6 +158,11 @@
     <Folder Include="Web_App\controllers\" />
     <Folder Include="Web_App\" />
     <Folder Include="Web_App\controllers\auth\" />
+    <Folder Include="Web_App\controllers\account\" />
+    <Folder Include="Web_App\controllers\call\" />
+    <Folder Include="Web_App\controllers\graph\" />
+    <Folder Include="Web_App\controllers\main\" />
+    <Folder Include="Web_App\controllers\put\" />
     <Folder Include="Web_App\static\" />
     <Folder Include="Web_App\static\css\" />
     <Folder Include="Web_App\static\images\" />
