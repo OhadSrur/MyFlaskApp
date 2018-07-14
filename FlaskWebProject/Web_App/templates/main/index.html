@@ -3,7 +3,7 @@
 {% block body %}
 <div class="starter-template">
     <h1>Covered Calls Dashboard</h1>
-    <h2>Welcome {{session.username}}</h2>
+    <h2>Welcome {% if current_user.is_authenticated %} {{ current_user.firstName }} {% else %} Stranger {% endif %}</h2>
     <p class="lead">This is your Covered Call application main page.<br />Please go ahead and check you daily Covered Call and Put results</p>
 </div>
 {% endblock %}

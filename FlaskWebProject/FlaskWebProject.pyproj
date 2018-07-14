@@ -73,9 +73,6 @@
     <Compile Include="Web_App\controllers\put\put.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Web_App\controllers\main\register.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Web_App\controllers\put\__init__.py">
       <SubType>Code</SubType>
     </Compile>

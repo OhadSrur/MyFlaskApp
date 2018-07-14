@@ -29,9 +29,6 @@ def create_app(config_object):
     from Web_App.controllers.main import main_blueprint
     app.register_blueprint(main_blueprint)
     
-    from Web_App.controllers.main.register import registerAccount_blueprint
-    app.register_blueprint(registerAccount_blueprint)
-
     from Web_App.controllers.auth import auth_blueprint
     app.register_blueprint(auth_blueprint)
     

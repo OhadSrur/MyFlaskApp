@@ -5,7 +5,7 @@ from Web_App.controllers.auth import auth_blueprint
 from functools import wraps
 from Web_App.models import UserAccount
 ##from ..email import send_email
-from Web_App.forms import LoginForm, ChangePasswordForm #,RegistrationForm,PasswordResetRequestForm, PasswordResetForm, ChangeEmailForm
+from Web_App.forms import LoginForm, ChangePasswordForm, RegisterForm #,RegistrationForm,PasswordResetRequestForm, PasswordResetForm, ChangeEmailForm
 #import pdb ##pdb.set_trace() #debug mode
 
 #@auth.before_app_request
@@ -71,6 +71,33 @@ def logout():
     flash('You have been logged out.')
     return redirect(url_for('main.index'))
 
+# User Register
+@auth_blueprint.route('/register', methods=['GET', 'POST'])
+def register():
+    form = RegisterForm(request.form)
+    if request.method == 'POST' and form.validate():
+        title = form.title.data
+        firstName = form.firstName.data
+        surName = form.surName.data
+        email = form.email.data
+        phone = form.phone.data
+        username = form.username.data
+        password = sha256_crypt.encrypt(str(form.password.data))
+
+        # Add account
+        newAccount = UserAccount(title=title,firstName=firstName,surName=surName,email=email,phone=phone,username=username,password=password)
+        db.session.add(newAccount)
+
+        # Commit to DB
+        db.session.commit()
+
+        # Close connection
+        db.session.close()
+
+        flash('You are now registered and can log in', 'success')
+
+        return redirect(url_for('auth.login'))
+    return render_template('main/register.html', form=form)
 
 #@auth.route('/register', methods=['GET', 'POST'])
 #def register():
