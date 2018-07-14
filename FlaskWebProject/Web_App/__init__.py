@@ -47,8 +47,8 @@ def create_app(config_object):
     from Web_App.controllers.account import account_blueprint
     app.register_blueprint(account_blueprint)
 
-    #@app.route('/favicon.ico') 
-    #def favicon(): 
-    #    return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.ico', mimetype='image/vnd.microsoft.icon')
+    @app.route('/favicon.ico') 
+    def favicon(): 
+        return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.ico', mimetype='image/vnd.microsoft.icon')
     
     return app
