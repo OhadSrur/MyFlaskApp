@@ -6,7 +6,7 @@ from functools import wraps
 from Web_App.models import UserAccount
 ##from ..email import send_email
 from Web_App.forms import LoginForm, ChangePasswordForm #,RegistrationForm,PasswordResetRequestForm, PasswordResetForm, ChangeEmailForm
-
+#import pdb ##pdb.set_trace() #debug mode
 
 #@auth.before_app_request
 #def before_request():
@@ -30,14 +30,14 @@ from Web_App.forms import LoginForm, ChangePasswordForm #,RegistrationForm,Passw
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        POST_USERNAME = request.form['username']
-        POST_PASSWORD = request.form['password']
+        POST_USERNAME = form.username.data
+        POST_PASSWORD = form.password.data
         user = UserAccount.query.filter_by(username=POST_USERNAME).first()
         if user is not None:
             if user.password is not None and user.verify_password(POST_PASSWORD):
-                session['logged_in'] = True
-                session['username'] = POST_USERNAME
-
+                #session['logged_in'] = True
+                #session['username'] = POST_USERNAME
+                login_user(user)
                 next = request.args.get('next')
                 if next is None or not next.startswith('/'):
                     next = url_for('call.CoveredCallsResults')
@@ -53,20 +53,20 @@ def login():
     return render_template('main/auth/login.html', form=form)
 
 # Check if user logged in
-def is_logged_in(f):
-    @wraps(f)
-    def wrap(*args, **kwargs):
-        if 'logged_in' in session:
-            return f(*args, **kwargs)
-        else:
-            flash('Unauthorized, Please login', 'danger')
-            return redirect(url_for('auth.login'))
-    return wrap
+#def is_logged_in(f):
+#    @wraps(f)
+#    def wrap(*args, **kwargs):
+#        if 'logged_in' in session:
+#            return f(*args, **kwargs)
+#        else:
+#            flash('Unauthorized, Please login', 'danger')
+#            return redirect(url_for('auth.login'))
+#    return wrap
 
 @auth_blueprint.route('/logout')
-@is_logged_in
+@login_required
 def logout():
-    session.clear()
+    #session.clear()
     logout_user()
     flash('You have been logged out.')
     return redirect(url_for('main.index'))

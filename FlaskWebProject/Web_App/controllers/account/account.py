@@ -1,12 +1,11 @@
-from flask import render_template, redirect, url_for, session, request, flash
+from flask import render_template, redirect, url_for, request, flash
 from . import account_blueprint
 import pandas as pd
 from Web_App import db
 from Web_App.models import UserAccount, Account, AccountScanParameters
 from Web_App.forms import UpdateAccountDetails, UpdateAccountBasic, UpdateAccountOptionParameters
 from Web_App.sqlConnection import get_connections
-from flask_login import login_user, logout_user, login_required, current_user
-from Web_App.controllers.auth.auth_views import is_logged_in
+from flask_login import login_required, current_user
 
 def getAccountID(username):
     connection_string, engine, connection = get_connections()
@@ -17,9 +16,9 @@ def getAccountID(username):
 
 # Account Details
 @account_blueprint.route('/myAccount', methods=['GET', 'POST'])
-@is_logged_in
+@login_required
 def myAccount():
-    query = UserAccount.query.filter_by(username=session['username']).first()
+    query = UserAccount.query.filter_by(username=current_user.get_username()).first()
 
     if query.UserID > 0:
         return render_template('app/account/myAccount.html', account=query)
@@ -29,9 +28,9 @@ def myAccount():
 
 # Account Details
 @account_blueprint.route('/accountBasic', methods=['GET', 'POST'])
-@is_logged_in
+@login_required
 def accountBasic():
-    query = Account.query.filter_by(AccountID=getAccountID(session['username'])).first()
+    query = Account.query.filter_by(AccountID=current_user.get_id()).first()
 
     if query.UserID > 0:
         return render_template('app/account/accountBasic.html', account=query)
@@ -40,14 +39,14 @@ def accountBasic():
         return render_template('app/account/accountBasic.html', msg=msg)
 
 @account_blueprint.route('/updateAccount', methods=['GET', 'POST'])
-@is_logged_in
+@login_required
 def updateAccount():
-    query = UserAccount.query.filter_by(username=session['username']).first()
+    query = UserAccount.query.filter_by(username=current_user.get_username()).first()
     form = UpdateAccountDetails(request.form)
 
     if request.method == 'POST' : #and form.validate()   
        # Update account
-        UserAccount.query.filter_by(username=session['username']).update({
+        UserAccount.query.filter_by(username=current_user.get_username()).update({
              'title': request.form['title'],
              'firstName': request.form['firstName'],
              'surName': request.form['surName'],
@@ -67,14 +66,14 @@ def updateAccount():
     return redirect(url_for('account.myAccount'))
 
 @account_blueprint.route('/updateAccountBasic', methods=['GET', 'POST'])
-@is_logged_in
+@login_required
 def updateAccountBasic():
-    query = Account.query.filter_by(AccountID=getAccountID(session['username'])).first()
+    query = Account.query.filter_by(AccountID=current_user.get_id()).first()
     form = UpdateAccountBasic(request.form)
 
     if request.method == 'POST' : #and form.validate()   
        # Update account
-        Account.query.filter_by(AccountID=getAccountID(session['username'])).update({
+        Account.query.filter_by(AccountID=current_user.get_id()).update({
              'StockCommission': request.form['StockCommission'],
              'StockCommPerSher': request.form['StockCommPerSher'],
              'OptionCommission': request.form['OptionCommission'],
@@ -101,9 +100,9 @@ def updateAccountBasic():
     return redirect(url_for('account.accountBasic'))
 
 @account_blueprint.route('/parametersOptions', methods=['GET', 'POST'])
-@is_logged_in
+@login_required
 def parametersOptions():
-    accountID = getAccountID(session['username'])
+    accountID = current_user.get_id()
     query = AccountScanParameters.query.filter_by(AccountID=accountID, PositionType='New').first()
 
     if query.UserID > 0:
@@ -113,9 +112,9 @@ def parametersOptions():
         return render_template('app/account/parameters.html', msg=msg)
     
 @account_blueprint.route('/updateParameters', methods=['GET', 'POST'])
-@is_logged_in
+@login_required
 def updateParameters():
-    accountID = getAccountID(session['username'])
+    accountID = current_user.get_id()
     query = AccountScanParameters.query.filter_by(AccountID=accountID, PositionType='New').first()
     form = UpdateAccountOptionParameters(request.form)
 

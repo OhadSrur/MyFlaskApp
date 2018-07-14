@@ -3,11 +3,10 @@ from . import graph_blueprint
 import pandas as pd
 import pygal
 from Web_App.sqlConnection import get_connections
-from flask_login import login_user, logout_user, login_required, current_user
-from Web_App.controllers.auth.auth_views import is_logged_in
+from flask_login import login_required, current_user
 
 @graph_blueprint.route('/StockGraph/<string:StockID>')
-@is_logged_in
+@login_required
 def StockGrpah(StockID):
     graph = pygal.Line()
     graph.title = 'Stock Graph for ' + StockID

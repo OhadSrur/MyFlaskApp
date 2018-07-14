@@ -24,8 +24,11 @@ class UserAccount(UserMixin,db.Model):
     #def verify_password(self, value):
     #    return check_password_hash(self.password, value)
 
-    def get_UserId(self):
+    def get_id(self):
         return self.UserID
+
+    def get_username(self):
+        return self.username
 
     def __repr__(self):
         return '<UserAccount %r>' % self.username
