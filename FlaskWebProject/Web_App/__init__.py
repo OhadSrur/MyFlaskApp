@@ -4,7 +4,6 @@ It contains the definition of routes and views for the application.
 """
 from flask import Flask, send_from_directory
 import os
-#from jinja2 import TemplateNotFound
 from flask_bootstrap import Bootstrap
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
@@ -15,7 +14,7 @@ db = SQLAlchemy()
 login_manager.session_protection = 'basic'
 login_manager.login_view = 'auth.login'
 
-def create_app(config_object):
+def create_app():
     # initialization
     app = Flask(__name__)
     app.config.from_object(config_object)
@@ -51,4 +50,4 @@ def create_app(config_object):
     #def favicon(): 
     #    return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.ico', mimetype='image/vnd.microsoft.icon')
     
-    return app.run()
+    return app
