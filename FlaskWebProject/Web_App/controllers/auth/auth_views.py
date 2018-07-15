@@ -8,7 +8,7 @@ from Web_App.models import UserAccount
 from Web_App.forms import LoginForm, ChangePasswordForm, RegisterForm #,RegistrationForm,PasswordResetRequestForm, PasswordResetForm, ChangeEmailForm
 import pdb ##pdb.set_trace() #debug mode
 from Web_App import db
-from Web_App.controllers.extension.email import send_email
+from Web_App.controllers.extension.mail import send_email
 
 #@auth.before_app_request
 #def before_request():

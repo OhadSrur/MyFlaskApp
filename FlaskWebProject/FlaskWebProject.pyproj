@@ -58,7 +58,7 @@
     <Compile Include="Web_App\controllers\call\__init__.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Web_App\controllers\extension\email.py">
+    <Compile Include="Web_App\controllers\extension\mail.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Web_App\controllers\extension\__init__.py">

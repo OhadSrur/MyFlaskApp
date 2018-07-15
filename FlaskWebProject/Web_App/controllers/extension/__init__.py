@@ -1,2 +1,2 @@
-from . import email
+from . import mail
 
