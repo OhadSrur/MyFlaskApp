@@ -1,5 +1,2 @@
-Download daily results to CSV from Azure Blob Storage
-Config.py with config settings for different environment
-
-Create requirements file
-Use WFastCGI
+Add PUT trades into DB:
+	a. Create a buy transaction after PUT has been excercised

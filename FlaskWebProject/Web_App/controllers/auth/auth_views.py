@@ -35,12 +35,10 @@ def login():
         user = UserAccount.query.filter_by(username=POST_USERNAME).first()
         if user is not None:
             if user.password is not None and user.verify_password(POST_PASSWORD):
-                #session['logged_in'] = True
-                #session['username'] = POST_USERNAME
-                login_user(user)
+                login_user(user, form.remember_me.data)
                 next = request.args.get('next')
                 if next is None or not next.startswith('/'):
-                    next = url_for('call.CoveredCallsResults')
+                    next = url_for('main.index')
                 flash('You are now logged in', 'success')
                 return redirect(next)
             else:
@@ -66,7 +64,6 @@ def login():
 @auth_blueprint.route('/logout')
 @login_required
 def logout():
-    #session.clear()
     logout_user()
     flash('You have been logged out.')
     return redirect(url_for('main.index'))
@@ -74,8 +71,8 @@ def logout():
 # User Register
 @auth_blueprint.route('/register', methods=['GET', 'POST'])
 def register():
-    form = RegisterForm(request.form)
-    if request.method == 'POST' and form.validate():
+    form = RegisterForm()
+    if form.validate_on_submit():
         title = form.title.data
         firstName = form.firstName.data
         surName = form.surName.data
@@ -97,6 +94,9 @@ def register():
         flash('You are now registered and can log in', 'success')
 
         return redirect(url_for('auth.login'))
+    else:
+        error = 'Information incorrect, please check all fields and submit again'
+        return render_template('main/register.html',form=form, error=error)
     return render_template('main/register.html', form=form)
 
 #@auth.route('/register', methods=['GET', 'POST'])

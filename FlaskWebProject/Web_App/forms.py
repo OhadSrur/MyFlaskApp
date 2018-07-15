@@ -5,7 +5,7 @@ from Web_App.models import UserAccount
 from flask_wtf import FlaskForm
 
 # Register Form Class
-class RegisterForm(Form):
+class RegisterForm(FlaskForm):
     title = StringField('Title', [validators.Length(min=2, max=6)])
     firstName = StringField('First Name', [validators.Length(min=2, max=20)])
     surName = StringField('Surname', [validators.Length(min=2, max=20)])
@@ -14,6 +14,7 @@ class RegisterForm(Form):
     phone = IntegerField('Phone')
     password = PasswordField('Password', [
         validators.DataRequired(),
+        validators.length(8,20),
         validators.EqualTo('confirm', message='Passwords do not match')
     ])
     confirm = PasswordField('Confirm Password', validators=[Required()])
