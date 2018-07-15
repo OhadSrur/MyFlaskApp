@@ -3,6 +3,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from passlib.hash import sha256_crypt
 from flask_login import UserMixin
 from Web_App import db, login_manager
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+from flask import current_app
 
 class UserAccount(UserMixin,db.Model):
     __tablename__ = 'UserAccount'
@@ -14,6 +16,7 @@ class UserAccount(UserMixin,db.Model):
     surName = db.Column(db.String(50), unique=False, nullable=False)
     phone = db.Column(db.Integer, unique=False, nullable=True)
     password = db.Column(db.String(50), unique=True, nullable=False)
+    confirmed = db.Column(db.Boolean, default=False)
 
     #def password(self, password):
     #    self.password = generate_password_hash(password)
@@ -29,6 +32,22 @@ class UserAccount(UserMixin,db.Model):
 
     def get_username(self):
         return self.username
+
+    def generate_confirmation_token(self, expiration=3600):
+        s = Serializer(current_app.config['SECRET_KEY'], expiration)
+        return s.dumps({'confirm': self.UserID}).decode('utf-8')
+
+    def confirm(self, token):
+        s = Serializer(current_app.config['SECRET_KEY'])
+        try:
+            data = s.loads(token.encode('utf-8'))
+        except:
+            return False
+        if data.get('confirm') != self.UserID:
+            return False
+        self.confirmed = True
+        db.session.add(self)
+        return True
 
     def __repr__(self):
         return '<UserAccount %r>' % self.username

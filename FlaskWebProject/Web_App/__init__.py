@@ -8,9 +8,11 @@ from flask_bootstrap import Bootstrap
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 from Web_App.config import Config
+from flask_mail import Mail
 
 bootstrap = Bootstrap()
 login_manager = LoginManager()
+mail = Mail()
 db = SQLAlchemy()
 login_manager.session_protection = 'basic'
 login_manager.login_view = 'auth.login'
@@ -22,6 +24,7 @@ def create_app(config_object):
     bootstrap.init_app(app)
     db.init_app(app)
     login_manager.init_app(app)
+    mail.init_app(app)
 
     # Make the WSGI interface available at the top level so wfastcgi can get it.
     wsgi_app = app.wsgi_app

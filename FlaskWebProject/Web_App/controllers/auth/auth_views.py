@@ -6,7 +6,9 @@ from functools import wraps
 from Web_App.models import UserAccount
 ##from ..email import send_email
 from Web_App.forms import LoginForm, ChangePasswordForm, RegisterForm #,RegistrationForm,PasswordResetRequestForm, PasswordResetForm, ChangeEmailForm
-#import pdb ##pdb.set_trace() #debug mode
+import pdb ##pdb.set_trace() #debug mode
+from Web_App import db
+from Web_App.controllers.extension.email import send_email
 
 #@auth.before_app_request
 #def before_request():
@@ -65,7 +67,7 @@ def login():
 @login_required
 def logout():
     logout_user()
-    flash('You have been logged out.')
+    flash('You have been logged out.', 'success')
     return redirect(url_for('main.index'))
 
 # User Register
@@ -73,29 +75,26 @@ def logout():
 def register():
     form = RegisterForm()
     if form.validate_on_submit():
-        title = form.title.data
-        firstName = form.firstName.data
-        surName = form.surName.data
-        email = form.email.data
-        phone = form.phone.data
-        username = form.username.data
         password = sha256_crypt.encrypt(str(form.password.data))
-
         # Add account
-        newAccount = UserAccount(title=title,firstName=firstName,surName=surName,email=email,phone=phone,username=username,password=password)
+        newAccount = UserAccount(title=form.title.data,firstName=form.firstName.data,surName=form.surName.data,email=form.email.data,phone=form.phone.data,username=form.username.data,password=password)
         db.session.add(newAccount)
 
-        # Commit to DB
+        ## Commit to DB
         db.session.commit()
 
-        # Close connection
-        db.session.close()
-
-        flash('You are now registered and can log in', 'success')
+        ## Close connection
+        #db.session.close()
+        
+        #Generate and send confirmation token
+        token = newAccount.generate_confirmation_token()
+        send_email(newAccount.email, 'Confirm Your Account','main/mail/confirmAccount', user=newAccount, token=token)
+        flash('A confirmation email has been sent to you, please click on the link to approve your subscription')
 
         return redirect(url_for('auth.login'))
-    else:
+    elif form.is_submitted():
         error = 'Information incorrect, please check all fields and submit again'
+        flash(form.errors)
         return render_template('main/register.html',form=form, error=error)
     return render_template('main/register.html', form=form)
 
@@ -116,27 +115,27 @@ def register():
 #    return render_template('auth/register.html', form=form)
 
 
-#@auth.route('/confirm/<token>')
-#@login_required
-#def confirm(token):
-#    if current_user.confirmed:
-#        return redirect(url_for('main.index'))
-#    if current_user.confirm(token):
-#        db.session.commit()
-#        flash('You have confirmed your account. Thanks!')
-#    else:
-#        flash('The confirmation link is invalid or has expired.')
-#    return redirect(url_for('main.index'))
+@auth_blueprint.route('/confirm/<token>')
+@login_required
+def confirm(token):
+    if current_user.confirmed:
+        return redirect(url_for('main.index'))
+    if current_user.confirm(token):
+        db.session.commit()
+        flash('You have confirmed your account. Thanks!', 'success')
+    else:
+        flash('The confirmation link is invalid or has expired.', 'error')
+    return redirect(url_for('main.index'))
 
 
-#@auth.route('/confirm')
-#@login_required
-#def resend_confirmation():
-#    token = current_user.generate_confirmation_token()
-#    send_email(current_user.email, 'Confirm Your Account',
-#               'auth/email/confirm', user=current_user, token=token)
-#    flash('A new confirmation email has been sent to you by email.')
-#    return redirect(url_for('main.index'))
+@auth_blueprint.route('/confirm')
+@login_required
+def resend_confirmation():
+    token = current_user.generate_confirmation_token()
+    send_email(current_user.email, 'Confirm Your Account',
+               'mail/mail/confirmAccount', user=current_user, token=token)
+    flash('A new confirmation email has been sent to you by email.', 'success')
+    return redirect(url_for('main.index'))
 
 
 #@auth.route('/change-password', methods=['GET', 'POST'])
@@ -173,6 +172,20 @@ def register():
 #        return redirect(url_for('auth.login'))
 #    return render_template('auth/reset_password.html', form=form)
 
+#@auth_blueprint.route('/change-password', methods=['GET', 'POST'])
+#@is_logged_in
+#def change_password():
+#    form = ChangePasswordForm()
+#    if request.method == 'POST' and form.validate():
+#        if UserAccount.verify_password(form.old_password.data):
+#            UserAccount.password = form.password.data
+#            #db.session.add(current_user)
+#            #db.session.commit()
+#            flash('Your password has been updated.')
+#            return redirect(url_for('main.index'))
+#        else:
+#            flash('Invalid password.')
+#    return render_template("auth/change_password.html", form=form)
 
 #@auth.route('/reset/<token>', methods=['GET', 'POST'])
 #def password_reset(token):
