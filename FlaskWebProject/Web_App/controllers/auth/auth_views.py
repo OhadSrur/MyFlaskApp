@@ -10,22 +10,23 @@ import pdb ##pdb.set_trace() #debug mode
 from Web_App import db
 from Web_App.controllers.extension.mail import send_email
 
-#@auth.before_app_request
-#def before_request():
-#    if current_user.is_authenticated:
-#        current_user.ping()
-#        if not current_user.confirmed \
-#                and request.endpoint \
-#                and request.blueprint != 'auth' \
-#                and request.endpoint != 'static':
-#            return redirect(url_for('auth.unconfirmed'))
+@auth_blueprint.before_app_request
+def before_request():
+    if current_user.is_authenticated:
+        current_user.ping()
+        if not current_user.confirmed \
+                and request.endpoint \
+                and request.blueprint != 'auth' \
+                and request.blueprint != 'main' \
+                and request.endpoint != 'static':
+            return redirect(url_for('auth.unconfirmed'))
 
 
-#@auth.route('/unconfirmed')
-#def unconfirmed():
-#    if current_user.is_anonymous or current_user.confirmed:
-#        return redirect(url_for('main.index'))
-#    return render_template('auth/unconfirmed.html')
+@auth_blueprint.route('/unconfirmed')
+def unconfirmed():
+    if current_user.is_anonymous or current_user.confirmed:
+        return redirect(url_for('main.index'))
+    return render_template('main/auth/unconfirmed.html')
 
 
 @auth_blueprint.route('/login', methods=['GET', 'POST'])
@@ -133,7 +134,7 @@ def confirm(token):
 def resend_confirmation():
     token = current_user.generate_confirmation_token()
     send_email(current_user.email, 'Confirm Your Account',
-               'mail/mail/confirmAccount', user=current_user, token=token)
+               'main/mail/confirmAccount', user=current_user, token=token)
     flash('A new confirmation email has been sent to you by email.', 'success')
     return redirect(url_for('main.index'))
 

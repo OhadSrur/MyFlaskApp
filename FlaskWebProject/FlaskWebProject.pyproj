@@ -85,6 +85,12 @@
     <Compile Include="Web_App\models.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Web_App\tests\test_basics.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web_App\tests\test_user_model.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Web_App\__init__.py" />
     <Compile Include="Web_App\config.py" />
     <Compile Include="Web_App\tests\config_test.py">
@@ -98,9 +104,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Web_App\sqlConnection.py" />
-    <Compile Include="Web_App\tests\__init_test.py">
-      <SubType>Code</SubType>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include=".deployment">
@@ -153,6 +156,9 @@
     <Content Include="Web_App\templates\includes\_navbar.html" />
     <Content Include="Web_App\templates\includes\_sidenavbar.html" />
     <Content Include="Web_App\templates\main\auth\change_password.html" />
+    <Content Include="Web_App\templates\main\auth\unconfirmed.html">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="Web_App\templates\main\index.html" />
     <Content Include="Web_App\templates\layout.html" />
     <Content Include="Web_App\templates\main\auth\login.html" />

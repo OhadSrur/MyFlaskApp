@@ -5,6 +5,7 @@ from flask_login import UserMixin
 from Web_App import db, login_manager
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask import current_app
+from datetime import datetime
 
 class UserAccount(UserMixin,db.Model):
     __tablename__ = 'UserAccount'
@@ -15,11 +16,17 @@ class UserAccount(UserMixin,db.Model):
     firstName = db.Column(db.String(50), unique=False, nullable=False)
     surName = db.Column(db.String(50), unique=False, nullable=False)
     phone = db.Column(db.Integer, unique=False, nullable=True)
-    password = db.Column(db.String(50), unique=True, nullable=False)
+    password = db.Column(db.String(128), nullable=False)
     confirmed = db.Column(db.Boolean, default=False)
+    last_seen = db.Column(db.DateTime(), default=datetime.utcnow)
 
-    #def password(self, password):
-    #    self.password = generate_password_hash(password)
+    @property
+    def password(self):
+        raise AttributeError('password is not a readable attribute')
+
+    @password.setter
+    def password(self, password):
+        self.password = generate_password_hash(password)
 
     def verify_password(self, value):
         return sha256_crypt.verify(value, self.password)
@@ -48,6 +55,10 @@ class UserAccount(UserMixin,db.Model):
         self.confirmed = True
         db.session.add(self)
         return True
+
+    def ping(self):
+        self.last_seen = datetime.utcnow()
+        db.session.add(self)
 
     def __repr__(self):
         return '<UserAccount %r>' % self.username
