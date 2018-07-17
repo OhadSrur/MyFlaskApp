@@ -1,2 +1,3 @@
+Drill down for next CC option
 Add PUT trades into DB:
 	a. Create a buy transaction after PUT has been excercised

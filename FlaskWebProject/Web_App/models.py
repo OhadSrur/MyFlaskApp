@@ -20,12 +20,15 @@ class UserAccount(UserMixin,db.Model):
     confirmed = db.Column(db.Boolean, default=False)
     last_seen = db.Column(db.DateTime(), default=datetime.utcnow)
 
-    @property
-    def password(self):
-        raise AttributeError('password is not a readable attribute')
+    #@property
+    #def password(self):
+    #    raise AttributeError('password is not a readable attribute')
 
-    @password.setter
-    def password(self, password):
+    #@password.setter
+    #def password(self, password):
+    #    self.password = generate_password_hash(password)
+
+    def set_password(self, password):
         self.password = generate_password_hash(password)
 
     def verify_password(self, value):

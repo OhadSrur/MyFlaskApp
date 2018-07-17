@@ -139,20 +139,20 @@ def resend_confirmation():
     return redirect(url_for('main.index'))
 
 
-#@auth.route('/change-password', methods=['GET', 'POST'])
-#@login_required
-#def change_password():
-#    form = ChangePasswordForm()
-#    if form.validate_on_submit():
-#        if current_user.verify_password(form.old_password.data):
-#            current_user.password = form.password.data
-#            db.session.add(current_user)
-#            db.session.commit()
-#            flash('Your password has been updated.')
-#            return redirect(url_for('main.index'))
-#        else:
-#            flash('Invalid password.')
-#    return render_template("auth/change_password.html", form=form)
+@auth_blueprint.route('/change-password', methods=['GET', 'POST'])
+@login_required
+def change_password():
+    form = ChangePasswordForm()
+    if form.validate_on_submit():
+        if current_user.verify_password(form.old_password.data):
+            current_user.password = form.password.data
+            db.session.add(current_user)
+            db.session.commit()
+            flash('Your password has been updated.', 'success')
+            return redirect(url_for('main.index'))
+        else:
+            flash('Invalid password.','error')
+    return render_template("main/auth/change_password.html", form=form)
 
 
 #@auth.route('/reset', methods=['GET', 'POST'])
