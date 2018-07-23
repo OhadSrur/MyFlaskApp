@@ -1,0 +1,48 @@
+﻿{% extends 'layout.html' %}
+{% block body %}
+<h1>Next Covered Call Position</h1>
+<!--<img alt="download-csv" height="44" src="{{ url_for('static' , filename='images/export-csv.png')}}" title="Download CSV results" width="120" />-->
+<hr/>
+<table class="table table-striped" onload="sortTable">
+    <tr>
+        <th>Symbol</th>
+        <th>Stock Price</th>
+        <th>Number of Shares</th>
+        <th>Expiry Date</th>
+        <th>Strike Price</th>
+        <th>Bid</th>
+        <th>Time Value</th>
+        <th>Intrinsic Value</th>
+        <th>Capital Gain Income</th>
+        <th>Required Stock Price for Same Income</th>
+        <th>Called Value</th>
+        <th>Break Even (Called)</th>
+        <th>Break Even (UnCalled)</th>
+        <th>Called % Profit</th>
+        <th>UnCalled % Profit</th>
+        <th>Called Income</th>
+        <th>UnCalled Income</th>
+    </tr>
+    {% for NextPick in NextPicks %}
+    <tr>
+        <td>{{NextPick[0]}}</td>
+        <td>{{NextPick[1]}}</td>
+        <td>{{NextPick[2]}}</td>
+        <td>{{NextPick[3]}}</td>
+        <td>{{NextPick[4]}}</td>
+        <td>{{NextPick[5]}}</td>
+        <td>{{NextPick[6]}}</td>
+        <td>{{NextPick[7]}}</td>
+        <td>{{NextPick[8]}}</td>
+        <td>{{NextPick[9]}}</td>
+        <td>{{NextPick[10]}}</td>
+        <td>{{NextPick[11]}}</td>
+        <td>{{NextPick[12]}}</td>
+        <td>{{NextPick[13]}}</td>
+        <td>{{NextPick[14]}}</td>
+        <td>{{NextPick[15]}}</td>
+        <td>{{NextPick[16]}}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

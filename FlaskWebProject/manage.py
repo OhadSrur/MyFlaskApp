@@ -21,6 +21,7 @@ def make_shell_context():
 if __name__ == "__main__":
     #manager.run()
     serve(manager.run())
+    #waitress.serve(myapp.wsgifunc, port=8041, url_scheme='https')
     #from wsgiref.simple_server import make_server
 
     #httpd = make_server('localhost', manager.run())

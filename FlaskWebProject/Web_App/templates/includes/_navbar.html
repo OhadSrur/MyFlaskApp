@@ -13,6 +13,9 @@
             <li class="nav-item {% if request.path == '/CoveredCallsResults' %}active{% endif %}">
                 <a class="nav-link" href="{{ url_for('call.CoveredCallsResults') }}">Covered Calls Results</a>
             </li>
+            <li class="nav-item {% if request.path == '/NextCoveredCall' %}active{% endif %}">
+                <a class="nav-link" href="{{ url_for('call.NextCoveredCall') }}">Next Calls</a>
+            </li>
             <li class="nav-item {% if request.path == '/putResults' %}active{% endif %}">
                 <a class="nav-link" href="{{ url_for('put.putResults') }}">Write Put Results</a>
             </li>
@@ -20,17 +23,17 @@
                 <a class="nav-link" href="{{ url_for('account.myAccount') }}">Settings</a>
             </li>
             <!--<li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <span class="caret"></span></a>
-            <ul class="dropdown-menu">
-                <li><a href="#">Action</a></li>
-                <li><a href="#">Another action</a></li>
-                <li><a href="#">Something else here</a></li>
-                <li role="separator" class="divider"></li>
-                <li><a href="#">Separated link</a></li>
-                <li role="separator" class="divider"></li>
-                <li><a href="#">One more separated link</a></li>
-            </ul>
-        </li>-->
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+            <li><a href="#">Action</a></li>
+            <li><a href="#">Another action</a></li>
+            <li><a href="#">Something else here</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="#">Separated link</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="#">One more separated link</a></li>
+        </ul>
+    </li>-->
             {% endif %}
         </ul>
         <ul class="nav navbar-nav navbar-right">

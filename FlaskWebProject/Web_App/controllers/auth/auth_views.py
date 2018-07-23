@@ -35,7 +35,7 @@ def login():
     if form.validate_on_submit():
         POST_USERNAME = form.username.data
         POST_PASSWORD = form.password.data
-        user = UserAccount.query.filter_by(username=POST_USERNAME).first()
+        user = UserAccount.query.filter_by(username=POST_USERNAME).first_or_404()
         if user is not None:
             if user.password is not None and user.verify_password(POST_PASSWORD):
                 login_user(user, form.remember_me.data)
