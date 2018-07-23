@@ -14,7 +14,7 @@
                 <a class="nav-link" href="{{ url_for('call.CoveredCallsResults') }}">Covered Calls Results</a>
             </li>
             <li class="nav-item {% if request.path == '/NextCoveredCall' %}active{% endif %}">
-                <a class="nav-link" href="{{ url_for('call.NextCoveredCall') }}">Next Calls</a>
+                <a class="nav-link" href="{{ url_for('call.NextCoveredCall') }}">Next Call Option</a>
             </li>
             <li class="nav-item {% if request.path == '/putResults' %}active{% endif %}">
                 <a class="nav-link" href="{{ url_for('put.putResults') }}">Write Put Results</a>
