@@ -17,13 +17,16 @@ class Config(object):
 class ProdConfig(Config):
     SQLALCHEMY_DATABASE_URI = get_sql_connection_string(svr=os.environ.get('CC_SVR'),db=os.environ.get('CC_SVR'),user=os.environ.get('CC_USER'),psw=os.environ.get('CC_PSW'))
     DEBUG = False
+    TESTING = False
 
 class DevConfig(Config):
     SQLALCHEMY_DATABASE_URI = get_sql_connection_string(svr=os.environ.get('CC_SVR'),db=os.environ.get('CC_SVR'),user=os.environ.get('CC_USER'),psw=os.environ.get('CC_PSW'))
-    DEBUG = None
+    DEBUG = True
+    TESTING = False
 
 class TestingConfig(Config):
     TESTING = True
+    DEBUG = True
     SQLALCHEMY_DATABASE_URI = os.environ.get('TEST_DATABASE_URL') or \
         'sqlite://'
     WTF_CSRF_ENABLED = False

@@ -87,3 +87,4 @@ Werkzeug==0.14.1
 wincertstore==0.2
 WTForms==2.2
 yarg==0.1.9
+pytest

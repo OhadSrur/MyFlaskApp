@@ -1,22 +1,14 @@
-import unittest
-from Web_App.models import UserAccount as user
+import pytest
+from passlib.hash import sha256_crypt
 
-class UserModelTestCase(unittest.TestCase):
-    def test_password_setter(self):
-        u = User(password = 'cat')
-        self.assertTrue(u.password is not None)
 
-    def test_no_password_getter(self):
-        u = User(password = 'cat')
-        with self.assertRaises(AttributeError):
-            u.password
+def test_user_password(app_ctx,user):
+    psw = '$5$rounds=535000$SYi4G8EOI240Va4C$9YbgGlA.DSnCK693RQoULKAW5TnLUETaQlxxORUUw0B'
+    assert psw == user.password
+    #assert u.verify_password(psw)
 
-    def test_password_verification(self):
-        u = User(password = 'cat')
-        self.assertTrue(u.verify_password('cat'))
-        self.assertFalse(u.verify_password('dog'))
+def test_user_get_id(app_ctx,user):
+    assert user.get_id() == 5
 
-    def test_password_salts_are_random(self):
-        u = User(password='cat')
-        u2 = User(password='cat')
-        self.assertTrue(u.password_hash != u2.password_hash)
+def test_user_get_username(app_ctx,user):
+    assert user.get_username() == 'jonedoe'

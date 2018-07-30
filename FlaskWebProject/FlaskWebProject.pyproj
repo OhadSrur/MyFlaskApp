@@ -85,17 +85,20 @@
     <Compile Include="Web_App\models.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Web_App\tests\test_basics.py">
+    <Compile Include="Web_App\tests\conftest.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web_App\tests\test_config.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Web_App\tests\test_user_model.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Web_App\__init__.py" />
-    <Compile Include="Web_App\config.py" />
-    <Compile Include="Web_App\tests\config_test.py">
+    <Compile Include="Web_App\tests\__init__.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Web_App\__init__.py" />
+    <Compile Include="Web_App\config.py" />
     <Compile Include="Web_App\controllers\main\main.py" />
     <Compile Include="Web_App\controllers\__init__.py">
       <SubType>Code</SubType>

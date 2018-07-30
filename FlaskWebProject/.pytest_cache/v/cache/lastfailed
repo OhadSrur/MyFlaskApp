@@ -1,0 +1,14 @@
+{
+  "Web_App/tests/test_basics.py::BasicsTestCase::test_app_exists": true,
+  "Web_App/tests/test_basics.py::BasicsTestCase::test_app_is_testing": true,
+  "Web_App/tests/test_basics.py::TestBasics::()": true,
+  "Web_App/tests/test_user_model.py::TestBasics": true,
+  "Web_App/tests/test_user_model.py::TestUserModel::()::test_password_verification": true,
+  "Web_App/tests/test_user_model.py::UserModelTestCase::test_no_password_getter": true,
+  "Web_App/tests/test_user_model.py::UserModelTestCase::test_password_salts_are_random": true,
+  "Web_App/tests/test_user_model.py::UserModelTestCase::test_password_verification": true,
+  "Web_App/tests/test_user_model.py::test_user_model": true,
+  "obj/Debug/Package/PackageTmp/Web_App/tests/config_test.py": true,
+  "obj/Release/Package/PackageTmp/Web_App/tests/__init_test.py": true,
+  "obj/Release/Package/PackageTmp/Web_App/tests/config_test.py": true
+}

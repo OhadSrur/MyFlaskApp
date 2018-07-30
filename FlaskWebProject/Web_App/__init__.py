@@ -17,7 +17,7 @@ db = SQLAlchemy()
 login_manager.session_protection = 'basic'
 login_manager.login_view = 'auth.login'
 
-def create_app(config_object):
+def create_app(config_object='Web_App.config.DevConfig'):
     # initialization
     app = Flask(__name__)
     app.config.from_object(config_object)

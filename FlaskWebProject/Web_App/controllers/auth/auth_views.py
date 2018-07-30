@@ -35,7 +35,7 @@ def login():
     if form.validate_on_submit():
         POST_USERNAME = form.username.data
         POST_PASSWORD = form.password.data
-        user = UserAccount.query.filter_by(username=POST_USERNAME).first_or_404()
+        user = UserAccount.query.filter_by(username=POST_USERNAME).first()
         if user is not None:
             if user.password is not None and user.verify_password(POST_PASSWORD):
                 login_user(user, form.remember_me.data)
@@ -45,11 +45,9 @@ def login():
                 flash('You are now logged in', 'success')
                 return redirect(next)
             else:
-                error = 'Invalid password'
-                return render_template('main/auth/login.html', error=error)
+                flash('Invalid password')
         else:
-            error = 'Username not found'
-            return render_template('login.html', error=error)
+            flash('Username not found')
     #flash(form.errors)@is_logged_in
     return render_template('main/auth/login.html', form=form)
 
