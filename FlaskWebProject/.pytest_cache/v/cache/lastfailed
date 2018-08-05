@@ -7,6 +7,7 @@
   "Web_App/tests/test_user_model.py::UserModelTestCase::test_no_password_getter": true,
   "Web_App/tests/test_user_model.py::UserModelTestCase::test_password_salts_are_random": true,
   "Web_App/tests/test_user_model.py::UserModelTestCase::test_password_verification": true,
+  "Web_App/tests/test_user_model.py::test_password_salts_are_random": true,
   "Web_App/tests/test_user_model.py::test_user_model": true,
   "obj/Debug/Package/PackageTmp/Web_App/tests/config_test.py": true,
   "obj/Release/Package/PackageTmp/Web_App/tests/__init_test.py": true,

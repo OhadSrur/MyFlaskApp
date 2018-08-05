@@ -1,5 +1,6 @@
 [
   "Web_App/tests/test_user_model.py::test_user_password",
   "Web_App/tests/test_user_model.py::test_user_get_id",
-  "Web_App/tests/test_user_model.py::test_user_get_username"
+  "Web_App/tests/test_user_model.py::test_user_get_username",
+  "Web_App/tests/test_user_model.py::test_password_salts_are_random"
 ]

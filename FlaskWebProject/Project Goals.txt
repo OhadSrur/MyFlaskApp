@@ -4,7 +4,15 @@ Add pytest or unittest
 Giving access to underlying data with API's
 Current position page / submit position
 Scan all the market regardless of parameters, and provide basic user pramaters with additional parameters on screen
+Trading journal
 Add PUT trades into DB:
 	a. Create a buy transaction after PUT has been excercised
 Graphs:
 	1. Bolinger bands
+
+05/08/2018 sunday:
+1. Add comment bubble to stock - Company Name and Industry -- Complete
+2. Add Put information
+3. Build test for all new functions
+4. Bolinger bands
+5. Update API use to AlpahAdventage
