@@ -13,6 +13,8 @@
         <th>Option Position</th>
         <th>Strike Price</th>
         <th>Bid</th>
+        <th>Time Value</th>
+        <th>Intrinsic Value</th>
         <th>Call Premium Net</th>
         <th>Break Even Simple</th>
         <th>Break Even New</th>
@@ -23,7 +25,7 @@
     {% for StockPick in StockPicks %}
     <tr>
         <td><a class="StockID" href="/StockGraph/{{StockPick[0]}}"><img alt="graph-stock" height="50" src="{{ url_for('static' , filename='images/graph.png')}}" title="view Stock Graph" width="50" /></a></td>
-        {% if request.path == '/CoveredCallsResults' %}<td><a title="{{StockPick[1]}}. Industry: {{StockPick[2]}}" class="StockID" href="/CoveredCallsResults/{{StockPick[0]}}">{{StockPick[0]}}</a></td>{% endif %}
+        <td><a title="{{StockPick[1]}}. Industry: {{StockPick[2]}}" class="StockID" href="/CoveredCallsResults/{{StockPick[0]}}">{{StockPick[0]}}</a></td>
         <td>{{StockPick[3]}}</td>
         <td>{{StockPick[4]}}</td>
         <td>{{StockPick[5]}}</td>
@@ -36,6 +38,8 @@
         <td>{{StockPick[12]}}</td>
         <td>{{StockPick[13]}}</td>
         <td>{{StockPick[14]}}</td>
+        <td>{{StockPick[15]}}</td>
+        <td>{{StockPick[16]}}</td>
     </tr>
     {% endfor %}
 </table>
