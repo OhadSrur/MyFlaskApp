@@ -15,4 +15,5 @@ Graphs:
 2. Add Put information
 3. Build test for all new functions
 4. Bolinger bands
-5. Update API use to AlpahAdventage
+5. Update API use to AlpahAdventage - Completed 17/08/18
+6. Create SP for SellPut
