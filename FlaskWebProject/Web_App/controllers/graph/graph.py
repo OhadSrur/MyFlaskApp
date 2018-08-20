@@ -29,7 +29,7 @@ def StockGrpah(StockID):
     stock_query = "exec spBollingerBands @StockID= ? , @NumOfYears=3"
     stockResults =  pd.read_sql_query(stock_query,connection,params=[StockID])
     graph_bb.x_labels = stockResults.StockPriceDate
-    graph_bb.add('Stock Price',  stockResults.StockCloseAdj)
+    graph_bb.add('Stock Price',  stockResults.StockClosePrice)
     graph_bb.add('50 MA',  stockResults.MA50)
     graph_bb.add('Upper Bound',  stockResults.UpperBollinger)
     graph_bb.add('Lower Bound',  stockResults.LowerBollinger)
