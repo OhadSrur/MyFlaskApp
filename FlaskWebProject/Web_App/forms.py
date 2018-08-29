@@ -1,4 +1,4 @@
-from wtforms import Form, StringField, TextAreaField, PasswordField, validators, IntegerField, DecimalField, BooleanField, SubmitField
+from wtforms import Form, StringField, TextAreaField, PasswordField, validators, IntegerField, DecimalField, BooleanField, SubmitField, DateField, SelectField
 from wtforms.validators import Required, Length, Email, Regexp, EqualTo, DataRequired
 from wtforms import ValidationError
 from Web_App.models import UserAccount
@@ -80,3 +80,14 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     remember_me = BooleanField('Keep me logged in')
     submit = SubmitField('Log In')
+
+class SellPutForm(FlaskForm):
+    StockID = StringField('StockID', [validators.Length(min=1, max=10)])
+    PutStrikePrice = DecimalField('PutStrikePrice',places=2)
+    PutExpiry = DateField('PutExpiry')
+    PutPrice = DecimalField('PutPrice',places=2)
+    IsOptionPriceWithCommission = BooleanField('IsOptionPriceWithCommission')
+    PutNumberOfShares = IntegerField('PutNumberOfShares')
+    PutWriteDate = DateField('PutWriteDate')
+    IsDemo = BooleanField('IsDemo')
+    TranType = StringField('TranType', [validators.Length(min=2, max=10)])# SelectField('Transaction Type', choices=[('Sell'),('BUY')])

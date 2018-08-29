@@ -38,7 +38,10 @@ def CoveredCallsResultsStock(StockID):
     query = "EXEC spCoveredCallResults @AccountID= ?, @TradingDate= ?, @StockID= ? "
     results = pd.read_sql_query(query,connection,params=(str(accountID),lastTradingDate.values[0][0],StockID))
 
-    return render_template('app/call/CoveredCallsResults.html',StockPicks=results.values)
+    stockQueryDetail = "exec spStockDetails @StockID= %s" %StockID
+    resultsStockQuery = pd.read_sql_query(stockQueryDetail,connection)
+
+    return render_template('app/call/CoveredCallsResults.html',StockPicks=results.values, stockQueryResult=resultsStockQuery.values)
 
 # CoveredCallsResults
 @call_blueprint.route('/NextCoveredCall')

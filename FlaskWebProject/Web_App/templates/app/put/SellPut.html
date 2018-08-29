@@ -1,0 +1,39 @@
+﻿{% extends 'layout.html' %}
+
+{% block body %}
+<h1><small>Sell Put Option</small></h1>
+{% from "includes/_formhelpers.html" import render_field %}
+<form method="POST" action="{{ url_for('put.SellPut') }}">
+    {{ form.hidden_tag() }}
+    <div class="form-group">
+        {{render_field(form.StockID, class_="form-control")}}
+    </div>
+    <div class="form-group">
+        {{render_field(form.PutStrikePrice, class_="form-control")}}
+    </div>
+    <div class="form-group">
+        {{render_field(form.PutExpiry, class_="form-control")}}
+    </div>
+    <div class="form-group">
+        {{render_field(form.PutPrice, class_="form-control")}}
+    </div>
+    <div class="form-group">
+        {{render_field(form.IsOptionPriceWithCommission, class_="form-control")}}
+    </div>
+    <div class="form-group">
+        {{render_field(form.PutNumberOfShares, class_="form-control")}}
+    </div>
+    <div class="form-group">
+        {{render_field(form.PutWriteDate, class_="form-control")}}
+    </div>
+    <div class="form-group">
+        {{render_field(form.IsDemo, class_="form-control")}}
+    </div>
+    <div class="form-group">
+        {{render_field(form.TranType, class_="form-control")}}
+    </div>
+    <div class="form-group">
+        <input type="submit" name="commit" class="btn btn-primary" value="Save Changes" />
+    </div>
+</form>
+{% endblock %}

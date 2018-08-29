@@ -143,6 +143,7 @@
     <Content Include="Web_App\static\js\bootstrap.min.js.map" />
     <Content Include="Web_App\static\js\sortTable.js" />
     <Content Include="Web_App\templates\app\call\NextCoveredCallPosition.html" />
+    <Content Include="Web_App\templates\app\put\SellPut.html" />
     <Content Include="Web_App\templates\favicon.ico" />
     <Content Include="Web_App\templates\app\Graph\lineGraph.html" />
     <Content Include="Web_App\templates\app\put\putResults.html" />
