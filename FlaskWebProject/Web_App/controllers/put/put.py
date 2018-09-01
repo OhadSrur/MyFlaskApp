@@ -53,8 +53,9 @@ def SellPut():
         insertPut = "EXEC CoveredCalls.dbo.spiCreatePutOption @AccountID= ?,@StockID= ?,@PositionID=NULL,@PutStrikePrice= ?,@PutExpiry= ?,@PutPrice= ?,@IsOptionPriceWithCommission= ?,@PutNumberOfShares= ?,@PutWriteDate= ?,@IsDemo= ?,@TranType= ?"
         connection.execute(insertPut, [accountID,form.StockID.data,form.PutStrikePrice.data,form.PutExpiry.data,form.PutPrice.data,form.IsOptionPriceWithCommission.data,form.PutNumberOfShares.data,form.PutWriteDate.data,form.IsDemo.data,form.TranType.data])
 
-        flash('SELL put option has been inserted for Stock %s' % form.StockID.data)
-
+        flash('SELL put option has been inserted for Stock %s' % form.StockID.data, 'success')
+        return redirect(url_for('main.index'))
+    
     elif form.is_submitted():
         error = 'Information incorrect, please check all fields and submit again'
         flash(form.errors)

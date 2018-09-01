@@ -17,7 +17,7 @@
                 <a class="nav-link" href="{{ url_for('call.NextCoveredCall') }}">Next Call Option</a>
             </li>
             <li class="nav-item {% if request.path == '/putResults' %}active{% endif %}">
-                <a class="nav-link" href="{{ url_for('put.putResults') }}">Write Put Results</a>
+                <a class="nav-link" href="{{ url_for('put.putResults') }}">Sell Put Results</a>
             </li>
             <li class="nav-item {% if request.path in ['/myAccount','/accountBasic','/parametersOptions'] %}active{% endif %}">
                 <a class="nav-link" href="{{ url_for('account.myAccount') }}">Settings</a>

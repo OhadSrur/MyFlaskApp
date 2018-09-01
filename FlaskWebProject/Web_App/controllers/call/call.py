@@ -57,3 +57,18 @@ def NextCoveredCall():
     results = pd.read_sql_query(query,connection,params=(str(accountID)))
 
     return render_template('app/call/NextCoveredCallPosition.html',NextPicks=results.values)
+
+# CoveredCallsResults
+@call_blueprint.route('/NextCoveredCall/<string:StockID>')
+@login_required
+def NextCoveredCallStock(StockID):
+    #Getting DB connection
+    connection_string, engine, connection = get_connections()
+    #Getting Account
+    accountID = current_user.get_id()
+    
+    #Stocks Picks
+    query = "exec spNextCall @AccountID= %s, @StockID= %s " %(accountID,StockID)
+    results = pd.read_sql_query(query,connection)
+
+    return render_template('app/call/NextCoveredCallPosition.html',NextPicks=results.values)
