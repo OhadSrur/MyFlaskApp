@@ -2,7 +2,78 @@
 {% block body %}
 <h1>Next Covered Call Position</h1>
 <!--<img alt="download-csv" height="44" src="{{ url_for('static' , filename='images/export-csv.png')}}" title="Download CSV results" width="120" />-->
-<hr/>
+<hr />
+{% if request.path != "/NextCoveredCall" %}
+<table class="table table-striped">
+    <tr>
+        <th>Symbol</th>
+        <th>Company Name</th>
+        <th>Current Price</th>
+        <th>Volume</th>
+        <th>High Price</th>
+        <th>Low Price</th>
+        <th>Open Price</th>
+        <th>Change Perc</th>
+        <th>Low 52W</th>
+        <th>High 52W</th>
+    </tr>
+    {% for stockQuery in stockQueryResult %}
+    <tr>
+        <td>{{stockQuery[0]}}</td>
+        <td>{{stockQuery[1]}}</td>
+        <td>{{stockQuery[2]}}</td>
+        <td>{{stockQuery[3]}}</td>
+        <td>{{stockQuery[4]}}</td>
+        <td>{{stockQuery[5]}}</td>
+        <td>{{stockQuery[6]}}</td>
+        <td>{{stockQuery[7]}}</td>
+        <td>{{stockQuery[21]}}</td>
+        <td>{{stockQuery[22]}}</td>
+    </tr>
+    {% endfor %}
+    <tr>
+        <th>Market Cap</th>
+        <th>PE</th>
+        <th>50MA</th>
+        <th>50MA Perc</th>
+        <th>200MA</th>
+        <th>200MA Perc</th>
+        <th>Earning Date</th>
+    </tr>
+    {% for stockQuery in stockQueryResult %}
+    <tr>
+        <td>{{stockQuery[9]}}</td>
+        <td>{{stockQuery[10]}}</td>
+        <td>{{stockQuery[12]}}</td>
+        <td>{{stockQuery[13]}}</td>
+        <td>{{stockQuery[14]}}</td>
+        <td>{{stockQuery[15]}}</td>
+        <td>{{stockQuery[16]}}</td>
+    </tr>
+    {% endfor %}
+    <tr>
+        <th>Dividend</th>
+        <th>Dividend Date</th>
+        <th>Ex Dividend Date</th>
+        <th>Sector</th>
+        <th>Industry</th>
+        <th>Web Page</th>
+        <th>Stock Graph</th>
+    </tr>
+    {% for stockQuery in stockQueryResult %}
+    <tr>
+        <td>{{stockQuery[11]}}</td>
+        <td>{{stockQuery[17]}}</td>
+        <td>{{stockQuery[18]}}</td>
+        <td>{{stockQuery[19]}}</td>
+        <td>{{stockQuery[20]}}</td>
+        <td><a href="{{stockQuery[23]}}">{{stockQuery[23]}}</a></td>
+        <td><a class="StockID" href="/StockGraph/{{stockQuery[0]}}"><img alt="graph-stock" height="50" src="{{ url_for('static' , filename='images/graph.png')}}" title="view Stock Graph" width="50" /></a></td>
+    </tr>
+    {% endfor %}
+</table>
+<hr />
+{% endif %}
 <table class="table table-striped" onload="sortTable">
     <tr>
         {% if request.path == "/NextCoveredCall" %}
