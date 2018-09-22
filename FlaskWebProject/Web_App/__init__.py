@@ -17,7 +17,7 @@ db = SQLAlchemy()
 login_manager.session_protection = 'basic'
 login_manager.login_view = 'auth.login'
 
-def create_app(config_object='Web_App.config.DevConfig'):
+def create_app(config_object='Web_App.config.ProdConfig'):
     # initialization
     app = Flask(__name__)
     app.config.from_object(config_object)
@@ -27,7 +27,7 @@ def create_app(config_object='Web_App.config.DevConfig'):
     mail.init_app(app)
 
     # Make the WSGI interface available at the top level so wfastcgi can get it.
-    wsgi_app = app.wsgi_app
+    #wsgi_app = app.wsgi_app
     
     from Web_App.controllers.main import main_blueprint
     app.register_blueprint(main_blueprint)
