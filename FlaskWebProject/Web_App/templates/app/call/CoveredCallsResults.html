@@ -82,9 +82,9 @@
     <tr>
         {% if request.path == "/CoveredCallsResults" %}
         <th>Symbol</th>
+        <th>Current Price</th>
         {% endif %}
         <th>Sigma Volatility</th>
-        <th>Current Stock Price</th>
         <th>Call Expiry Days</th>
         <th>Option Position</th>
         <th>Strike Price</th>
@@ -102,9 +102,9 @@
     <tr>
         {% if request.path == "/CoveredCallsResults" %}
         <td><a title="{{StockPick[1]}}. Industry: {{StockPick[2]}}" class="StockID" href="/CoveredCallsResults/{{StockPick[0]}}">{{StockPick[0]}}</a></td>
+        <td>{{StockPick[4]}}</td>
         {% endif %}
         <td>{{StockPick[3]}}</td>
-        <td>{{StockPick[4]}}</td>
         <td>{{StockPick[5]}}</td>
         <td>{{StockPick[6]}}</td>
         <td>{{StockPick[7]}}</td>

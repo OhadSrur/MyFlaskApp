@@ -82,8 +82,8 @@
     <tr>
         {% if request.path == "/putResults" %}
         <th>Symbol</th>
+        <th>Current Price</th>
         {% endif %}
-        <th>Current Stock Price</th>
         <th>Call Expiry Days</th>
         <th>Strike Price</th>
         <th>Bid</th>
@@ -94,8 +94,8 @@
     <tr>
         {% if request.path == "/putResults" %}
         <td><a title="{{StockPick[1]}}. Industry: {{StockPick[2]}}" class="StockID" href="/putResults/{{StockPick[0]}}">{{StockPick[0]}}</a></td>
-        {% endif %}
         <td>{{StockPick[3]}}</td>
+        {% endif %}
         <td>{{StockPick[4]}}</td>
         <td>{{StockPick[5]}}</td>
         <td>{{StockPick[6]}}</td>

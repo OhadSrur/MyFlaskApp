@@ -5,9 +5,11 @@
 <hr/>
 <table class="table table-striped" onload="sortTable">
     <tr>
+        {% if request.path == "/NextCoveredCall" %}
         <th>Symbol</th>
         <th>Stock Price</th>
         <th>Number of Shares</th>
+        {% endif %}
         <th>Number of Days to Expiry</th>
         <th>Strike Price</th>
         <th>Bid</th>
@@ -25,9 +27,11 @@
     </tr>
     {% for NextPick in NextPicks %}
     <tr>
+        {% if request.path == "/NextCoveredCall" %}
         <td><a href="/NextCoveredCall/{{NextPick[0]}}">{{NextPick[0]}}</a></td>
         <td>{{NextPick[1]}}</td>
         <td>{{NextPick[2]}}</td>
+        {% endif %}
         <td>{{NextPick[3]}}</td>
         <td>{{NextPick[4]}}</td>
         <td>{{NextPick[5]}}</td>
