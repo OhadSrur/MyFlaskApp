@@ -9,6 +9,7 @@ Add PUT trades into DB:
 	a. Create a buy transaction after PUT has been excercised
 Graphs:
 	1. Bolinger bands
+Select favorite stock
 
 1. Add comment bubble to stock - Company Name and Industry -- Complete
 2. Add next page with Put information - top section selected position, bottom section different put options

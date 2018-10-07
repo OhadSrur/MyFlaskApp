@@ -150,3 +150,18 @@ def updateParameters():
 
         return redirect(url_for('account.parametersOptions'))
     return redirect(url_for('account.parametersOptions'))
+
+# Account Portfolio
+@account_blueprint.route('/Portfolio', methods=['GET', 'POST'])
+@login_required
+def Portfolio():
+    #Getting DB connection
+    connection_string, engine, connection = get_connections()
+    #Getting Account
+    accountID = current_user.get_id()
+
+    #Stocks Picks
+    query = "SELECT StockID, AvgStockPurchasePriceAfterComm,StockPurchaseDate , BreakEvenNet, TotalNumOfShares, TotalStockInvestment FROM [CoveredCalls].[dbo].[vStockPurchasePortfolio] where HoldingStock=1 and AccountID= %s;" %accountID
+    results = pd.read_sql_query(query,connection)
+
+    return render_template('app/account/Portfolio.html',StockPicks=results.values)

@@ -143,8 +143,10 @@
     <Content Include="Web_App\static\js\bootstrap.min.js.map" />
     <Content Include="Web_App\static\js\sortTable.js" />
     <Content Include="Web_App\static\web.config" />
+    <Content Include="Web_App\templates\app\account\Portfolio.html" />
     <Content Include="Web_App\templates\app\call\NextCoveredCallPosition.html" />
     <Content Include="Web_App\templates\app\put\SellPut.html" />
+    <Content Include="Web_App\templates\app\Trading\Trading.html" />
     <Content Include="Web_App\templates\favicon.ico" />
     <Content Include="Web_App\templates\app\Graph\lineGraph.html" />
     <Content Include="Web_App\templates\app\put\putResults.html" />
@@ -191,6 +193,7 @@
     <Folder Include="Web_App\templates\app\account\" />
     <Folder Include="Web_App\templates\app\call\" />
     <Folder Include="Web_App\templates\app\Graph\" />
+    <Folder Include="Web_App\templates\app\Trading\" />
     <Folder Include="Web_App\templates\app\put\" />
     <Folder Include="Web_App\templates\main\" />
     <Folder Include="Web_App\templates\app\" />

@@ -1,0 +1,25 @@
+﻿{% extends 'layout.html' %}
+{% block body %}
+<h1>Account Portfolio</h1>
+<hr>
+<table class="table table-striped" onload="sortTable">
+    <tr>
+        <th>Symbol</th>
+        <th>Purchase Price</th>
+        <th>Purchase Date</th>
+        <th>Break Even Price</th>
+        <th>Number of Shares</th>
+        <th>Total Investment</th>
+    </tr>
+    {% for StockPick in StockPicks %}
+    <tr>
+        <td>{{StockPick[0]}}</td>
+        <td>{{StockPick[1]}}</td>
+        <td>{{StockPick[2]}}</td>
+        <td>{{StockPick[3]}}</td>
+        <td>{{StockPick[4]}}</td>
+        <td>{{StockPick[5]}}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
