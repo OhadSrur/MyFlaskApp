@@ -54,7 +54,7 @@ def NextCoveredCall():
     
     #Stocks Picks
     query = "exec spNextCall @AccountID= ?, @StockID=NULL"
-    results = pd.read_sql_query(query,connection,params=(str(accountID)))
+    results = pd.read_sql_query(query,connection,params=(str(accountID),))
 
     return render_template('app/call/NextCoveredCallPosition.html',NextPicks=results.values)
 
