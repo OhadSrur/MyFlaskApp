@@ -68,7 +68,7 @@ pyreadline==2.1
 python-dateutil==2.7.3
 pytz==2018.4
 pywin32-ctypes==0.1.2
-PyYAML==5.1
+PyYAML==5.4
 requests==2.22.0
 requests-oauthlib==0.8.0
 simplegeneric==0.8.1
